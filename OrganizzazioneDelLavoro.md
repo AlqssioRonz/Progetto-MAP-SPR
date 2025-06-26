@@ -2,11 +2,12 @@
 
 ## Indice
 
-- [Organizzazione del lavoro - Before Deorbiting](#organizzazione-del-lavoro---before-deorbiting)
-  - [Indice](#indice)
-  - [1 - Introduzione](#1---introduzione)
-    - [1.1 - Partecipanti al Progetto](#11---partecipanti-al-progetto)
-    - [2 - Suddivisione dei package](#2---suddivisione-dei-package)
+- ### [# 1 - Introduzione](#1---introduzione)
+
+  - #### [# 1.1 - Partecipanti al Progetto](#11---partecipanti-al-progetto)
+  - #### [# 1.2 - Descrizione dell'avventura](#12---descrizione-dellavventura)
+    
+- ###  [# 2 - Progettazione](#2---progettazione)
 
 ## 1 - Introduzione
 
@@ -18,5 +19,24 @@ Il team **SPR** è composto da:
 - **Lorenzo Peluso ([LorenzoPeluso04](https://github.com/LorenzoPeluso04))**
 - **Alessio Ronzullo ([AlqssioRonz](https://github.com/AlqssioRonz))**
 
-### 2 - Suddivisione dei package
+### 1.2 - Descrizione dell'avventura
 
+## 2 - Progettazione
+
+Il progetto sarà suddiviso nei seguenti package:
+
+- Package per il main:
+  - Engine: contiene tutte  del gioco assieme alla procedura main da eseguire
+- Package per la struttura del Parser utile allo sviluppo del gioco:
+  - Parser: interpreta i comandi dell’utente e li converte in istruzioni comprensibili per il gioco
+  - ParserOutput: contiene il risultato dell’analisi di un comando, con azione e oggetti coinvolti
+- Package con l'inizializzazione del gioco e le implementazioni degli observer:
+  - BeforeDeorbiting: possiede tutta l'inizializzazione del gioco
+  - inserire tutti gli observer
+- Package per i type con:
+  -  Setter
+  -  Getter
+  -  Metodi base
+- Package per le componenti grafiche
+- Package per le componenti della base di dati
+- Package contenente le applicazioni RESTful

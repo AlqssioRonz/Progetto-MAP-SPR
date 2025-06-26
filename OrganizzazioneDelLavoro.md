@@ -21,6 +21,22 @@ Il team **SPR** è composto da:
 
 ### 1.2 - Descrizione dell'avventura
 
+### Introduzione generale
+
+### Caratteristiche principali
+
+### Trama del gioco
+
+22 giugno 2030. Sei a bordo della Stazione Spaziale Internazionale, al termine di una lunga missione. È il tuo ultimo giorno nello spazio: presto la stazione verrà deorbitata e distrutta.
+
+Ma qualcosa interrompe la routine. Un silenzio anomalo, assenze inspiegabili, segnali che non tornano.
+La stazione, che fino a ieri era casa, ora sembra diversa. Più fredda. Più ostile.
+
+Dovrai esplorare, raccogliere indizi, interagire con strumenti e terminali, e affrontare l’ignoto.
+Qualcosa sta accadendo. E il tempo a disposizione sta finendo.
+
+Riuscirai a capire cosa sta succedendo… prima del deorbitaggio?
+
 ## 2 - Progettazione
 
 Il progetto sarà suddiviso nei seguenti package:

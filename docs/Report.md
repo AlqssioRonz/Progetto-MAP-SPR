@@ -36,9 +36,21 @@ Il team **SPR** è composto da:
 
 ### Introduzione generale
 
----
+**Before Deorbiting** è un progetto sviluppato come lavoro finale dal **Team SPR** per il corso di *Metodi Avanzati di Programmazione*, tenuto dal Prof. [Pierpaolo Basile](https://github.com/pippokill) presso l’Università degli Studi di Bari “Aldo Moro”.
 
-### Caratteristiche principali
+L'obiettivo del corso era quello di approfondire il paradigma della **Programmazione a Oggetti** e applicarlo concretamente attraverso la realizzazione di un progetto software. In questo caso, si è scelto di sviluppare un'avventura testuale.
+
+### Che cos'è un'avventura testuale?
+
+Un’avventura testuale è un videogioco in cui il giocatore interagisce con l’ambiente scrivendo comandi testuali. Diffuso soprattutto agli albori dell’informatica, questo genere punta tutto sulla narrazione e sull’immaginazione, offrendo un’esperienza interattiva senza elementi grafici.
+
+#### Caratteristiche principali
+
+- **Interfaccia testuale**: il giocatore interagisce attraverso comandi scritti, come "avanti", "prendi biglietto" o "osserva", per esplorare l’ambiente e compiere azioni.
+
+- **Descrizioni immersive**: ogni scena, oggetto o evento viene descritto con testi ricchi di dettagli, che guidano l’immaginazione e favoriscono l'immersione nel mondo di gioco.
+
+- **Enigmi e rompicapi**: per avanzare, il giocatore deve risolvere enigmi, sfruttare l’inventario e usare logica e intuizione per ottenere codici o indizi, spesso indispensabili per superare ostacoli o sbloccare nuove situazion
 
 ---
 

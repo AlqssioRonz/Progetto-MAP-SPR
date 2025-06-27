@@ -29,7 +29,8 @@ public class Parser {
 
     private int checkForCommand(String token, List<Command> commands) {
         for (int i = 0; i < commands.size(); i++) {
-            if (commands.get(i).getName().equals(token) || commands.get(i).getAlias().contains(token)) {
+            if (commands.get(i).getName().equals(token) || 
+                    commands.get(i).getAlias().contains(token)) {
                 return i;
             }
         }
@@ -38,7 +39,8 @@ public class Parser {
 
     private int checkForObject(String token, List<BDObject> obejcts) {
         for (int i = 0; i < obejcts.size(); i++) {
-            if (obejcts.get(i).getName().equals(token) || obejcts.get(i).getAlias().contains(token)) {
+            if (obejcts.get(i).getName().equals(token) || 
+                    obejcts.get(i).getAlias().contains(token)) {
                 return i;
             }
         }
@@ -53,42 +55,66 @@ public class Parser {
      * @param inventory
      * @return
      */
-    public ParserOutput parse(String command, List<Command> commands, List<BDObject> objects, List<BDObject> inventory) {
-        List<String> tokens = this.parseString(command, stopwords);
+    public ParserOutput parse(String input, List<Command> commands, 
+            List<BDObject> objects, List<BDObject> inventory) {
+        
+        List<String> tokens = parseString(input, stopwords);
         if (!tokens.isEmpty()) {
-            int ic = checkForCommand(tokens.get(0), commands);
-            if (ic > -1) {
-                if (tokens.size() > 1) {
-                    int io = checkForObject(tokens.get(1), objects);
-                    int ioinv = -1;
-                    if (io < 0 && tokens.size() > 2) {
-                        io = checkForObject(tokens.get(2), objects);
-                    }
-                    if (io < 0) {
-                        ioinv = checkForObject(tokens.get(1), inventory);
-                        if (ioinv < 0 && tokens.size() > 2) {
-                            ioinv = checkForObject(tokens.get(2), inventory);
-                        }
-                    }
-                    if (io > -1 && ioinv > -1) {
-                        return new ParserOutput(commands.get(ic), objects.get(io), inventory.get(ioinv));
-                    } else if (io > -1) {
-                        return new ParserOutput(commands.get(ic), objects.get(io), null);
-                    } else if (ioinv > -1) {
-                        return new ParserOutput(commands.get(ic), null, inventory.get(ioinv));
-                    } else {
-                        return new ParserOutput(commands.get(ic), null, null);
-                    }
-                } else {
-                    return new ParserOutput(commands.get(ic), null);
+            
+            Command command = null;
+            BDObject object = null;
+            BDObject inventoryObject = null;
+            
+            int commandIndex = -1;
+            int commandTokenIndex = -1;
+            boolean found = false;
+
+            // Cerca il comando dinamicamente tra tutti i token
+            for (int i = 0; i < tokens.size() && !found; i++) {
+                commandIndex = checkForCommand(tokens.get(i), commands);
+                if (commandIndex != -1) {
+                    commandTokenIndex = i;
+                    found = true;
                 }
-            } else {
+            }
+
+            if (commandIndex == -1) {
+                // Nessun comando trovato, restituisce un payload vuoto
                 return new ParserOutput(null, null);
             }
-        } else {
+
+            //altrimenti memorizza il comando
+            command = commands.get(commandIndex);
+
+            //ricerca degli oggetti
+            for (int i = 0; i < tokens.size(); i++) {
+                
+                boolean sameToken = (i == commandTokenIndex);
+
+                int objectIndex = -1;
+                int inventoryIndex = -1;
+
+                if (!sameToken && object == null) {
+                    objectIndex = checkForObject(tokens.get(i), objects);
+                    if (objectIndex != -1) {
+                        object = objects.get(objectIndex);
+                    }
+                }
+
+                if (!sameToken && inventoryObject == null) {
+                    inventoryIndex = checkForObject(tokens.get(i), inventory);
+                    if (inventoryIndex != -1) {
+                        inventoryObject = inventory.get(inventoryIndex);
+                    }
+                }
+            }
+            return new ParserOutput(command, object, inventoryObject);
+            //se ha trovato un comando, opzionalmente un oggetto, vengono restituiti nel payload
+        }else{ 
             return null;
         }
-    }
+    };
+
     
     /**
      *

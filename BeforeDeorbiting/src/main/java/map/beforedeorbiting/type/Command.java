@@ -49,5 +49,27 @@ public class Command {
     public void setAlias(String[] alias) {
         this.alias = new HashSet<>(Arrays.asList(alias));
     }
-
+    
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Command other = (Command) obj;
+        if (this.type != other.type) {
+            return false;
+        }
+        return true;
+    }
 }

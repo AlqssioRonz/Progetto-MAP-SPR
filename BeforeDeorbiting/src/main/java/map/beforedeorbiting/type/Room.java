@@ -24,6 +24,8 @@ public class Room {
     private String description;
 
     private String look;
+    
+    private String history;
 
     private boolean visible = true;
     
@@ -100,6 +102,14 @@ public class Room {
 
     public void setLook(String look) {
         this.look = look;
+    }
+    
+    public void setHistory(String history) {
+        this.history = history;
+    }
+    
+    public String getHistory() {
+        return this.history;
     }
 
     public boolean isVisible() {

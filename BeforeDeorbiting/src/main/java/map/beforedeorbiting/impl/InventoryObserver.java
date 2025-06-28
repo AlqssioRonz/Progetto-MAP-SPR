@@ -11,7 +11,7 @@ import map.beforedeorbiting.GameDesc;
 
 
 /**
- * Questa classe rappresenta l'observer del comando inventory, 
+ * Questa classe rappresenta l'observer del comando 'INVENTORY', 
  * pemette di implementare il comando visualizzando i contenuti dell'inventario
  * 
  * @author lorenzopeluso
@@ -27,19 +27,19 @@ public class InventoryObserver implements GameObserver {
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {
         
-        StringBuilder msg = new StringBuilder();
+        StringBuilder inventoryMessage = new StringBuilder();
         if (parserOutput.getCommand().getType() == CommandType.INVENTORY) {
             if (game.getInventory().getList().isEmpty()) {
-                msg.append("Guardi nel tuo inventario spaziale, ma con tua sorpresa non ci sono nemmeno le caramelle della Nonna!");
+                inventoryMessage.append("Guardi nel tuo inventario spaziale, ma con tua sorpresa non ci sono nemmeno le caramelle della Nonna!");
             } else {
-                msg.append("Ecco cosa hai nel tuo inventario :\n");
+                inventoryMessage.append("Ecco cosa hai nel tuo inventario :\n");
                 for (BDObject o : game.getInventory().getList()) {
-                    msg.append(o.getName()).append(" -> ").append(o.getDescription()).append("\n");
+                    inventoryMessage.append(o.getName()).append(" -> ").append(o.getDescription()).append("\n");
                 }
             }
         }
         
-        return msg.toString();
+        return inventoryMessage.toString();
     }
     
 }

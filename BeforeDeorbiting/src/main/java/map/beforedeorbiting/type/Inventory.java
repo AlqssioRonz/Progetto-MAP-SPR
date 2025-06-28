@@ -13,8 +13,17 @@ import java.util.List;
  */
 public class Inventory {
     
+    private static final Inventory instance = new Inventory();
     private List<BDObject> list = new ArrayList<>();
 
+    public Inventory() {
+    }
+    
+    
+    public static Inventory getInstance() {
+        return instance;
+    }
+    
     /**
      *
      * @return
@@ -45,6 +54,6 @@ public class Inventory {
      */
     public void remove(BDObject o) {
         list.remove(o);
-    }
+    }   
     
 }

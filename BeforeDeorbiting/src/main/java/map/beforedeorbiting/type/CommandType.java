@@ -31,7 +31,7 @@ public enum CommandType {
     AFT,
 
     /**
-     *
+     * Direzione nautica in assenza di punti cardinali
      */
     STARBORD,
 
@@ -68,6 +68,10 @@ public enum CommandType {
     /**
      *
      */
-    LOOK_AT
+    LOOK_AT,
+     /**
+     *
+     */
+    SAVE
 }
 

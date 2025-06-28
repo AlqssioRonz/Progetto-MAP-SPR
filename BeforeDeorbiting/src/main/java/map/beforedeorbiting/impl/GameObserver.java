@@ -4,6 +4,9 @@
  */
 package map.beforedeorbiting.impl;
 
+import map.beforedeorbiting.parser.ParserOutput;
+import map.beforedeorbiting.GameDesc;
+
 /**
  *
  * @author lorenzopeluso
@@ -12,6 +15,6 @@ package map.beforedeorbiting.impl;
 public interface GameObserver {
     
     
-    //public String update(GameDescription description, ParserOutput parserOutput);
+    public String update(GameDesc game, ParserOutput parserOutput);
     
 }

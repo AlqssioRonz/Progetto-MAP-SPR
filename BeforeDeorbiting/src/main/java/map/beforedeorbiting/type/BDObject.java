@@ -24,6 +24,14 @@ public class BDObject {
     private boolean pickupable = false;
     
     private boolean usable = false;
+
+    /**
+     * 
+     * @param id 
+     */
+    public BDObject(int id) {
+        this.id = id;
+    }
     
     /**
      * 

@@ -45,6 +45,6 @@ public class Inventory {
      */
     public void remove(BDObject o) {
         list.remove(o);
-    }
+    }   
     
 }

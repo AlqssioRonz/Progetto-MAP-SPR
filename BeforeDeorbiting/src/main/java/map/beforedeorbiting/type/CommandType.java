@@ -14,6 +14,11 @@ public enum CommandType {
      *
      */
     HELP,
+    
+    /**
+     * Comando che permette di avere una storia del modulo che si sta visitando
+     */
+    HISTORY,
 
     /**
      *

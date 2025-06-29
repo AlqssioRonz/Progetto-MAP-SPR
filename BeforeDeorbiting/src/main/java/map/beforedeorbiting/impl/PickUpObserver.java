@@ -41,13 +41,11 @@ public class PickUpObserver implements GameObserver, Serializable {
                     game.getInventory().add(parserOutput.getObject());
                     game.getCurrentRoom().getObjects().remove(parserOutput.getObject());
                     if(parserOutput.getObject().getName().equalsIgnoreCase("tuta")){
-                        pickUpmsg.append("""
-                                         Strappo la tuta spaziale dal corpo freddo e rigido di Luke.
-                                         La bombola dell'ossigeno... è danneggiata. Ho solo due opzioni.
-                                         Posso restare qui, al sicuro, e lasciare che Susan affronti da sola qualunque incubo si nasconda in questa nave
-                                         o posso trattenere il fiato e tentare la traversata nello spazio.
-                                         Non so se Susan sia ancora viva. Ma nella mia testa... so già cosa devo fare.
-                                         """);
+                        pickUpmsg.append("Strappo la tuta spaziale dal corpo freddo e rigido di Luke."
+                                + "La bombola dell'ossigeno... è danneggiata. Ho solo due opzioni."
+                                + "Posso restare qui, al sicuro, e lasciare che Susan affronti da sola qualunque incubo si nasconda in questa nave"
+                                + "o posso trattenere il fiato e tentare la traversata nello spazio."
+                                + "Non so se Susan sia ancora viva. Ma nella mia testa... so già cosa devo fare.");
                     }
                     //Quando raccogli il diario di Susan c'è un altro messaggio del genere (forse anche altre volte)
                     pickUpmsg.append("Hai preso: ").append(parserOutput.getObject().getName()).append(" e si trova nel tuo inventario!");

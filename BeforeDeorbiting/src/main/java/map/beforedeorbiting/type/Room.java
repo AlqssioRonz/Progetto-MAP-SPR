@@ -139,6 +139,30 @@ public class Room {
     public void setLook(String look) {
         this.look = look;
     }
+
+    //quando otterremo gamestory restituisce la stringa solo se la stanza non è stata mai visitata
+    public String getGameStory() {
+        StringBuilder message = new StringBuilder();
+        
+        if(!this.isAccesed()){
+            message.append(gameStory);
+            this.setAccesed(true);
+        }
+        
+        return message.toString();
+    }
+
+    public void setGameStory(String gameStory) {
+        this.gameStory = gameStory;
+    }
+
+    public boolean isAccesed() {
+        return accesed;
+    }
+
+    public void setAccesed(boolean accesed) {
+        this.accesed = accesed;
+    }
     
     public void setHistory(String history) {
         this.history = history;

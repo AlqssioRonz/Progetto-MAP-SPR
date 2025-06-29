@@ -35,7 +35,7 @@ public class PickUpObserver implements GameObserver, Serializable {
         StringBuilder pickUpmsg = new StringBuilder();
         if(parserOutput.getCommand().getType() == CommandType.PICK_UP){
             if(!game.getCurrentRoom().getObjects().contains(parserOutput.getObject())){
-                pickUpmsg.append("Sono contento che tu voglia raccoglierlo, ma non si trova qui! Magari dovresti provare in un'altra stanza...");
+                pickUpmsg.append("Sono contento che tu voglia raccoglierlo, ma non si trova qui! Magari dovresti provare in un altro modulo...");
             }else{
                 if(parserOutput.getObject().isPickupable()){
                     game.getInventory().add(parserOutput.getObject());

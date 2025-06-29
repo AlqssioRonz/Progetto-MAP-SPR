@@ -140,7 +140,10 @@ public class Room {
         this.look = look;
     }
 
-    //quando otterremo gamestory restituisce la stringa solo se la stanza non è stata mai visitata
+    /*
+    * Quando otterremo gamestory restituisce la stringa solo 
+    * se la stanza non è stata mai visitata.
+    */
     public String getGameStory() {
         StringBuilder message = new StringBuilder();
         
@@ -170,34 +173,6 @@ public class Room {
     
     public String getHistory() {
         return this.history;
-    }
-
-    /*
-    * Quando otterremo gamestory restituisce la stringa solo 
-    * se la stanza non è stata mai visitata.
-    */
-    public String getGameStory() {
-        StringBuilder message = new StringBuilder();
-        
-        if(this.isAccesed()){
-        } else {
-            message.append(gameStory);
-            this.setAccesed(true);
-        }
-        
-        return message.toString();
-    }
-
-    public void setGameStory(String gameStory) {
-        this.gameStory = gameStory;
-    }
-
-    public boolean isAccesed() {
-        return accesed;
-    }
-
-    public void setAccesed(boolean accesed) {
-        this.accesed = accesed;
     }
 
     public boolean isVisible() {

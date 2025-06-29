@@ -58,8 +58,10 @@ public class MovementObserver implements GameObserver {
                     Room target = nextRoomGetter.apply(current);
                     if (target != null && target.isAccessible()) {
                         game.setCurrentRoom(target);
-                        movementMessage.append(target.getDescription());
+                        movementMessage.append(target.getGameStory())
+                                .append(target.getDescription());
                     } else if (target != null && !target.isAccessible()) {
+                        //aggiungere il controllo tentativo di EVA senza tuta indossata
                         movementMessage.append("Quel modulo sembra essere inaccessibile, forse potrei aprirlo in quealche modo...");
                     }
                 }

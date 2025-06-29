@@ -7,8 +7,6 @@ package map.beforedeorbiting.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import map.beforedeorbiting.type.BDObject;
-
 /**
  *
  * @author lorenzopeluso
@@ -24,8 +22,14 @@ public class Room {
     private String description;
 
     private String look;
+    
+    private String gameStory;
+    
+    private String history;
 
     private boolean visible = true;
+    
+    private boolean accesed = false;
     
     private boolean accessible = true;
 
@@ -78,6 +82,40 @@ public class Room {
         this.look = look;
     }
 
+    /**
+     * 
+     * @param id
+     * @param name
+     * @param description
+     * @param look
+     * @param gameStory 
+     */
+    public Room(int id, String name, String description, String look, String gameStory) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.look = look;
+        this.gameStory = gameStory;
+    }
+
+    /**
+     * 
+     * @param id
+     * @param name
+     * @param description
+     * @param look
+     * @param gameStory
+     * @param history 
+     */
+    public Room(int id, String name, String description, String look, String gameStory, String history) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.look = look;
+        this.gameStory = gameStory;
+        this.history = history;
+    }
+
     public String getName() {
         return name;
     }
@@ -100,6 +138,42 @@ public class Room {
 
     public void setLook(String look) {
         this.look = look;
+    }
+
+    /*
+    * Quando otterremo gamestory restituisce la stringa solo 
+    * se la stanza non è stata mai visitata.
+    */
+    public String getGameStory() {
+        StringBuilder message = new StringBuilder();
+        
+        if(this.isAccesed()){
+        } else {
+            message.append(gameStory);
+            this.setAccesed(true);
+        }
+        
+        return message.toString();
+    }
+
+    public void setGameStory(String gameStory) {
+        this.gameStory = gameStory;
+    }
+
+    public boolean isAccesed() {
+        return accesed;
+    }
+
+    public void setAccesed(boolean accesed) {
+        this.accesed = accesed;
+    }
+    
+    public void setHistory(String history) {
+        this.history = history;
+    }
+    
+    public String getHistory() {
+        return this.history;
     }
 
     public boolean isVisible() {
@@ -208,10 +282,14 @@ public class Room {
             return false;
         }
         final Room other = (Room) obj;
-        if (this.id != other.id) {
-            return false;
-        }
-        return true;
+        return this.id == other.id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + this.id;
+        return hash;
     }
     
 }

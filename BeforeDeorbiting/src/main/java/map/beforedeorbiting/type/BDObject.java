@@ -24,6 +24,8 @@ public class BDObject {
     private boolean pickupable = false;
     
     private boolean usable = false;
+    
+    private boolean inUse = false;
 
     /**
      * 
@@ -105,6 +107,14 @@ public class BDObject {
 
     public boolean isUsable() {
         return usable;
+    }
+
+    public boolean isInUse() {
+        return inUse;
+    }
+
+    public void setInUse(boolean inUse) {
+        this.inUse = inUse;
     }
     
     

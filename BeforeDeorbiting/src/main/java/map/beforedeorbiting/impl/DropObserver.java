@@ -50,7 +50,7 @@ import map.beforedeorbiting.type.BDObjectChest;
                                 if (o instanceof BDObjectChest bDObjectChest) {
                                     bDObjectChest.add(parserOutput.getInvObject());
                                     dropmsg.append("Hai lasciato ").append(parserOutput.getInvObject().getName()).append(" nella cassa!");
-                                    break; //In questo modo, se dovessero essere create più oggetti contenitori, prende il primo
+                                    break; //In questo modo, se dovessero essere creati più oggetti contenitori, prende il primo
                                 }
                             }
                         } else {

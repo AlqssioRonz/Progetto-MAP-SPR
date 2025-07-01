@@ -59,6 +59,9 @@ public abstract class GameDesc implements Serializable {
         this.currentRoom = currentRoom;
     }
     
+    public abstract void init();
+    
+    
     /**
      * Metodi astratti per generalizzare GameDesc come
      * template per una avventura testuale

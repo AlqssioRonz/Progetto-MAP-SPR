@@ -74,9 +74,15 @@ public enum CommandType {
      *
      */
     LOOK_AT,
-     /**
+    
+    /**
      *
      */
-    SAVE
+    SAVE,
+    
+    /**
+     *
+     */
+    END
 }
 

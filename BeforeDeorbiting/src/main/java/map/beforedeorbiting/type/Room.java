@@ -11,10 +11,10 @@ import java.util.List;
  *
  * @author lorenzopeluso
  * @author alessioronzullo
- * 
+ *
  */
 public class Room {
-    
+
     private final int id;
 
     private String name;
@@ -22,15 +22,15 @@ public class Room {
     private String description;
 
     private String look;
-    
+
     private String gameStory;
 
     private String history;
 
     private boolean visible = true;
-    
+
     private boolean accesed = false;
-    
+
     private boolean accessible = true;
 
     private Room forward = null;
@@ -40,40 +40,39 @@ public class Room {
     private Room starbord = null;
 
     private Room port = null;
-    
+
     private Room overhead = null;
-    
+
     private Room deck = null;
 
     private final List<BDObject> objects = new ArrayList<>();
 
     /**
-     * 
-     * @param id 
+     *
+     * @param id
      */
     public Room(int id) {
         this.id = id;
     }
 
     /**
-     * 
+     *
      * @param id
      * @param name
-     * @param description 
+     * @param description
      */
     public Room(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
     }
-    
 
     /**
-     * 
+     *
      * @param id
      * @param name
      * @param description
-     * @param look 
+     * @param look
      */
     public Room(int id, String name, String description, String look) {
         this.id = id;
@@ -83,12 +82,12 @@ public class Room {
     }
 
     /**
-     * 
+     *
      * @param id
      * @param name
      * @param description
      * @param look
-     * @param gameStory 
+     * @param gameStory
      */
     public Room(int id, String name, String description, String look, String gameStory) {
         this.id = id;
@@ -99,13 +98,13 @@ public class Room {
     }
 
     /**
-     * 
+     *
      * @param id
      * @param name
      * @param description
      * @param look
      * @param gameStory
-     * @param history 
+     * @param history
      */
     public Room(int id, String name, String description, String look, String gameStory, String history) {
         this.id = id;
@@ -114,6 +113,10 @@ public class Room {
         this.look = look;
         this.gameStory = gameStory;
         this.history = history;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -143,15 +146,15 @@ public class Room {
     /*
     * Quando otterremo gamestory restituisce la stringa solo 
     * se la stanza non è stata mai visitata.
-    */
+     */
     public String getGameStory() {
         StringBuilder message = new StringBuilder();
-        
-        if(!this.isAccesed()){
+
+        if (!this.isAccesed()) {
             message.append(gameStory);
             this.setAccesed(true);
         }
-        
+
         return message.toString();
     }
 
@@ -166,11 +169,11 @@ public class Room {
     public void setAccesed(boolean accesed) {
         this.accesed = accesed;
     }
-    
+
     public void setHistory(String history) {
         this.history = history;
     }
-    
+
     public String getHistory() {
         return this.history;
     }
@@ -238,24 +241,24 @@ public class Room {
     public void setDeck(Room deck) {
         this.deck = deck;
     }
-    
+
     /**
-     * 
+     *
      * @return objects
      */
-    public List<BDObject> getObjects(){
+    public List<BDObject> getObjects() {
         return objects;
     }
-    
-    public void addObject(BDObject o){
+
+    public void addObject(BDObject o) {
         objects.add(o);
     }
-    
-    public void removeObject(BDObject o){
+
+    public void removeObject(BDObject o) {
         objects.remove(o);
     }
-    
-    public BDObject getObject(int id){
+
+    public BDObject getObject(int id) {
         for (BDObject o : objects) {
             if (o.getId() == id) {
                 return o;
@@ -263,7 +266,7 @@ public class Room {
         }
         return null;
     }
-      
+
     /**
      *
      * @param obj
@@ -290,5 +293,5 @@ public class Room {
         hash = 67 * hash + this.id;
         return hash;
     }
-    
+
 }

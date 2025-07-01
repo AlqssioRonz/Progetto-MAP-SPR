@@ -46,8 +46,9 @@ public class Engine {
     }
 
     public void execute() {
+        System.out.println(game.getWelcomeMessage());
+        System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
-        game.getWelcomeMessage();
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
             ParserOutput p = parser.parse(command, game.getCommands(), game.getListObj(), game.getInventory().getList());
@@ -66,6 +67,7 @@ public class Engine {
                     System.exit(0);
                 }
             }
+            System.out.print("> ");
         }
     }
 

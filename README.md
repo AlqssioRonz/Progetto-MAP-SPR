@@ -5,7 +5,7 @@ Progetto di Metodi Avanzati di Programmazione (Salonia - Peluso - Ronzullo)
 
 - [ ] Observers
 - [ ] Capire come usare le lambda express
-- [ ] Engine
+- [X] Engine
 - [ ] Timer partita - threads
 - [ ] Debugging 1
 - [ ] GUI scheletro - swing

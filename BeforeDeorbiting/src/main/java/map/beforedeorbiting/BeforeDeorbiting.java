@@ -266,13 +266,28 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
     @Override
     public void nextMove(ParserOutput p, PrintStream out) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        parserOutput = p;
+        messages.clear();
+        if (p.getCommand() == null) {
+            out.println("""
+                        Comunicazione fuori fase. Sintonizza meglio le frequenze della tua richiesta.
+                        In attesa di un nuovo comando.""");
+        } else {
+            notifyObservers();
+            if (!messages.isEmpty()) {
+                for (String m : messages) {
+                    if (m.length() > 0) {
+                        out.println(m);
+                    }
+                }
+            }
+        }
     }
 
     @Override
     public String getWelcomeMessage() {
         return "È il 22 giugno 2030 e ci troviamo nella stazione spaziale "
-                + "internazionale, nella stanza più a destra, dormitori, "
+                + "internazionale, nella stanza più a destra, dormitori, " //stanza più a ??destra??
                 + "modulo ZVEZDA.";
     }
 
@@ -290,7 +305,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
     @Override
     public void notifyObservers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (GameObserver o : observer) {
+            messages.add(o.update(this, parserOutput));
+        }
     }
 
 }

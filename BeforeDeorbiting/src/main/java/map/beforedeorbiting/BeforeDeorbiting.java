@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
@@ -25,8 +26,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     private ParserOutput parserOutput;
     
     private final List<String> messages = new ArrayList<>();
-    
-    private Inventory inventory = Inventory.getInstance();
     
     @Override
     public void init(){
@@ -78,18 +77,32 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         
         /* Lista di tutti gli oggetti del gioco*/
         BDObject modellinoRusso = new BDObject(0,"Modellino russo","Una parte del modellino, rappresenta il ramo russo.");
+        modellinoRusso.setAlias(Set.of("modellinoRusso","modellino1","russo","modellinoR"));
         BDObject modellinoAmericano = new BDObject(1,"Modellino americano","Una parte del modellino, rappresenta il modulo centrale della stazione.");
+        modellinoAmericano.setAlias(Set.of("modellinoAmericano","modellino2","americano","modellinoA"));
         BDObject modellinoDx = new BDObject(2,"Modellino pannelli solari Dx","Una parte del modellino, rappresenta i pannelli solari dell'ala destra.");
+        modellinoDx.setAlias(Set.of("modellinoDestro","modellino3","destro","modellinoDx","modellinoD"));
         BDObject modellinoSx = new BDObject(3,"Modellino pannelli solari Sx","Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
+        modellinoDx.setAlias(Set.of("modellinoSinistro","modellino4","sinistro","modellinoSx","modellinoS"));
         BDObject diarioSusan = new BDObject(4, "Diario Susan", "Il diario di Susan... contiene i suoi ultimi istanti.");
+        diarioSusan.setAlias(Set.of("diario","diarioSusan","susan"));
         BDObject bigliettinoLuke = new BDObject(5, "Bigliettino Luke","Questo bigliettino si trovava nelle mani di Luke quando l'ho trovato morto... mi sarà sicuramente utile.");
+        diarioSusan.setAlias(Set.of("bigliettino","biglietto","bigliettinoLuke","bigliettoLuke","luke"));
         BDObject pezzoDiVetro = new BDObject(6, "Pezzo di vetro","Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.");
+        pezzoDiVetro.setAlias(Set.of("pezzo","pezzo1","pezzo2","pezzo3","pezzodivetro","pezzovetro"));
         BDObject mezzoPrisma = new BDObject(7, "Mezzo prisma", "Creato dall'unione di due pezzi di vetro.");
+        mezzoPrisma.setAlias(Set.of("mezzoprisma","metaprisma","mezzoprismavetro","metaprismavetro"));
         BDObject prisma = new BDObject(8,"Prisma di vetro","Creato dall'unione di tutti i pezzi di vetro. Riflette perfettamente la luce.");
+        prisma.setAlias(Set.of("prisma","vetro","prismacompleto"));
         BDObject computer = new BDObject(9,"Computer","Permette di interagire col database della stazione.");
+        computer.setAlias(Set.of("computer","pc","personalcomputer","fisso","portatile"));
         BDObject tutaSpaziale = new BDObject(10,"Tuta spaziale","Utilizzata da Luke per navigare nello spazio.");
+        tutaSpaziale.setAlias(Set.of("tuta","tutaspaziale","tutaluke","tutaspazio"));
+        BDObject taccuino = new BDObject(11,"Taccuino","Utile per segnarsi ogni dettaglio dell'avventura.");
+        taccuino.setAlias(Set.of("taccuino","blocknote","blocknotes","blocconote","quaderno","quadernino"));
+        taccuino.setUsable(true);
         // quando la prende per metterla deve usare "indossa" e dopo, quando torna, verrà mostrato un output "ti sei tolto la tuta"
-        BDObjectChest cassa = new BDObjectChest(11, "Cassa", "Permette di contenere vari oggetti.");
+        BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
         
         getListObj().add(modellinoRusso);
         getListObj().add(modellinoAmericano);
@@ -101,8 +114,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         getListObj().add(mezzoPrisma);
         getListObj().add(prisma);
         getListObj().add(computer);
-        getListObj().add(cassa);
         getListObj().add(tutaSpaziale);
+        getListObj().add(taccuino);
+        getListObj().add(cassa);
         
         /* Lista di tutte le stanze */
         Room macchina = new Room(-2, "MACCHINA", "Finale cattivo.");
@@ -316,6 +330,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         
         // Setta la stanza iniziale
         setCurrentRoom(zvezda);
+        this.getInventory().add(taccuino);
     }
 
     @Override

@@ -119,10 +119,6 @@ public class Room {
         return id;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getName() {
         return name;
     }

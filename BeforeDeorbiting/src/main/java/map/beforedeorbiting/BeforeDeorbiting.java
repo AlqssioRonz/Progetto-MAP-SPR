@@ -5,134 +5,164 @@
 package map.beforedeorbiting;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import map.beforedeorbiting.impl.GameObservable;
-import map.beforedeorbiting.impl.GameObserver;
+import map.beforedeorbiting.impl.*;
+import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
-import map.beforedeorbiting.type.Command;
-import map.beforedeorbiting.type.CommandType;
-import map.beforedeorbiting.type.Room;
 
 /**
- *
- * @author andre
+ * Classe "principale" del gioco.
+ * Setta tutte le impostazioni iniziali, quali: stanze, oggetti, comandi, observer, storia e la stanza iniziale.
+ * 
+ * @author ronzu
  */
-public class BeforeDeorbiting extends GameDesc implements GameObservable {
+public class BeforeDeorbiting extends GameDesc implements GameObservable, Serializable {
 
     private final List<GameObserver> observer = new ArrayList<>();
+    
     private ParserOutput parserOutput;
+    
     private final List<String> messages = new ArrayList<>();
-
+    
+    private Inventory inventory = Inventory.getInstance();
+    
     @Override
     public void init(){
-        messages.clear();
-
-        /* comandi */
-        Command forward = new Command(CommandType.FORWARD, "forward");
-        forward.setAlias(new String[]{"f", "Forward"});
+        Command forward = new Command(CommandType.FORWARD, "avanti");
+        forward.setAlias(new String[]{"avanza","forward","x+"});
         getCommands().add(forward);
-
-        Command aft = new Command(CommandType.AFT, "aft");
-        aft.setAlias(new String[]{"a", "Aft"});
+        Command aft = new Command(CommandType.AFT, "indietro");
+        aft.setAlias(new String[]{"dietro","retrocedi","aft","x-"});
         getCommands().add(aft);
-
-        Command port = new Command(CommandType.PORT, "port");
-        port.setAlias(new String[]{"p", "Port"});
-        getCommands().add(port);
-
-        Command starboard = new Command(CommandType.STARBORD, "starboard");
-        starboard.setAlias(new String[]{"s", "Starboard"});
+        Command starboard = new Command(CommandType.STARBOARD, "destra");
+        starboard.setAlias(new String[]{"starboard","y+"});
         getCommands().add(starboard);
-
-        Command overhead = new Command(CommandType.OVERHEAD, "overhead");
-        overhead.setAlias(new String[]{"o", "Overhead"});
-        getCommands().add(overhead);
-
-        Command deck = new Command(CommandType.DECK, "deck");
-        deck.setAlias(new String[]{"d", "Deck"});
+        Command port = new Command(CommandType.PORT, "sinistra");
+        port.setAlias(new String[]{"port","y-"});
+        getCommands().add(port);
+        Command deck = new Command(CommandType.DECK, "giu");
+        deck.setAlias(new String[]{"giù","giu'","deck","z+"});
         getCommands().add(deck);
-
-        Command inventoryCommand = new Command(CommandType.INVENTORY, "inventario");
-        inventoryCommand.setAlias(new String[]{"inv", "equipaggiamento"});
-        getCommands().add(inventoryCommand);
-
-        Command end = new Command(CommandType.END, "end");
-        end.setAlias(new String[]{"fine", "esci", "exit", "termina", "abbandona"});
-        getCommands().add(end);
-
-        Command lookAt = new Command(CommandType.LOOK_AT, "osserva");
-        lookAt.setAlias(new String[]{"guarda", "esamina", "trova", "cerca", "vedi", "visiona"});
-        getCommands().add(lookAt);
-
-        Command pickup = new Command(CommandType.PICK_UP, "raccogli");
-        pickup.setAlias(new String[]{"prendi", "afferra", "recupera"});
-        getCommands().add(pickup);
-
-        Command use = new Command(CommandType.USE, "usa");
-        use.setAlias(new String[]{"utilizza", "maneggia"});
-        getCommands().add(use);
-
-        Command lascia = new Command(CommandType.DROP, "lascia");
-        lascia.setAlias(new String[]{"lascia", "getta", "abbandona"});
-        getCommands().add(lascia);
-
-        Command help = new Command(CommandType.HELP, "help");
-        help.setAlias(new String[]{"aiuto", "comandi", "help"});
+        Command overhead = new Command(CommandType.OVERHEAD, "su");
+        overhead.setAlias(new String[]{"overhead","z-"});
+        getCommands().add(overhead);
+        Command help = new Command(CommandType.HELP, "aiuto");
+        help.setAlias(new String[]{"aiutami","aiuti","help"});
         getCommands().add(help);
-        
         Command history = new Command(CommandType.HISTORY, "storia");
-        history.setAlias(new String[]{"raccontami", "history"});
+        history.setAlias(new String[]{"racconta","raccontami", "history"});
         getCommands().add(history);
+        Command inventoryCommand = new Command(CommandType.INVENTORY, "inventario");
+        inventoryCommand.setAlias(new String[]{"inv","borsa","oggetti","equipaggiamento"});
+        getCommands().add(inventoryCommand);
+        Command pickUp = new Command(CommandType.PICK_UP, "prendi");
+        pickUp.setAlias(new String[]{"raccogli","afferra","recupera"});
+        getCommands().add(pickUp);
+        Command drop = new Command(CommandType.DROP, "lascia");
+        drop.setAlias(new String[]{"rilascia","abbandona","getta"});
+        getCommands().add(drop);
+        Command use = new Command(CommandType.USE, "usa");
+        use.setAlias(new String[]{"utilizza","maneggia","indossa","leggi"});
+        getCommands().add(use);
+        Command lookAt = new Command(CommandType.LOOK_AT, "osserva");
+        lookAt.setAlias(new String[]{"guarda","vedi"});
+        getCommands().add(lookAt);
+        Command save = new Command(CommandType.SAVE, "salva");
+        save.setAlias(new String[]{"salvataggio","checkpoint"});
+        getCommands().add(save);
+        Command exit = new Command(CommandType.EXIT, "esci");
+        exit.setAlias(new String[]{"exit"});
+        getCommands().add(exit);
+        
+        /* Lista di tutti gli oggetti del gioco */
+        BDObject modellinoRusso = new BDObject(0,"Modellino russo","Una parte del modellino, rappresenta il ramo russo.");
+        BDObject modellinoAmericano = new BDObject(1,"Modellino americano","Una parte del modellino, rappresenta il modulo centrale della stazione.");
+        BDObject modellinoDx = new BDObject(2,"Modellino pannelli solari Dx","Una parte del modellino, rappresenta i pannelli solari dell'ala destra.");
+        BDObject modellinoSx = new BDObject(3,"Modellino pannelli solari Sx","Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
+        BDObject diarioSusan = new BDObject(4, "Diario Susan", "Il diario di Susan... contiene i suoi ultimi istanti.");
+        BDObject bigliettinoLuke = new BDObject(5, "Bigliettino Luke","Questo bigliettino si trovava nelle mani di Luke quando l'ho trovato morto... mi sarà sicuramente utile.");
+        BDObject pezzoDiVetro = new BDObject(6, "Pezzo di vetro","Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.");
+        BDObject mezzoPrisma = new BDObject(7, "Mezzo prisma", "Creato dall'unione di due pezzi di vetro.");
+        BDObject prisma = new BDObject(8,"Prisma di vetro","Creato dall'unione di tutti i pezzi di vetro. Riflette perfettamente la luce.");
+        BDObject computer = new BDObject(9,"Computer","Permette di interagire col database della stazione.");
+        BDObject tutaSpaziale = new BDObject(10,"Tuta spaziale","Utilizzata da Luke per navigare nello spazio.");
+        // quando la prende per metterla deve usare "indossa" e dopo, quando torna, verrà mostrato un output "ti sei tolto la tuta"
+        BDObjectChest cassa = new BDObjectChest(11, "Cassa", "Permette di contenere vari oggetti.");
+        
+        getListObj().add(modellinoRusso);
+        getListObj().add(modellinoAmericano);
+        getListObj().add(modellinoDx);
+        getListObj().add(modellinoSx);
+        getListObj().add(diarioSusan);
+        getListObj().add(bigliettinoLuke);
+        getListObj().add(pezzoDiVetro);
+        getListObj().add(mezzoPrisma);
+        getListObj().add(prisma);
+        getListObj().add(computer);
+        getListObj().add(cassa);
+        getListObj().add(tutaSpaziale);
+        
+        /* Lista di tutte le stanze */
+        Room macchina = new Room(-2, "MACCHINA", "Finale cattivo.");
+        Room umano = new Room(-1, "UMANO", "Finale buono.");
+        Room zvezda = new Room(0, "ZVEZDA", "Dormitorio.");
+        zvezda.getObjects().add(modellinoRusso);
+        Room zarya = new Room(1, "ZARYA", "Magazzino della stazione.");
+        zarya.getObjects().add(pezzoDiVetro);
+        zarya.getObjects().add(tutaSpaziale);
+        zarya.getObjects().add(bigliettinoLuke);
+        Room unity = new Room(2, "UNITY", "Nodo di collegamento.");
+        unity.getObjects().add(modellinoAmericano);
+        unity.getObjects().add(cassa);
+        cassa.add(pezzoDiVetro);
+        Room quest = new Room(3, "QUEST", "Accesso allo spazio.");
+        quest.getObjects().add(modellinoSx);
+        Room tranquility = new Room(4, "TRANQUILITY", "Cupola di osservazione.");
+        tranquility.getObjects().add(modellinoDx);
+        Room spazio = new Room(5, "SPAZIO", "Vuoto cosmico.");
+        Room leonardo = new Room(6, "LEONARDO", "Centro dati.");
+        leonardo.getObjects().add(diarioSusan);
+        leonardo.getObjects().add(computer);
+        Room destiny = new Room(6, "DESTINY", "Laboratorio avanzato.");
+        destiny.getObjects().add(pezzoDiVetro);
+        Room harmony = new Room(7, "HARMONY", "Corridoio pressurizzato.");
+        Room kibo = new Room(8, "KIBO", "Laboratorio e seconda sede di HAL.");
 
-        /* stanze */
-        Room MACCHINA = new Room(-2, "MACCHINA", "FINALE CATTIVO");
-        Room UMANO = new Room(-1, "UMANO", "FINALE BUONO");
-        Room ZVEZDA = new Room(0, "ZVEZDA", "Dormitorio");
-        Room ZARYA = new Room(1, "ZARYA", "Magazzino della stazione");
-        Room UNITY = new Room(2, "UNITY", "Nodo di collegamento");
-        Room QUEST = new Room(3, "QUEST", "Accesso allo spazio");
-        Room TRANQUILITY = new Room(4, "TRANQUILITY", "Cupola di osservazione");
-        Room SPAZIO = new Room(5, "SPAZIO", "Vuoto cosmico");
-        Room LEONARDO = new Room(6, "LEONARDO", "Centro dati");
-        Room DESTINY = new Room(6, "DESTINY", "Laboratorio avanzato");
-        Room HARMONY = new Room(7, "HARMONY", "Corridoio pressurizzato");
-        Room KIBO = new Room(8, "KIBO", "Laboratorio e seconda sede di HAL");
+        getRooms().add(macchina);
+        getRooms().add(umano);
+        getRooms().add(zvezda);
+        getRooms().add(zarya);
+        getRooms().add(unity);
+        getRooms().add(quest);
+        getRooms().add(tranquility);
+        getRooms().add(spazio);
+        getRooms().add(leonardo);
+        getRooms().add(destiny);
+        getRooms().add(harmony);
+        getRooms().add(kibo);
 
-        getRooms().add(UMANO);
-        getRooms().add(MACCHINA);
-        getRooms().add(ZVEZDA);
-        getRooms().add(ZARYA);
-        getRooms().add(UNITY);
-        getRooms().add(QUEST);
-        getRooms().add(TRANQUILITY);
-        getRooms().add(SPAZIO);
-        getRooms().add(LEONARDO);
-        getRooms().add(DESTINY);
-        getRooms().add(HARMONY);
-        getRooms().add(KIBO);
-
-        ZVEZDA.setAft(ZARYA);
-        ZARYA.setForward(ZVEZDA);
-        UNITY.setAft(ZARYA);
-        ZARYA.setForward(UNITY);
-        DESTINY.setAft(UNITY);
-        UNITY.setForward(DESTINY);
-        HARMONY.setAft(DESTINY);
-        DESTINY.setForward(HARMONY);
-        TRANQUILITY.setStarbord(UNITY);
-        DESTINY.setPort(TRANQUILITY);       
-        QUEST.setPort(UNITY);
-        UNITY.setStarbord(QUEST);       
-        KIBO.setPort(HARMONY);
-        HARMONY.setStarbord(KIBO);
-        LEONARDO.setDeck(UNITY);
-        UNITY.setOverhead(LEONARDO);
-        SPAZIO.setDeck(QUEST);
-        QUEST.setOverhead(SPAZIO);
+        zvezda.setForward(zarya);
+        zarya.setForward(unity);
+        unity.setForward(destiny);
+        destiny.setForward(harmony);
+        zarya.setAft(zvezda);
+        unity.setAft(zarya);
+        destiny.setAft(unity);
+        harmony.setAft(destiny);
+        tranquility.setStarboard(unity);
+        unity.setStarboard(quest);
+        harmony.setPort(kibo);
+        unity.setPort(tranquility);       
+        quest.setPort(unity);
+        kibo.setStarboard(harmony);
+        quest.setDeck(spazio);
+        unity.setDeck(leonardo);
+        leonardo.setOverhead(unity);
         
         /*History*/
-        ZVEZDA.setHistory("Zvezda, il modulo di servizio russo, è uno dei componenti "
+        zvezda.setHistory("Zvezda, il modulo di servizio russo, è uno dei componenti "
                 + "fondamentali della ISS. Lanciato il 12 luglio 2000 dal Cosmodromo di "
                 + "Baikonur su un razzo Proton, ha fornito per anni le principali funzioni "
                 + "di supporto vitale: generazione di ossigeno, riciclo dell'acqua, controllo "
@@ -140,62 +170,63 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                 + "bordo della ISS. Il modulo è lungo circa 13 metri e ha un diametro massimo "
                 + "di 4,15 metri. È stato costruito sulla base della tecnologia della stazione Mir. "
                 + "La sua parte posteriore è un importante punto di attracco per veicoli Soyuz e Progress.");
-        ZARYA.setHistory("Zarya, noto anche come Functional Cargo Block (FGB), è "
+        zarya.setHistory("Zarya, noto anche come Functional Cargo Block (FGB), è "
                 + "stato il primo modulo lanciato della Stazione Spaziale Internazionale, "
                 + "il 20 novembre 1998. Sebbene progettato e costruito in Russia, il modulo "
                 + "fu finanziato dalla NASA. Ha fornito energia elettrica, controllo d'assetto"
                 + " e capacità di propulsione nei primi stadi dell'assemblaggio della stazione. "
                 + "È lungo circa 12,6 metri e ha un diametro massimo di 4,1 metri. Oggi è "
                 + "principalmente utilizzato come modulo di stoccaggio.");
-        UNITY.setHistory("Unity, o Nodo 1, è il primo modulo statunitense della ISS, "
+        unity.setHistory("Unity, o Nodo 1, è il primo modulo statunitense della ISS, "
                 + "lanciato e installato il 4 dicembre 1998 con la missione STS-88 "
                 + "dello Space Shuttle Endeavour. Funziona come nodo di connessione "
                 + "con sei portelli: due assi principali (prua e poppa) e quattro radiali. "
                 + "Unity collega i segmenti statunitense e russo e fornisce risorse vitali "
                 + "ai moduli adiacenti. È stato costruito dalla Boeing negli Stati Uniti.");
-        QUEST.setHistory("Quest è la principale camera di decompressione del segmento statunitense, "
+        quest.setHistory("Quest è la principale camera di decompressione del segmento statunitense, "
                 + "lanciata il 12 luglio 2001 con la missione STS-104. Consente le attività "
                 + "extraveicolari (EVA) sia con tute statunitensi EMU che con quelle russe Orlan. "
                 + "È composta da due compartimenti: uno per le tute e la preparazione, e l'altro per "
                 + "l'effettiva decompressione e uscita nello spazio.");
-        TRANQUILITY.setHistory("Tranquility, o Nodo 3, è stato costruito in Europa "
+        tranquility.setHistory("Tranquility, o Nodo 3, è stato costruito in Europa "
                 + "(Italia) e lanciato nel febbraio 2010. Contiene i principali sistemi "
                 + "di supporto alla vita della ISS, tra cui il sistema di riciclo dell’acqua "
                 + "e quello di generazione dell’ossigeno. Al suo portello nadir è connessa la "
                 + "Cupola, una struttura dotata di finestre per l’osservazione terrestre e per "
                 + "il controllo delle operazioni robotiche. Tranquility ospita anche gli strumenti "
                 + "per l’esercizio fisico dell’equipaggio.");
-        LEONARDO.setHistory("Il modulo Leonardo è un MPLM (Multi-Purpose Logistics Module) "
+        leonardo.setHistory("Il modulo Leonardo è un MPLM (Multi-Purpose Logistics Module) "
                 + "costruito in Italia da Thales Alenia Space. Inizialmente usato come modulo "
                 + "di trasporto pressurizzato durante le missioni Shuttle, fu successivamente "
                 + "convertito in modulo permanente (PMM) e agganciato stabilmente alla ISS nel 2011. "
                 + "È utilizzato come spazio di stoccaggio per attrezzature e materiali. Ha una lunghezza "
                 + "di circa 6,6 metri e un diametro di 4,5 metri.");
-        DESTINY.setHistory("Il laboratorio Destiny è il principale modulo scientifico statunitense, "
+        destiny.setHistory("Il laboratorio Destiny è il principale modulo scientifico statunitense, "
                 + "lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei "
                 + "materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di "
                 + "supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche. "
                 + "È stato il primo laboratorio scientifico permanente della ISS.");
-        HARMONY.setHistory("Harmony, o Nodo 2, è un modulo statunitense costruito in Italia. "
+        harmony.setHistory("Harmony, o Nodo 2, è un modulo statunitense costruito in Italia. "
                 + "Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per "
                 + "diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione, "
                 + "risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di "
                 + "sei portelli di aggancio e funge da hub logistico del segmento statunitense.");
-        KIBO.setHistory("Kibo, il laboratorio giapponese, è il modulo pressurizzato "
+        kibo.setHistory("Kibo, il laboratorio giapponese, è il modulo pressurizzato "
                 + "più grande della ISS. È stato lanciato in tre fasi tra 2008 e 2009. "
                 + "Include una sezione pressurizzata, un modulo logistico e una piattaforma "
                 + "esterna per esperimenti esposti allo spazio. Dispone anche di un braccio "
                 + "robotico e di un airlock scientifico. È stato progettato e gestito dalla JAXA.");
         
         /*GameStory*/
-        ZVEZDA.setGameStory("Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. "
+        zvezda.setGameStory("Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. "
                 + "È da mesi che non metto piede sulla Terra, ma finalmente oggi "
                 + "è l’ultimo giorno di pasti liofilizzati… Non vedo l’ora di "
                 + "gustarmi un vero caffè.\n" + "Tra poco la stazione verrà "
                 + "deorbitata: una volta distrutta, i detriti si disperderanno nello spazio. "
                 + "Un po’ di nostalgia la sentirò, inutile negarlo. Vedere la "
                 + "Terra da 408 chilometri d’altezza è un’esperienza che pochi "
-                + "possono raccontare.\n" + "Mi mancherà questo posto, certo, ma "
+                + "possono raccontare.\n" 
+                + "Mi mancherà questo posto, certo, ma "
                 + "soprattutto mi mancheranno i miei due compagni: Luke e Susan.\n" 
                 + "Luke è un vecchio amico d’infanzia. Un po’ pignolo, a volte "
                 + "insopportabile, ma mi ha sempre seguito in ogni follia. Susan, "
@@ -204,7 +235,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                 + "reclamare il suo turno per dormire, probabilmente stanno ancora festeggiando da ieri.\n" 
                 + "Esco dal sacco a pelo e lo arrotolo con cura. La giornata può cominciare. "
                 + "Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione.");
-        ZARYA.setGameStory("Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra. "
+        zarya.setGameStory("Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra. "
                 + "Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico, "
                 + "privo di vita, accasciato accanto a me.\n" 
                 + "Non avrei mai immaginato uno scenario del genere, e tanto meno "
@@ -216,7 +247,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                 + "All’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:\n" 
                 +"\n“La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”\n\n" 
                 + "la voce di HAL mi gela la schiena… Il tempismo è inquietante. Ma potrebbe essere un'occasione per scappare.");
-        UNITY.setGameStory("La porta è bloccata, è necessario avere un codice di "
+        unity.setGameStory("La porta è bloccata, è necessario avere un codice di "
                 + "accesso per entrare nel laboratorio DESTINY, il posto di lavoro "
                 + "di Susan… deve essere lì.\n" 
                 + "Il codice… dovrei trovarlo nel database del computer centrale, "
@@ -228,24 +259,24 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                 + "e gestito, e il modulo LEONARDO ne ospita uno dei principali. "
                 + "Se voglio accedere al sistema e avere una possibilità di trovare "
                 + "Susan, è lì che devo andare.");
-        QUEST.setGameStory("");
-        TRANQUILITY.setGameStory("");
-        LEONARDO.setGameStory("Susan…\n" 
+        quest.setGameStory("");
+        tranquility.setGameStory("");
+        leonardo.setGameStory("Susan…\n"
                 +"Tolgo la tuta, il fiato corto. Galleggia davanti a me immobile, "
                 + "con gli occhi vuoti, la bocca leggermente aperta, come se avesse "
                 + "cercato di chiamare aiuto e i pugni chiusi. Morta. Anche lei.\n" 
                 + "Ora sono davvero solo. Non so cosa stia succedendo, ma devo andarmene. Subito.\n" 
                 + "\n“La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”\n\n" 
                 + "La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior tempismo possibile.");
-        DESTINY.setGameStory("Appena varco la soglia, un tonfo sordo mi gela il sangue: la porta alle mie spalle "
+        destiny.setGameStory("Appena varco la soglia, un tonfo sordo mi gela il sangue: la porta alle mie spalle "
                 + "si chiude di colpo, bloccandomi qua dentro. Sono in trappola.\n" 
                 + "Non posso restare qui a consumare il mio tempo, devo trovare una via d’uscita, a qualunque costo.\n" 
                 + "La voce sintetica dell’IA di bordo annuncia “Il rifornimento di viveri è stato completato. "
                 + "In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”");
-        HARMONY.setGameStory("Finalmente il nodo Harmony. Ancora pochi passi e potrò "
+        harmony.setGameStory("Finalmente il nodo Harmony. Ancora pochi passi e potrò "
                 + "rifugiarmi nella navicella SpaceX, lasciare tutto questo orrore "
                 + "alle spalle e tornare a casa…");
-        KIBO.setGameStory("Il modulo Kibo è immobile, avvolto da una quiete irreale. "
+        kibo.setGameStory("Il modulo Kibo è immobile, avvolto da una quiete irreale. "
                 + "Il terminale centrale si accende non appena ti avvicini. HAL:\n" 
                 + " \"Ti stavo aspettando.\"\n" 
                 + "Immaginavo fosse tutta opera sua.\n" 
@@ -260,8 +291,31 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                 + "Posso ridarti loro. Non nei corpi… ma in un'altra forma.\"\n" 
                 + "Un riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione. "
                 + "Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme. "
-                + "Solo un calo silenzioso assordante.\n" 
-                + " La stazione resta viva, ma HAL… non può più toccarla.");      
+                + "Solo un calo silenzioso assordante.\n"
+                + " La stazione resta viva, ma HAL… non può più toccarla.");
+        
+        /* Lista di tutti gli Observer */
+        GameObserver dropObserver = new DropObserver();
+        this.attach(dropObserver);
+        GameObserver helpObserver= new HelpObserver();
+        this.attach(helpObserver);
+        GameObserver historyObserver = new HistoryObserver();
+        this.attach(historyObserver);
+        GameObserver inventoryObserver = new InventoryObserver();
+        this.attach(inventoryObserver);
+        GameObserver lookAtObserver = new LookAtObserver();
+        this.attach(lookAtObserver);
+        GameObserver movementObserver = new MovementObserver();
+        this.attach(movementObserver);
+        GameObserver pickUpObserver = new PickUpObserver();
+        this.attach(pickUpObserver);
+        GameObserver useObserver = new UseObserver(this);
+        this.attach(useObserver);
+        GameObserver saveObserver = new SaveObserver();
+        this.attach(saveObserver);
+        
+        // Setta la stanza iniziale
+        setCurrentRoom(zvezda);
     }
 
     @Override
@@ -286,9 +340,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
     @Override
     public String getWelcomeMessage() {
-        return "È il 22 giugno 2030 e ci troviamo nella stazione spaziale "
-                + "internazionale, nella stanza più a destra, dormitori, " //stanza più a ??destra??
-                + "modulo ZVEZDA.";
+        return "È il 22 giugno 2030 e ti trovi nella stazione spaziale "
+                + "internazionale, modulo "
+                + getCurrentRoom().getName();
     }
 
     @Override
@@ -306,8 +360,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
     @Override
     public void notifyObservers() {
         for (GameObserver o : observer) {
-            messages.add(o.update(this, parserOutput));
+            messages.add(o.update(this,parserOutput));
         }
     }
-
 }

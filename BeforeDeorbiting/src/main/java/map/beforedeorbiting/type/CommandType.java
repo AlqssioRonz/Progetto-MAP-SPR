@@ -38,7 +38,7 @@ public enum CommandType {
     /**
      * Direzione nautica in assenza di punti cardinali
      */
-    STARBORD,
+    STARBOARD,
 
     /**
      * Direzione nautica in assenza di punti cardinali
@@ -83,6 +83,5 @@ public enum CommandType {
     /**
      *
      */
-    END
+    EXIT
 }
-

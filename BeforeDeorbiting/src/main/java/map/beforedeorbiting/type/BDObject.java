@@ -6,40 +6,39 @@ package map.beforedeorbiting.type;
 
 import java.util.Set;
 
-
 /**
  *
  * @author lorenzopeluso
  */
 public class BDObject {
-    
+
     private final int id;
-    
+
     private String name;
-    
+
     private String description;
-    
+
     private Set<String> alias;
-    
+
     private boolean pickupable = false;
-    
+
     private boolean usable = false;
-    
+
     private boolean inUse = false;
 
     /**
-     * 
-     * @param id 
+     *
+     * @param id
      */
     public BDObject(int id) {
         this.id = id;
     }
-    
+
     /**
-     * 
+     *
      * @param id
      * @param name
-     * @param description 
+     * @param description
      */
     public BDObject(int id, String name, String description) {
         this.id = id;
@@ -48,11 +47,11 @@ public class BDObject {
     }
 
     /**
-     * 
+     *
      * @param id
      * @param name
      * @param description
-     * @param alias 
+     * @param alias
      */
     public BDObject(int id, String name, String description, Set<String> alias) {
         this.id = id;
@@ -60,31 +59,31 @@ public class BDObject {
         this.description = description;
         this.alias = alias;
     }
-    
+
     /**
-     * 
-     * @param alias 
+     *
+     * @param alias
      */
     public void setAlias(Set<String> alias) {
         this.alias = alias;
     }
 
     /**
-     * 
-     * @param pickupable 
+     *
+     * @param pickupable
      */
     public void setPickupable(boolean pickupable) {
         this.pickupable = pickupable;
     }
 
     /**
-     * 
-     * @param usable 
+     *
+     * @param usable
      */
     public void setUsable(boolean usable) {
         this.usable = usable;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -116,8 +115,7 @@ public class BDObject {
     public void setInUse(boolean inUse) {
         this.inUse = inUse;
     }
-    
-    
+
     /**
      *
      * @param obj
@@ -140,5 +138,5 @@ public class BDObject {
         }
         return true;
     }
-  
+
 }

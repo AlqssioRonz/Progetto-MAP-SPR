@@ -1,5 +1,6 @@
 package map.beforedeorbiting.impl;
 
+import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -24,24 +25,26 @@ import map.beforedeorbiting.type.Room;
  *
  * @lorenzopeluso
  */
-public class MovementObserver implements GameObserver {
+public class MovementObserver implements GameObserver, Serializable {
 
     private final Map<CommandType, Function<Room, Room>> moves = new EnumMap<>(CommandType.class);
 
     public MovementObserver() {
         moves.put(CommandType.FORWARD, Room::getForward);
         moves.put(CommandType.AFT, Room::getAft);
-        moves.put(CommandType.STARBORD, Room::getStarbord);
+        moves.put(CommandType.STARBOARD, Room::getStarboard);
         moves.put(CommandType.PORT, Room::getPort);
         moves.put(CommandType.OVERHEAD, Room::getOverhead);
         moves.put(CommandType.DECK, Room::getDeck);
     }
 
     /**
+     * Aggiorna lo stato del gioco in base all'output del parser e restituisce
+     * un messaggio di risposta.
      * 
-     * @param game
-     * @param parserOutput
-     * @return 
+    * @param game l'oggetto GameDesc che rappresenta lo stato corrente del gioco
+    * @param parserOutput l'output del parser utile per conoscere l'input dell'utente
+    * @return il messaggio di risposta in base all'azione di movimento.
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {

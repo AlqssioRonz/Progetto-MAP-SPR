@@ -54,6 +54,14 @@ public class Inventory {
      */
     public void remove(BDObject o) {
         list.remove(o);
-    }   
+    }
+    
+    public int count(BDObject target) {
+        int id = target.getId();
+
+        return (int) list.stream()
+                .filter(obj -> obj.getId() == id)
+                .count();
+    }
     
 }

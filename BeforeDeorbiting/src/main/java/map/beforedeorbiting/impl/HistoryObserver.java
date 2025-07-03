@@ -4,6 +4,7 @@
  */
 package map.beforedeorbiting.impl;
 
+import java.io.Serializable;
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
@@ -16,8 +17,16 @@ import map.beforedeorbiting.type.CommandType;
  *
  * @author lorenzopeluso
  */
-public class HistoryObserver implements GameObserver {
+public class HistoryObserver implements GameObserver, Serializable {
     
+    /**
+     * Aggiorna lo stato del gioco in base all'output del parser e restituisce
+     * un messaggio di risposta.
+     * 
+    * @param game l'oggetto GameDesc che rappresenta lo stato corrente del gioco
+    * @param parserOutput l'output del parser utile per conoscere l'input dell'utente
+    * @return il messaggio di risposta in base all'azione di 'storia'.
+     */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput){
         StringBuilder historyMessage = new StringBuilder();

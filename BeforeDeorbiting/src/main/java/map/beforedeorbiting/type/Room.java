@@ -37,7 +37,7 @@ public class Room {
 
     private Room aft = null;
 
-    private Room starbord = null;
+    private Room starboard = null;
 
     private Room port = null;
 
@@ -113,6 +113,10 @@ public class Room {
         this.look = look;
         this.gameStory = gameStory;
         this.history = history;
+    }
+    
+    public int getId() {
+        return id;
     }
 
     public int getId() {
@@ -210,12 +214,12 @@ public class Room {
         this.aft = aft;
     }
 
-    public Room getStarbord() {
-        return starbord;
+    public Room getStarboard() {
+        return starboard;
     }
 
-    public void setStarbord(Room starbord) {
-        this.starbord = starbord;
+    public void setStarboard(Room starbord) {
+        this.starboard = starbord;
     }
 
     public Room getPort() {

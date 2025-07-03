@@ -4,6 +4,7 @@
  */
 package map.beforedeorbiting.impl;
 
+import java.io.Serializable;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.type.BDObject;
@@ -12,17 +13,20 @@ import map.beforedeorbiting.GameDesc;
 
 /**
  * Questa classe rappresenta l'observer del comando 'INVENTORY', 
- * pemette di implementare il comando visualizzando i contenuti dell'inventario
+ * pemette di implementare il comando visualizzando i contenuti dell'inventario.
+ * Per farlo, implmenta l'interfaccia GameObserver.
  * 
  * @author lorenzopeluso
  */
-public class InventoryObserver implements GameObserver {
+public class InventoryObserver implements GameObserver, Serializable {
     
     /**
+     * Aggiorna lo stato del gioco in base all'output del parser e restituisce
+     * un messaggio di risposta.
      * 
-     * @param game
-     * @param parserOutput
-     * @return 
+    * @param game l'oggetto GameDesc che rappresenta lo stato corrente del gioco
+    * @param parserOutput l'output del parser utile per conoscere l'input dell'utente
+    * @return il messaggio di risposta in base all'azione di 'inventario'.
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {

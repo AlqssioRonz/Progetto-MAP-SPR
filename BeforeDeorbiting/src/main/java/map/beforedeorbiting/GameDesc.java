@@ -20,14 +20,14 @@ import java.util.List;
  * @author lorenzopeluso
  */
 public abstract class GameDesc implements Serializable {
-    
+
     private final List<Room> rooms = new ArrayList<>();
 
     private final List<Command> commands = new ArrayList<>();
 
     private final List<BDObject> listObj = new ArrayList<>();
-    
-    private Inventory inventory =  Inventory.getInstance();
+
+    private Inventory inventory = Inventory.getInstance();
 
     private Room currentRoom;
 
@@ -38,6 +38,14 @@ public abstract class GameDesc implements Serializable {
     public List<Command> getCommands() {
         return commands;
     }
+
+    /**
+     * Inizializza il gioco.
+     *
+     * @throws Exception se si verifica un errore durante l'inizializzazione del
+     * gioco
+     */
+    public abstract void init();
 
     public List<BDObject> getListObj() {
         return listObj;
@@ -58,18 +66,30 @@ public abstract class GameDesc implements Serializable {
     public void setCurrentRoom(Room currentRoom) {
         this.currentRoom = currentRoom;
     }
-    
-    public abstract void init();
-    
-    
     /**
-     * Metodi astratti per generalizzare GameDesc come
-     * template per una avventura testuale
+     * Metodi astratti per generalizzare GameDesc come template per una
+     * avventura testuale
+     *
      * @param p
-     * @param out 
+     * @param out
      */
     public abstract void nextMove(ParserOutput p, PrintStream out);
-    
+
     public abstract String getWelcomeMessage();
-    
+
+    public BDObject getObjectByID(int id) {
+        return listObj.stream()
+                .filter(obj -> obj.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public int count(BDObject target) {
+        int id = target.getId();
+
+        return (int) listObj.stream()
+                .filter(obj -> obj.getId() == id)
+                .count();
+    }
+
 }

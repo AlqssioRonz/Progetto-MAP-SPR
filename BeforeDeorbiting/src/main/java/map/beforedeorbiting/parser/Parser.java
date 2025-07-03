@@ -49,7 +49,7 @@ public class Parser {
 
     /**
      *
-     * @param command
+     * @param input
      * @param commands
      * @param objects
      * @param inventory

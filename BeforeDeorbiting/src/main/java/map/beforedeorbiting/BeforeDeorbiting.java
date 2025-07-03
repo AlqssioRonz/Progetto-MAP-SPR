@@ -76,7 +76,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         exit.setAlias(new String[]{"exit"});
         getCommands().add(exit);
         
-        /* Lista di tutti gli oggetti del gioco */
+        /* Lista di tutti gli oggetti del gioco*/
         BDObject modellinoRusso = new BDObject(0,"Modellino russo","Una parte del modellino, rappresenta il ramo russo.");
         BDObject modellinoAmericano = new BDObject(1,"Modellino americano","Una parte del modellino, rappresenta il modulo centrale della stazione.");
         BDObject modellinoDx = new BDObject(2,"Modellino pannelli solari Dx","Una parte del modellino, rappresenta i pannelli solari dell'ala destra.");

@@ -32,9 +32,9 @@ public class SaveObserver implements GameObserver {
         if (parserOutput.getCommand().getType() == CommandType.SAVE) {
             try {
                 JSONSaveController.saveGameWithTimestamp(game);
-                saveMsg.append("[✔] Salvataggio automatico completato.");
+                saveMsg.append("[✔] Salvataggio completato.");
             } catch (IOException e) {
-                saveMsg.append("[✘] Errore durante il salvataggio automatico: " + e.getMessage());
+                saveMsg.append("[✘] Errore durante il salvataggio: ").append(e.getMessage());
             }
         }
         return saveMsg.toString();

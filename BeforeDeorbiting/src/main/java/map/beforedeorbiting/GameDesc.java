@@ -39,12 +39,7 @@ public abstract class GameDesc implements Serializable {
         return commands;
     }
 
-    /**
-     * Inizializza il gioco.
-     *
-     * @throws Exception se si verifica un errore durante l'inizializzazione del
-     * gioco
-     */
+    /* Inizializza il gioco */
     public abstract void init();
 
     public List<BDObject> getListObj() {

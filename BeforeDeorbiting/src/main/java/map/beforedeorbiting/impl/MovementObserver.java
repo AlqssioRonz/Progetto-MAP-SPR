@@ -62,6 +62,7 @@ public class MovementObserver implements GameObserver, Serializable {
                     if (target != null && target.isAccessible()) {
                         game.setCurrentRoom(target);
                         movementMessage.append(target.getGameStory())
+                                .append(target.getName()).append("\n")
                                 .append(target.getDescription());
                     } else if (target != null && !target.isAccessible()) {
                         //aggiungere il controllo tentativo di EVA senza tuta indossata

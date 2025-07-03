@@ -46,21 +46,26 @@ public class Engine {
     }
 
     public void execute() {
-        System.out.println(game.getWelcomeMessage());
+        System.out.println(game.getWelcomeMessage()+"\n\n"
+                + game.getCurrentRoom().getGameStory());
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
-            ParserOutput p = parser.parse(command, game.getCommands(), game.getListObj(), game.getInventory().getList());
+            ParserOutput p = parser.parse(command, game.getCommands(), 
+                    game.getListObj(), game.getInventory().getList());
             if (p == null || p.getCommand() == null) {
-                System.out.println("Quello che dici non ha senso, persino HAL alzerebbe un sopracciglio... se ne avesse uno.");
+                System.out.println("Quello che dici non ha senso, persino "
+                        + "HAL alzerebbe un sopracciglio... se ne avesse uno.");
             } else if (p.getCommand() != null && p.getCommand().getType() == CommandType.EXIT) {
-                System.out.println("Se stai cercando l'uscita, si trova accanto al panico e alla rassegnazione.");
+                System.out.println("Se stai cercando l'uscita, "
+                        + "si trova accanto al panico e alla rassegnazione.");
                 break;
             } else {
                 game.nextMove(p, System.out);
                 if (game.getCurrentRoom().getId() == -1) {
-                    System.out.println("La Terra ti accoglie. E i ricordi... resteranno tra le stelle.");
+                    System.out.println("La Terra ti accoglie. E i ricordi... "
+                            + "resteranno tra le stelle.");
                     System.exit(0);
                 } else if (game.getCurrentRoom().getId() == -2) {
                     System.out.println("Rinunci alla terra, ma ritrovi chi avevi perso.");

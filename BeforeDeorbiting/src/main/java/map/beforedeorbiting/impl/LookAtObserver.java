@@ -38,7 +38,7 @@ public class LookAtObserver  implements GameObserver, Serializable {
             }else if(parserOutput.getInvObject() != null){
                 lookAtmsg.append(parserOutput.getInvObject().getDescription());
             }else{
-                game.getCurrentRoom().getDescription();
+                game.getCurrentRoom().getLook();
             }
         }
         return lookAtmsg.toString();

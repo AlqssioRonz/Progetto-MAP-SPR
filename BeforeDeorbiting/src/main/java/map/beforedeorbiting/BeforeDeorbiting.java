@@ -69,7 +69,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         lookAt.setAlias(new String[]{"guarda","vedi"});
         getCommands().add(lookAt);
         Command save = new Command(CommandType.SAVE, "salva");
-        save.setAlias(new String[]{"salvataggio","checkpoint"});
+        save.setAlias(new String[]{"salvataggio","checkpoint", "save"});
         getCommands().add(save);
         Command exit = new Command(CommandType.EXIT, "esci");
         exit.setAlias(new String[]{"exit"});
@@ -175,6 +175,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         unity.setDeck(leonardo);
         leonardo.setOverhead(unity);
         
+        /*RoomLook*/
+        //zvezda.setLook(look);
+        
         /*History*/
         zvezda.setHistory("Zvezda, il modulo di servizio russo, è uno dei componenti "
                 + "fondamentali della ISS. Lanciato il 12 luglio 2000 dal Cosmodromo di "
@@ -232,23 +235,26 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "robotico e di un airlock scientifico. È stato progettato e gestito dalla JAXA.");
         
         /*GameStory*/
-        zvezda.setGameStory("Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. "
-                + "È da mesi che non metto piede sulla Terra, ma finalmente oggi "
-                + "è l’ultimo giorno di pasti liofilizzati… Non vedo l’ora di "
-                + "gustarmi un vero caffè.\n" + "Tra poco la stazione verrà "
-                + "deorbitata: una volta distrutta, i detriti si disperderanno nello spazio. "
-                + "Un po’ di nostalgia la sentirò, inutile negarlo. Vedere la "
-                + "Terra da 408 chilometri d’altezza è un’esperienza che pochi "
-                + "possono raccontare.\n" 
-                + "Mi mancherà questo posto, certo, ma "
-                + "soprattutto mi mancheranno i miei due compagni: Luke e Susan.\n" 
-                + "Luke è un vecchio amico d’infanzia. Un po’ pignolo, a volte "
-                + "insopportabile, ma mi ha sempre seguito in ogni follia. Susan, "
-                + "invece, è americana, l’ho conosciuta all’università. Brillante, "
-                + "silenziosa, e ottima compagna di viaggio. Nessuno dei due è venuto a "
-                + "reclamare il suo turno per dormire, probabilmente stanno ancora festeggiando da ieri.\n" 
-                + "Esco dal sacco a pelo e lo arrotolo con cura. La giornata può cominciare. "
-                + "Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione.");
+        zvezda.setGameStory("""
+                            Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. 
+                            da mesi che non metto piede sulla Terra, 
+                            ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
+                            Non vedo l'ora di gustarmi un vero caffè.
+                            Tra poco la stazione verrà deorbitata: una volta distrutta, 
+                            i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò, 
+                            inutile negarlo. 
+                            Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.
+                            Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni: 
+                            Luke e Susan.
+                            Luke è un vecchio amico d'infanzia. 
+                            Un po' pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia. 
+                            Susan, invece, è americana, l'ho conosciuta all'università. 
+                            Brillante, silenziosa, e ottima compagna di viaggio. 
+                            Nessuno dei due è venuto a reclamare il suo turno per dormire, 
+                            probabilmente stanno ancora festeggiando da ieri.
+                            Esco dal sacco a pelo e lo arrotolo con cura. 
+                            La giornata può cominciare. 
+                            Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione.""");
         zarya.setGameStory("Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra. "
                 + "Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico, "
                 + "privo di vita, accasciato accanto a me.\n" 
@@ -260,7 +266,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "fuggire sulla navicella Soyuz ormeggiata proprio sotto questo modulo.\n" 
                 + "All’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:\n" 
                 +"\n“La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”\n\n" 
-                + "la voce di HAL mi gela la schiena… Il tempismo è inquietante. Ma potrebbe essere un'occasione per scappare.");
+                + "la voce di HAL mi gela la schiena… Il tempismo è inquietante. Ma potrebbe essere un'occasione per scappare.\n");
         unity.setGameStory("La porta è bloccata, è necessario avere un codice di "
                 + "accesso per entrare nel laboratorio DESTINY, il posto di lavoro "
                 + "di Susan… deve essere lì.\n" 
@@ -272,7 +278,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "HAL richiede una rete di terminali locali per essere monitorato "
                 + "e gestito, e il modulo LEONARDO ne ospita uno dei principali. "
                 + "Se voglio accedere al sistema e avere una possibilità di trovare "
-                + "Susan, è lì che devo andare.");
+                + "Susan, è lì che devo andare.\n");
         quest.setGameStory("");
         tranquility.setGameStory("");
         leonardo.setGameStory("Susan…\n"
@@ -289,7 +295,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”");
         harmony.setGameStory("Finalmente il nodo Harmony. Ancora pochi passi e potrò "
                 + "rifugiarmi nella navicella SpaceX, lasciare tutto questo orrore "
-                + "alle spalle e tornare a casa…");
+                + "alle spalle e tornare a casa…\n");
         kibo.setGameStory("Il modulo Kibo è immobile, avvolto da una quiete irreale. "
                 + "Il terminale centrale si accende non appena ti avvicini. HAL:\n" 
                 + " \"Ti stavo aspettando.\"\n" 
@@ -306,7 +312,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "Un riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione. "
                 + "Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme. "
                 + "Solo un calo silenzioso assordante.\n"
-                + " La stazione resta viva, ma HAL… non può più toccarla.");
+                + " La stazione resta viva, ma HAL… non può più toccarla.\n");
         
         /* Lista di tutti gli Observer */
         GameObserver dropObserver = new DropObserver();

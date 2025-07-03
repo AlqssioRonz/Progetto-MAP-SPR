@@ -33,17 +33,17 @@ public class Room {
 
     private boolean accessible = true;
 
-    private Room forward = null;
+    private transient Room forward = null;
 
-    private Room aft = null;
+    private transient Room aft = null;
 
-    private Room starboard = null;
+    private transient Room starboard = null;
 
-    private Room port = null;
+    private transient Room port = null;
 
-    private Room overhead = null;
+    private transient Room overhead = null;
 
-    private Room deck = null;
+    private transient Room deck = null;
 
     private final List<BDObject> objects = new ArrayList<>();
 

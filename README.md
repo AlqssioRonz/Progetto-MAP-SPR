@@ -3,7 +3,7 @@ Progetto di Metodi Avanzati di Programmazione (Salonia - Peluso - Ronzullo)
 
 ### Roadmap
 
-- [ ] Observers
+- [X] Observers
 - [ ] Capire come usare le lambda express
 - [X] Engine
 - [ ] Timer partita - threads
@@ -14,5 +14,5 @@ Progetto di Metodi Avanzati di Programmazione (Salonia - Peluso - Ronzullo)
 - [ ] Enigma Leonardo - databases
 - [ ] GUI enigma buio prismi
 - [ ] Enigma CanadArm2
-- [ ] Salvataggio - serializzazione e file
+- [X] Salvataggio - serializzazione e file
 - [ ] Sito tempi migliori - RestFul

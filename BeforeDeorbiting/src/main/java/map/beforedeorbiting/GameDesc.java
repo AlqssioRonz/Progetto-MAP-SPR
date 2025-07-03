@@ -86,5 +86,13 @@ public abstract class GameDesc implements Serializable {
                 .filter(obj -> obj.getId() == id)
                 .count();
     }
+    
+    public Room getRoomByName(String name) {
+        
+        return rooms.stream()
+            .filter(room -> room.getName().equals(name))
+            .findFirst()
+            .orElse(null);
+    }
 
 }

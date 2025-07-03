@@ -176,7 +176,21 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         leonardo.setOverhead(unity);
         
         /*RoomLook*/
-        //zvezda.setLook(look);
+        zvezda.setLook("""
+                       Il nostro piccolo ma comodo dormitorio. Sacchi e attrezzature 
+                       legati alle pareti, un portello centrale aperto conduce al 
+                       modulo Zarya.""");
+        
+        zarya.setLook("""
+                      Il modulo Zarya. Sacchi con tutte le attrezzature sono 
+                      legati alle pareti della stanza, un tablet a terra vicino 
+                      a una botola chiusa che porta alla navicella Soyuz.""");
+        
+        unity.setLook("""
+                      Il nodo di collegamento Unity. A destra, un passaggio 
+                      stretto conduce verso il modulo EVA e lo spazio esterno.""");
+        
+        //Inizializzare il formato base degli osserva - Lorenzo
         
         /*History*/
         zvezda.setHistory("Zvezda, il modulo di servizio russo, è uno dei componenti "
@@ -323,7 +337,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(historyObserver);
         GameObserver inventoryObserver = new InventoryObserver();
         this.attach(inventoryObserver);
-        GameObserver lookAtObserver = new LookAtObserver();
+        GameObserver lookAtObserver = new LookAtObserver(this);
         this.attach(lookAtObserver);
         GameObserver movementObserver = new MovementObserver();
         this.attach(movementObserver);

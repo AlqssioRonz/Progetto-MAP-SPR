@@ -65,8 +65,15 @@ public class MovementObserver implements GameObserver, Serializable {
                                 .append(target.getName()).append("\n")
                                 .append(target.getDescription());
                     } else if (target != null && !target.isAccessible()) {
-                        //aggiungere il controllo tentativo di EVA senza tuta indossata
-                        movementMessage.append("Quel modulo sembra essere inaccessibile, forse potrei aprirlo in quealche modo...");
+                        //id 10 tuta spaziale
+                        if(target.equals(game.getRoomByName("SPAZIO")) && 
+                                !game.getObjectByID(10).isInUse())
+                            movementMessage.append("""
+                                                   Fare una camminata nello spazio senza indossare 
+                                                   una tuta spaziale sarebbe un suicidio.""");
+                        movementMessage.append("""
+                                               Quel modulo sembra essere inaccessibile,
+                                               forse potrei aprirlo in quealche modo...""");
                     }
                 }
             } else {

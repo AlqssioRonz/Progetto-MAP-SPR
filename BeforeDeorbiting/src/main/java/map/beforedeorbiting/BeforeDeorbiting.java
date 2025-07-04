@@ -86,7 +86,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         modellinoDx.setAlias(Set.of("modellinoDestro","modellino3","destro","modellinoDx","modellinoD","modellino"));
         modellinoDx.setPickupable(true);
         BDObject modellinoSx = new BDObject(3,"Modellino pannelli solari Sx","Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
-        modellinoSx.setAlias(Set.of("modellinoSinistro","modellino4","sinistro","modellinoSx","modellinoS","modellino"));
+        modellinoSx.setAlias(Set.of("oggetto","modellinoSinistro","modellino4","sinistro","modellinoSx","modellinoS","modellino"));
         modellinoSx.setPickupable(true);
         BDObject diarioSusan = new BDObject(4, "Diario Susan", "Il diario di Susan... contiene i suoi ultimi istanti.");
         diarioSusan.setAlias(Set.of("diario","diarioSusan","susan"));
@@ -144,10 +144,10 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Room leonardo = new Room(6, "LEONARDO", "Centro dati.");
         leonardo.getObjects().add(diarioSusan);
         leonardo.getObjects().add(computer);
-        Room destiny = new Room(6, "DESTINY", "Laboratorio avanzato.");
+        Room destiny = new Room(7, "DESTINY", "Laboratorio avanzato.");
         destiny.getObjects().add(pezzoDiVetro);
-        Room harmony = new Room(7, "HARMONY", "Corridoio pressurizzato.");
-        Room kibo = new Room(8, "KIBO", "Laboratorio e seconda sede di HAL.");
+        Room harmony = new Room(8, "HARMONY", "Corridoio pressurizzato.");
+        Room kibo = new Room(9, "KIBO", "Laboratorio e seconda sede di HAL.");
 
         getRooms().add(macchina);
         getRooms().add(umano);
@@ -180,6 +180,13 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         unity.setDeck(leonardo);
         leonardo.setOverhead(unity);
         
+        /*PosizionareGliOggettiNelleStanze*/
+        zvezda.addObject(modellinoRusso);
+        
+        zarya.addObject(tutaSpaziale);
+        zarya.addObject(taccuino);
+        
+        
         /*RoomLook*/
         zvezda.setLook("""
                        Il nostro piccolo ma comodo dormitorio. Sacchi e attrezzature 
@@ -194,6 +201,35 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         unity.setLook("""
                       Il nodo di collegamento Unity. A destra, un passaggio 
                       stretto conduce verso il modulo EVA e lo spazio esterno.""");
+        
+        destiny.setLook("""
+                        Cos’è stato… non vedo nulla se non per un flebile fascio di 
+                        luce riflesso dalla luna che proviene dalla finestra di 
+                        osservazione, ma non è sufficiente per orientarmi nella stanza""");
+        
+        tranquility.setLook("""
+                            La Terra riempie ogni finestra, immensa e silenziosa, 
+                            sospesa sotto di te. sembra così piccola vista dallo spazio.""");
+        
+        quest.setLook("""
+                      Il modulo EVA, attraverso quella botola si accede direttamente allo spazio.""");
+        
+        harmony.setLook("""
+                        Il nodo Harmony è corridoio pressurizzato, ampio e ordinato. 
+                        In fondo, il portellone che conduce alla navicella di fuga. 
+                        A sinistra si apre l’accesso al laboratorio Kibo. A sinistra,
+                        l’ingresso è sigillato e inaccessibile.""");
+        
+        leonardo.setLook("""
+                         Il modulo Leonardo, rivestito da contenitori imbottiti e 
+                         cavi. Sul lato sinistro, il terminale principale di HAL 
+                         emette un tenue bagliore verde. La botola in fondo è 
+                         quella direttamente collegata a Unity. Il corpo di Susan 
+                         fluttua a mezz’aria, immobile.""");
+        
+        spazio.setLook("""
+                       Davanti a te la terra sembra ruotare, in tutte le direzioni 
+                       c'è solo il vuoto.""");
         
         //Inizializzare il formato base degli osserva - Lorenzo
         

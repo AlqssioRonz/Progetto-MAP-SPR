@@ -13,7 +13,10 @@ import java.util.Scanner;
 import java.io.BufferedReader;
 import java.util.HashSet;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -37,8 +40,11 @@ public class Engine {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        try {
-            Set<String> stopwords = loadFileListInSet(new File("/stopwords.txt"));
+        try (InputStream in = Engine.class.getResourceAsStream("/stopwords.txt");
+             BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+            Set<String> stopwords = br.lines()
+                    .map(s -> s.trim().toLowerCase())
+                    .collect(Collectors.toSet());
             parser = new Parser(stopwords);
         } catch (IOException ex) {
             System.out.println(ex);

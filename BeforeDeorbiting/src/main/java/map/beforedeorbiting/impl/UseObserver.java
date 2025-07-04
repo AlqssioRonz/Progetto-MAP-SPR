@@ -17,8 +17,6 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
@@ -35,8 +33,8 @@ import map.beforedeorbiting.type.CommandType;
 public class UseObserver implements GameObserver, Serializable {
 
     /*
-    * Crea una HashMap che ci permette di utilizzare un determinato
-    * oggetto, in base all'id scelto.
+     * Crea una HashMap che ci permette di utilizzare un determinato
+     * oggetto, in base all'id scelto.
      */
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
 
@@ -54,11 +52,15 @@ public class UseObserver implements GameObserver, Serializable {
     }
 
     /*
-    * Aggiorna lo stato del gioco in base all'output del parser e restituisce
-    * un messaggio di risposta.
-    * @param game l'oggetto GameDesc che rappresenta lo stato corrente del gioco
-    * @param parserOutput l'output del parser utile per conoscere l'input dell'utente
-    * @return il messaggio di risposta in base all'azione di 'usa'.
+     * Aggiorna lo stato del gioco in base all'output del parser e restituisce
+     * un messaggio di risposta.
+     * 
+     * @param game l'oggetto GameDesc che rappresenta lo stato corrente del gioco
+     * 
+     * @param parserOutput l'output del parser utile per conoscere l'input
+     * dell'utente
+     * 
+     * @return il messaggio di risposta in base all'azione di 'usa'.
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {
@@ -107,7 +109,8 @@ public class UseObserver implements GameObserver, Serializable {
             game.getInventory().add(game.getObjectByID(7));
             prismMsg.append("Unendo due pezzi di vetro hai creato un mezzo prisma! Lo trovi nel tuo inventario.");
         } else {
-            if (game.getInventory().getList().contains(game.getObjectByID(7)) && game.getInventory().count(game.getObjectByID(6)) == 1) {
+            if (game.getInventory().getList().contains(game.getObjectByID(7))
+                    && game.getInventory().count(game.getObjectByID(6)) == 1) {
                 game.getInventory().remove(game.getObjectByID(6));
                 game.getInventory().remove(game.getObjectByID(7));
                 game.getInventory().add(game.getObjectByID(8));
@@ -122,10 +125,15 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String usePrism(GameDesc game) {
         StringBuilder usingPrismMsg = new StringBuilder();
-        game.getInventory().remove(game.getObjectByID(8));
-        System.out.println("Hai posizionato il prisma!");
-        // METTERE IL MINIGAME
-        usingPrismMsg.append("Hai completato l'enigma!");
+        // servirebbe anche il controllo per capire se la luce dall'oblò arriva
+        if (game.getCurrentRoom().getName().equalsIgnoreCase("destiny")) {
+            game.getInventory().remove(game.getObjectByID(8));
+            System.out.println("Hai posizionato il prisma!");
+            // METTERE IL MINIGAME
+            usingPrismMsg.append("Hai completato l'enigma!");
+        } else {
+            usingPrismMsg.append("Non puoi usare qui il prisma!");
+        }
         return usingPrismMsg.toString();
     }
 
@@ -145,17 +153,15 @@ public class UseObserver implements GameObserver, Serializable {
                 + "Iniziano a riaffiorare tutti i bei ricordi e le avventure passate insieme, "
                 + "causandoti tanta nostalgia.\n");
         game.getInventory().remove(game.getObjectByID(10));
-        // quando entrerà in leonardo, dopo il minigame, scrivere che la tuta si è completamente rotta
+        // quando entrerà in leonardo, dopo il minigame, scrivere che la tuta si è
+        // completamente rotta
         return wearSuit.toString();
     }
 
     public String useNotebook(GameDesc game) {
-        StringBuilder notebookMsg = new StringBuilder();
         System.out.println("Apri il taccuino!");
         mostraTaccuinoSwing();
-        notebookMsg.append("Hai chiuso il taccuino. Puoi consultarlo di nuovo in qualsiasi momento, "
-                + "finché resterà nel tuo inventario.");
-        return notebookMsg.toString();
+        return "";
     }
 
     // Metodo principale che apre la finestra del taccuino
@@ -172,7 +178,7 @@ public class UseObserver implements GameObserver, Serializable {
             frame.add(scrollPane, BorderLayout.CENTER); // aggiungiamo al centro della finestra
 
             File file = new File(FILE_PATH);
-            boolean[] modificato = {false}; // flag per sapere se l'utente ha modificato il testo
+            boolean[] modificato = { false }; // flag per sapere se l'utente ha modificato il testo
 
             // Carica il contenuto del file nel text area
             caricaContenuto(file, textArea);
@@ -209,23 +215,38 @@ public class UseObserver implements GameObserver, Serializable {
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    // Se il contenuto è stato modificato, chiedi se salvare
                     if (modificato[0]) {
-                        int scelta = JOptionPane.showConfirmDialog(frame,
-                                "Hai modificato il taccuino. Vuoi salvare prima di uscire?",
-                                "Salvataggio",
-                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
+                        Object[] opzioni = {"Sì", "No", "Annulla"};
+                        int scelta = JOptionPane.showOptionDialog(frame,
+                        "Hai modificato il taccuino. Vuoi salvare prima di uscire?",
+                        "Salvataggio",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE,
+                        null,
+                        opzioni,
+                        opzioni[0]);
 
                         if (scelta == JOptionPane.YES_OPTION) {
                             salvaContenuto(file, textArea);
-                            frame.dispose(); // chiude
+                            JOptionPane.showMessageDialog(frame,
+                                    "Hai chiuso il taccuino. Puoi consultarlo di nuovo in qualsiasi momento, finché resterà nel tuo inventario.",
+                                    "Chiusura taccuino",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            frame.dispose();
                         } else if (scelta == JOptionPane.NO_OPTION) {
-                            frame.dispose(); // chiude senza salvare
+                            JOptionPane.showMessageDialog(frame,
+                                    "Hai chiuso il taccuino. Puoi consultarlo di nuovo in qualsiasi momento, finché resterà nel tuo inventario.",
+                                    "Chiusura taccuino",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                            frame.dispose();
                         }
-                        // CANCEL: non chiude
+                        // CANCEL: non chiudere
                     } else {
-                        frame.dispose(); // nessuna modifica → chiudi subito
+                        JOptionPane.showMessageDialog(frame,
+                                "Hai chiuso il taccuino. Puoi consultarlo di nuovo in qualsiasi momento, finché resterà nel tuo inventario.",
+                                "Chiusura taccuino",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        frame.dispose();
                     }
                 }
             });
@@ -257,9 +278,11 @@ public class UseObserver implements GameObserver, Serializable {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(textArea.getText()); // scrive tutto il contenuto
             writer.close();
-            JOptionPane.showMessageDialog(null, "Taccuino salvato con successo!", "Salvato", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Taccuino salvato con successo!", "Salvato",
+                    JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Errore nel salvataggio del file.", "Errore", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Errore nel salvataggio del file.", "Errore",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

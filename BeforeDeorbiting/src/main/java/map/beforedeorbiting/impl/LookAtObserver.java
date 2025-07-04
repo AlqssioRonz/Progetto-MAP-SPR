@@ -31,13 +31,13 @@ public class LookAtObserver  implements GameObserver, Serializable {
      */
     public LookAtObserver(GameDesc game) {
         stateDescr.put(game.getRoomByName("ZVEZDA"), this::zvezdaDescr);
-        stateDescr.put(game.getRoomByName("ZARYA"), this::zaryaDescr);
+        /*stateDescr.put(game.getRoomByName("ZARYA"), this::zaryaDescr);
         stateDescr.put(game.getRoomByName("UNITY"), this::unityDescr);
         stateDescr.put(game.getRoomByName("DESTINY"), this::destinyDescr);
         stateDescr.put(game.getRoomByName("TRANQUILITY"), this::tranquilityDescr);
         stateDescr.put(game.getRoomByName("QUEST"), this::questDescr);
         stateDescr.put(game.getRoomByName("HARMONY"), this::harmonyDescr);
-        stateDescr.put(game.getRoomByName("LEONARDO"), this::leonardoDescr);      
+        stateDescr.put(game.getRoomByName("LEONARDO"), this::leonardoDescr);*/
     }
     
     /**
@@ -61,10 +61,11 @@ public class LookAtObserver  implements GameObserver, Serializable {
             }else if(parserOutput.getInvObject() != null){
                 lookAtmsg.append(parserOutput.getInvObject().getDescription());
             }else{
-                game.getCurrentRoom().getLook();
+                lookAtmsg.append(game.getCurrentRoom().getLook()).append("\n")
+                        .append(stateDescr.get(game.getCurrentRoom()).apply(game));
             }
         }
-        return lookAtmsg.append(stateDescr.get(game.getCurrentRoom()).apply(game)).toString();
+        return lookAtmsg.toString();
     }
     
     public String zvezdaDescr(GameDesc game) {

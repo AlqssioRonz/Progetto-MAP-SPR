@@ -38,7 +38,7 @@ public class Engine {
             System.out.println(ex);
         }
         try {
-            Set<String> stopwords = loadFileListInSet(new File("./resources/stopwords.txt"));
+            Set<String> stopwords = loadFileListInSet(new File("/stopwords.txt"));
             parser = new Parser(stopwords);
         } catch (IOException ex) {
             System.out.println(ex);

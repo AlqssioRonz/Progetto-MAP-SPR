@@ -12,6 +12,7 @@ Progetto di Metodi Avanzati di Programmazione (Salonia - Peluso - Ronzullo)
 - [ ] GUI immagini
 - [ ] GUI Enigma EVA - threads timer
 - [ ] Enigma Leonardo - databases
+  - [X] Creazione del db
 - [ ] GUI enigma buio prismi
 - [ ] Enigma CanadArm2
 - [X] Salvataggio - serializzazione e file

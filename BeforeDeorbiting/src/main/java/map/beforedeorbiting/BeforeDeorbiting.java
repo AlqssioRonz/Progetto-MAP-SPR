@@ -234,14 +234,18 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         //Inizializzare il formato base degli osserva - Lorenzo
         
         /*History*/
-        zvezda.setHistory("Zvezda, il modulo di servizio russo, è uno dei componenti "
-                + "fondamentali della ISS. Lanciato il 12 luglio 2000 dal Cosmodromo di "
-                + "Baikonur su un razzo Proton, ha fornito per anni le principali funzioni "
-                + "di supporto vitale: generazione di ossigeno, riciclo dell'acqua, controllo "
-                + "termico e propulsione. Ha anche ospitato i primi equipaggi permanenti a "
-                + "bordo della ISS. Il modulo è lungo circa 13 metri e ha un diametro massimo "
-                + "di 4,15 metri. È stato costruito sulla base della tecnologia della stazione Mir. "
-                + "La sua parte posteriore è un importante punto di attracco per veicoli Soyuz e Progress.");
+        zvezda.setHistory("""
+                          Zvezda, il modulo di servizio russo, è uno dei componenti 
+                          fondamentali della ISS. Lanciato il 12 luglio 2000 
+                          dal Cosmodromo di Baikonur su un razzo Proton, ha 
+                          fornito per anni le principali funzioni di supporto 
+                          vitale: generazione di ossigeno, riciclo dell'acqua, 
+                          controllo termico e propulsione. Ha anche ospitato i 
+                          primi equipaggi permanenti a bordo della ISS. Il modulo 
+                          è lungo circa 13 metri e ha un diametro massimo di 
+                          4,15 metri. È stato costruito sulla base della tecnologia 
+                          della stazione Mir. La sua parte posteriore è un importante 
+                          punto di attracco per veicoli Soyuz e Progress.""");
         zarya.setHistory("Zarya, noto anche come Functional Cargo Block (FGB), è "
                 + "stato il primo modulo lanciato della Stazione Spaziale Internazionale, "
                 + "il 20 novembre 1998. Sebbene progettato e costruito in Russia, il modulo "

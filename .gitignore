@@ -1,2 +1,6 @@
 notebook.txt
 saves/*.txt
+BeforeDeorbiting/target/classes/map/beforedeorbiting/impl/HistoryObserver.class
+BeforeDeorbiting/target/classes/map/beforedeorbiting/impl/InventoryObserver.class
+*.class
+*.lst

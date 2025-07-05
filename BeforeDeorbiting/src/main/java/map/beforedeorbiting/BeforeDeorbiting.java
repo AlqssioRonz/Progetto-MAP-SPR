@@ -125,7 +125,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         
         /* Lista di tutte le stanze */
         Room macchina = new Room(-2, "MACCHINA", "Finale cattivo.");
+        macchina.setAccessible(false);
         Room umano = new Room(-1, "UMANO", "Finale buono.");
+        umano.setAccessible(false);
         Room zvezda = new Room(0, "ZVEZDA", "Dormitorio.");
         zvezda.getObjects().add(modellinoRusso);
         Room zarya = new Room(1, "ZARYA", "Magazzino della stazione.");
@@ -141,13 +143,18 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Room tranquility = new Room(4, "TRANQUILITY", "Cupola di osservazione.");
         tranquility.getObjects().add(modellinoDx);
         Room spazio = new Room(5, "SPAZIO", "Vuoto cosmico.");
+        spazio.setAccessible(false);
         Room leonardo = new Room(6, "LEONARDO", "Centro dati.");
         leonardo.getObjects().add(diarioSusan);
         leonardo.getObjects().add(computer);
+        leonardo.setAccessible(false);
         Room destiny = new Room(7, "DESTINY", "Laboratorio avanzato.");
         destiny.getObjects().add(pezzoDiVetro);
+        destiny.setAccessible(false);
         Room harmony = new Room(8, "HARMONY", "Corridoio pressurizzato.");
+        harmony.setAccessible(false);
         Room kibo = new Room(9, "KIBO", "Laboratorio e seconda sede di HAL.");
+        kibo.setAccessible(false);
 
         getRooms().add(macchina);
         getRooms().add(umano);

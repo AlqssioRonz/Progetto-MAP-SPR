@@ -8,7 +8,6 @@ import map.beforedeorbiting.parser.Parser;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.database.DBConfig;
-import map.beforedeorbiting.database.AstronautsDAO;
 
 import java.io.File;
 import java.io.IOException;
@@ -95,13 +94,9 @@ public class Engine {
         Engine engine = new Engine(new BeforeDeorbiting());
 
         try (Connection conn = DBConfig.getConnection()) {
-            AstronautsDAO dao = new AstronautsDAO(conn);
 
             try {
-                DBConfig.populateDatabase(dao);
-            } catch (IOException e) {
-                System.err.println("Errore nel caricamento dei dati da JSON: " + e.getMessage());
-                return;
+                DBConfig.populateDatabase();
             } catch (Exception e) {
                 System.err.println("Errore di inserimento dati nel DB:  " + e.getMessage());
                 return;

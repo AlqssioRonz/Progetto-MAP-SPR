@@ -30,7 +30,7 @@ public class DBConfig {
     }
 
     public static List<Astronaut> loadAstronautsFromJson() throws IOException {
-        String json = new String(Files.readAllBytes(Paths.get("astronauts.json")));
+        String json = new String(Files.readAllBytes(Paths.get("resources/Astronauts.json")));
 
         Gson gson = new Gson();
         Astronaut[] array = gson.fromJson(json, Astronaut[].class);

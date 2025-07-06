@@ -7,6 +7,8 @@ package map.beforedeorbiting;
 import map.beforedeorbiting.parser.Parser;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
+import map.beforedeorbiting.database.DBConfig;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -15,6 +17,8 @@ import java.util.HashSet;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -88,7 +92,21 @@ public class Engine {
      */
     public static void main(String[] args) {
         Engine engine = new Engine(new BeforeDeorbiting());
-        engine.execute();
+
+        try (Connection conn = DBConfig.getConnection()) {
+
+            try {
+                DBConfig.populateDatabase();
+            } catch (Exception e) {
+                System.err.println("Errore di inserimento dati nel DB:  " + e.getMessage());
+                return;
+            }
+
+            engine.execute();
+
+        } catch (SQLException e) {
+            System.err.println("Could not connect to database: " + e.getMessage());
+        }
     }
 
     /**

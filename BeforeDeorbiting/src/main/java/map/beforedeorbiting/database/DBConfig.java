@@ -6,8 +6,8 @@ package map.beforedeorbiting.database;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -30,17 +30,13 @@ public class DBConfig {
     }
 
     public static List<Astronaut> loadAstronautsFromJson() throws IOException {
-        ClassLoader loader = DBConfig.class.getClassLoader();
-        try (InputStream is = loader.getResourceAsStream("Astronauts.json")) {
-            if (is == null) {
-                throw new IOException("Astronauts.json non trovato");
-            }
+        String json = new String(Files.readAllBytes(Paths.get("Astronauts.json")));
 
-            String json = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-            Gson gson = new Gson();
-            Astronaut[] array = gson.fromJson(json, Astronaut[].class);
-            return Arrays.asList(array);
-        }
+        Gson gson = new Gson();
+        Astronaut[] array = gson.fromJson(json, Astronaut[].class);
+        List<Astronaut> astronauts = Arrays.asList(array);
+        
+        return astronauts;
     }
 
     public static void populateDatabase(AstronautsDAO dao) throws Exception {

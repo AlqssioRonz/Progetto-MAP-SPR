@@ -253,52 +253,76 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                           4,15 metri. È stato costruito sulla base della tecnologia 
                           della stazione Mir. La sua parte posteriore è un importante 
                           punto di attracco per veicoli Soyuz e Progress.""");
-        zarya.setHistory("Zarya, noto anche come Functional Cargo Block (FGB), è "
-                + "stato il primo modulo lanciato della Stazione Spaziale Internazionale, "
-                + "il 20 novembre 1998. Sebbene progettato e costruito in Russia, il modulo "
-                + "fu finanziato dalla NASA. Ha fornito energia elettrica, controllo d'assetto"
-                + " e capacità di propulsione nei primi stadi dell'assemblaggio della stazione. "
-                + "È lungo circa 12,6 metri e ha un diametro massimo di 4,1 metri. Oggi è "
-                + "principalmente utilizzato come modulo di stoccaggio.");
-        unity.setHistory("Unity, o Nodo 1, è il primo modulo statunitense della ISS, "
-                + "lanciato e installato il 4 dicembre 1998 con la missione STS-88 "
-                + "dello Space Shuttle Endeavour. Funziona come nodo di connessione "
-                + "con sei portelli: due assi principali (prua e poppa) e quattro radiali. "
-                + "Unity collega i segmenti statunitense e russo e fornisce risorse vitali "
-                + "ai moduli adiacenti. È stato costruito dalla Boeing negli Stati Uniti.");
-        quest.setHistory("Quest è la principale camera di decompressione del segmento statunitense, "
-                + "lanciata il 12 luglio 2001 con la missione STS-104. Consente le attività "
-                + "extraveicolari (EVA) sia con tute statunitensi EMU che con quelle russe Orlan. "
-                + "È composta da due compartimenti: uno per le tute e la preparazione, e l'altro per "
-                + "l'effettiva decompressione e uscita nello spazio.");
-        tranquility.setHistory("Tranquility, o Nodo 3, è stato costruito in Europa "
-                + "(Italia) e lanciato nel febbraio 2010. Contiene i principali sistemi "
-                + "di supporto alla vita della ISS, tra cui il sistema di riciclo dell’acqua "
-                + "e quello di generazione dell’ossigeno. Al suo portello nadir è connessa la "
-                + "Cupola, una struttura dotata di finestre per l’osservazione terrestre e per "
-                + "il controllo delle operazioni robotiche. Tranquility ospita anche gli strumenti "
-                + "per l’esercizio fisico dell’equipaggio.");
-        leonardo.setHistory("Il modulo Leonardo è un MPLM (Multi-Purpose Logistics Module) "
-                + "costruito in Italia da Thales Alenia Space. Inizialmente usato come modulo "
-                + "di trasporto pressurizzato durante le missioni Shuttle, fu successivamente "
-                + "convertito in modulo permanente (PMM) e agganciato stabilmente alla ISS nel 2011. "
-                + "È utilizzato come spazio di stoccaggio per attrezzature e materiali. Ha una lunghezza "
-                + "di circa 6,6 metri e un diametro di 4,5 metri.");
-        destiny.setHistory("Il laboratorio Destiny è il principale modulo scientifico statunitense, "
-                + "lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei "
-                + "materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di "
-                + "supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche. "
-                + "È stato il primo laboratorio scientifico permanente della ISS.");
-        harmony.setHistory("Harmony, o Nodo 2, è un modulo statunitense costruito in Italia. "
-                + "Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per "
-                + "diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione, "
-                + "risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di "
-                + "sei portelli di aggancio e funge da hub logistico del segmento statunitense.");
-        kibo.setHistory("Kibo, il laboratorio giapponese, è il modulo pressurizzato "
-                + "più grande della ISS. È stato lanciato in tre fasi tra 2008 e 2009. "
-                + "Include una sezione pressurizzata, un modulo logistico e una piattaforma "
-                + "esterna per esperimenti esposti allo spazio. Dispone anche di un braccio "
-                + "robotico e di un airlock scientifico. È stato progettato e gestito dalla JAXA.");
+        zarya.setHistory("""
+                        Zarya, noto anche come Functional Cargo Block (FGB), è 
+                        stato il primo modulo lanciato della Stazione Spaziale Internazionale, 
+                        il 20 novembre 1998. Sebbene progettato e costruito in Russia, il modulo 
+                        fu finanziato dalla NASA. Ha fornito energia elettrica, controllo d'assetto 
+                        e capacità di propulsione nei primi stadi dell'assemblaggio della stazione. 
+                        È lungo circa 12,6 metri e ha un diametro massimo di 4,1 metri. Oggi è 
+                        principalmente utilizzato come modulo di stoccaggio.
+                        """);
+
+        unity.setHistory("""
+                Unity, o Nodo 1, è il primo modulo statunitense della ISS, 
+                lanciato e installato il 4 dicembre 1998 con la missione STS-88 
+                dello Space Shuttle Endeavour. Funziona come nodo di connessione 
+                con sei portelli: due assi principali (prua e poppa) e quattro radiali. 
+                Unity collega i segmenti statunitense e russo e fornisce risorse vitali 
+                ai moduli adiacenti. È stato costruito dalla Boeing negli Stati Uniti.
+                """);
+
+        quest.setHistory("""
+                Quest è la principale camera di decompressione del segmento statunitense, 
+                lanciata il 12 luglio 2001 con la missione STS-104. Consente le attività 
+                extraveicolari (EVA) sia con tute statunitensi EMU che con quelle russe Orlan. 
+                È composta da due compartimenti: uno per le tute e la preparazione, e l'altro per 
+                l'effettiva decompressione e uscita nello spazio.
+                """);
+
+        tranquility.setHistory("""
+                Tranquility, o Nodo 3, è stato costruito in Europa 
+                (Italia) e lanciato nel febbraio 2010. Contiene i principali sistemi 
+                di supporto alla vita della ISS, tra cui il sistema di riciclo dell’acqua 
+                e quello di generazione dell’ossigeno. Al suo portello nadir è connessa la 
+                Cupola, una struttura dotata di finestre per l’osservazione terrestre e per 
+                il controllo delle operazioni robotiche. Tranquility ospita anche gli strumenti 
+                per l’esercizio fisico dell’equipaggio.
+                """);
+
+        leonardo.setHistory("""
+                Il modulo Leonardo è un MPLM (Multi-Purpose Logistics Module) 
+                costruito in Italia da Thales Alenia Space. Inizialmente usato come modulo 
+                di trasporto pressurizzato durante le missioni Shuttle, fu successivamente 
+                convertito in modulo permanente (PMM) e agganciato stabilmente alla ISS nel 2011. 
+                È utilizzato come spazio di stoccaggio per attrezzature e materiali. Ha una lunghezza 
+                di circa 6,6 metri e un diametro di 4,5 metri.
+                """);
+
+        destiny.setHistory("""
+                Il laboratorio Destiny è il principale modulo scientifico statunitense, 
+                lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei 
+                materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di 
+                supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche. 
+                È stato il primo laboratorio scientifico permanente della ISS.
+                """);
+
+        harmony.setHistory("""
+                Harmony, o Nodo 2, è un modulo statunitense costruito in Italia. 
+                Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per 
+                diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione, 
+                risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di 
+                sei portelli di aggancio e funge da hub logistico del segmento statunitense.
+                """);
+
+        kibo.setHistory("""
+                Kibo, il laboratorio giapponese, è il modulo pressurizzato 
+                più grande della ISS. È stato lanciato in tre fasi tra 2008 e 2009. 
+                Include una sezione pressurizzata, un modulo logistico e una piattaforma 
+                esterna per esperimenti esposti allo spazio. Dispone anche di un braccio 
+                robotico e di un airlock scientifico. È stato progettato e gestito dalla JAXA.
+                """);
+
         
         /*GameStory*/
         zvezda.setGameStory("""

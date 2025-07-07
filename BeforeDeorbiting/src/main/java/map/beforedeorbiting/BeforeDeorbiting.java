@@ -29,6 +29,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
 
     @Override
     public void init() {
+        getInventory().getList().clear();
         Command forward = new Command(CommandType.FORWARD, "avanti");
         forward.setAlias(new String[]{"avanza", "forward", "x+"});
         getCommands().add(forward);

@@ -51,7 +51,6 @@ import map.beforedeorbiting.parser.ParserOutput;
 
 /**
  * Classe che mostra la GUI del gioco.
->>>>>>> 05173d8 (Tante modifiche bro)
  */
 public class GameUI extends JFrame {
 
@@ -65,6 +64,7 @@ public class GameUI extends JFrame {
     private Parser parser = null;
     private Engine engine;
     private GameDesc game;
+
     private JFrame confermaChiusura;
     private JTextPane textPane;
     private JScrollPane scrollPane;
@@ -127,7 +127,7 @@ public class GameUI extends JFrame {
             mainComponents(false, null);
         } catch (Exception ex) {
             Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        }
         //initCurrentImage();
 
         // Se usi Parser, lo lasci dentro Engine (non qui)
@@ -343,6 +343,7 @@ public class GameUI extends JFrame {
         menuBar.setBackground(BACKGROUND_PINK);
         menuBar.setForeground(TEXT);
         setJMenuBar(menuBar);
+
         // musicHTN.playMusic("src\\music\\HTN_gameplaylist.wav");
         musicButton.setText("Mute");
         musicButton.setBackground(BACKGROUND_PINK);
@@ -353,7 +354,6 @@ public class GameUI extends JFrame {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 /*if (musicHTN.isPlaying()) {
->>>>>>> 05173d8 (Tante modifiche bro)
                     musicHTN.pausaMusica();
                     musicButton.setText("Play");
                     musicButton.setForeground(GREEN);
@@ -454,6 +454,7 @@ public class GameUI extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
+
         printer = new PrinterUI(textPane);
     }
 
@@ -494,6 +495,7 @@ public class GameUI extends JFrame {
             if (engine.getGame().getCurrentRoom() != null) {
                 updateRoomImage(engine.getGame().getCurrentRoom().getName());
             }
+
             checkEndGame();
         }
     }
@@ -560,7 +562,7 @@ public class GameUI extends JFrame {
         }
 
         if (isGameOver) {
-            //concludiPartita();
+//            concludiPartita();
         }
     }
 

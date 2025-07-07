@@ -12,7 +12,6 @@ import java.util.Set;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
-import map.beforedeorbiting.ui.GameUI;
 
 /**
  * Classe "principale" del gioco. Setta tutte le impostazioni iniziali, quali:
@@ -27,6 +26,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     private ParserOutput parserOutput;
 
     private final List<String> messages = new ArrayList<>();
+
     @Override
     public void init() {
         Command forward = new Command(CommandType.FORWARD, "avanti");
@@ -296,6 +296,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "Include una sezione pressurizzata, un modulo logistico e una piattaforma "
                 + "esterna per esperimenti esposti allo spazio. Dispone anche di un braccio "
                 + "robotico e di un airlock scientifico. È stato progettato e gestito dalla JAXA.");
+
         /*GameStory*/
         zvezda.setGameStory("""
                             Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. 

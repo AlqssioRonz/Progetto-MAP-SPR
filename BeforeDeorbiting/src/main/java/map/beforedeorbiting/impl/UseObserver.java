@@ -29,10 +29,8 @@ public class UseObserver implements GameObserver, Serializable {
      * oggetto, in base all'id scelto.
      */
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
-    private final GameDesc game;
 
     public UseObserver(GameDesc game) {
-        this.game = game;
         uses.put(game.getObjectByID(4), this::readSusanDiary);
         uses.put(game.getObjectByID(5), this::readLukeNote);
         uses.put(game.getObjectByID(6), this::createPrism);

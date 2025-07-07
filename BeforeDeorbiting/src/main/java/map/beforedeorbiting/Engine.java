@@ -6,21 +6,14 @@ package map.beforedeorbiting;
 import map.beforedeorbiting.parser.Parser;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
-import map.beforedeorbiting.database.DBConfig;
-import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Collectors;
-import map.beforedeorbiting.type.Inventory;
 
 /**
  *
@@ -39,28 +32,41 @@ public class Engine {
      */
     public Engine(GameDesc game) {
         this.game = game;
-        this.game.setNotebookText("");
-        try {
-            Files.writeString(Path.of("notebook.txt"), "", StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        Inventory.getInstance().getList().clear();
         try {
             this.game.init();
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        try (InputStream in = Engine.class.getResourceAsStream("/stopwords.txt"); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-            Set<String> stopwords = br.lines()
-                    .map(s -> s.trim().toLowerCase())
-                    .collect(Collectors.toSet());
+        Set<String> stopwords;
+        try {
+            stopwords = loadFileListInSet("/stopwords.txt");
             parser = new Parser(stopwords);
-        } catch (IOException ex) {
-            System.out.println(ex);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+    public Engine(GameDesc game, boolean load) {
+        this.game = game;
+        if (!load) {
+            try {
+                this.game.init();
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
+        Set<String> stopwords;
+        try {
+            stopwords = loadFileListInSet("/stopwords.txt");
+            parser = new Parser(stopwords);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
+     * Restituisce l'istanza di GameDesc.
+     *
      * @return il gioco.
      */
     public GameDesc getGame() {
@@ -104,26 +110,13 @@ public class Engine {
      */
     public static void main(String[] args) {
         Engine engine = new Engine(new BeforeDeorbiting());
-
-        try (Connection conn = DBConfig.getConnection()) {
-
-            try {
-                DBConfig.populateDatabase();
-            } catch (Exception e) {
-                System.err.println("Errore di inserimento dati nel DB:  " + e.getMessage());
-                return;
-            }
-
-            engine.execute();
-
-        } catch (SQLException e) {
-            System.err.println("Could not connect to database: " + e.getMessage());
-        }
+        engine.execute();
     }
 
     /**
      * Carica le righe di un file in un set di stringhe
-     * @param resourcePath il percorso della risorsa da caricare
+     *
+     * @param resourcePath
      * @return
      * @throws java.io.IOException
      */

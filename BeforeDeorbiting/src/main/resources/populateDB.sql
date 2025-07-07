@@ -7,6 +7,9 @@
  * Created: 6 Jul 2025
  */
 
+
+TRUNCATE TABLE astronauts;
+
 INSERT INTO astronauts (name, surname, date_of_birth, birthplace, time_on_iss_hours) VALUES
 ('Samantha', 'Cristoforetti', '1977-04-26', 'Milan, Italy', 4792),
 ('Luca', 'Parmitano', '1976-09-27', 'Paterno, Sicily, Italy', 8784),

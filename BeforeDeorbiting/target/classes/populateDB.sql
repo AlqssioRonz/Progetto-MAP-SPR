@@ -7,6 +7,9 @@
  * Created: 6 Jul 2025
  */
 
+
+TRUNCATE TABLE astronauts;
+
 INSERT INTO astronauts (name, surname, date_of_birth, birthplace, time_on_iss_hours) VALUES
 ('Samantha', 'Cristoforetti', '1977-04-26', 'Milan, Italy', 4792),
 ('Luca', 'Parmitano', '1976-09-27', 'Paterno, Sicily, Italy', 8784),
@@ -17,7 +20,7 @@ INSERT INTO astronauts (name, surname, date_of_birth, birthplace, time_on_iss_ho
 ('Sunita', 'Williams', '1965-09-19', 'Euclid, Ohio, USA', 7728),
 ('Gennady', 'Padalka', '1958-06-21', 'Krasnodar, Russia', 21072),
 ('Thomas', 'Pesquet', '1978-02-27', 'Rouen, France', 9168),
-('E****&', 'V4(k*.v', '1984-11-03', '%u/i_g+o, dv0--@ra', 4320),
+('E****&', 'V4(k*.v', '1984-11-03', '%u/i_g+o, dv0°°@ra', 4320),
 ('Christina', 'Koch', '1979-01-29', 'Grand Rapids, Michigan, USA', 7872),
 ('Oleg', 'Kononenko', '1964-06-21', 'Chkalovsk, Tajik SSR', 17016),
 ('Jessica', 'Meir', '1977-07-01', 'Caribou, Maine, USA', 4920),

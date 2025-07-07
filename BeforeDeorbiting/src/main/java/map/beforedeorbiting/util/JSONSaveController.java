@@ -44,7 +44,6 @@ public class JSONSaveController {
      * Salva il gioco creando un file con timestamp, es. save_20250702_153055.json
      * @param game il GameDesc da serializzare
      * @throws IOException se il write fallisce
->>>>>>> 05173d8 (Tante modifiche bro)
      */
     public static void saveGameWithTimestamp(GameDesc game) throws IOException {
         Files.createDirectories(SAVE_DIR); // crea la cartella se non esiste

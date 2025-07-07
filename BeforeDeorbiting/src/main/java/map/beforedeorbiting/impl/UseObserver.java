@@ -8,20 +8,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
 
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.BDObject;
 import map.beforedeorbiting.type.CommandType;
+import map.beforedeorbiting.ui.NotebookUI;
 
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore
@@ -37,10 +29,10 @@ public class UseObserver implements GameObserver, Serializable {
      * oggetto, in base all'id scelto.
      */
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
-
-    private static final String FILE_PATH = "notebook.txt";
+    private final GameDesc game;
 
     public UseObserver(GameDesc game) {
+        this.game = game;
         uses.put(game.getObjectByID(4), this::readSusanDiary);
         uses.put(game.getObjectByID(5), this::readLukeNote);
         uses.put(game.getObjectByID(6), this::createPrism);
@@ -160,130 +152,8 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String useNotebook(GameDesc game) {
         System.out.println("Apri il taccuino!");
-        mostraTaccuinoSwing();
+        NotebookUI.show();
         return "";
-    }
-
-    // Metodo principale che apre la finestra del taccuino
-    private void mostraTaccuinoSwing() {
-        SwingUtilities.invokeLater(() -> {
-            // Crea la finestra
-            JFrame frame = new JFrame("Taccuino di bordo");
-            frame.setSize(600, 400);
-            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // vogliamo gestire la chiusura manualmente
-
-            // Area di testo dove scrivere e leggere
-            JTextArea textArea = new JTextArea();
-            JScrollPane scrollPane = new JScrollPane(textArea);
-            frame.add(scrollPane, BorderLayout.CENTER); // aggiungiamo al centro della finestra
-
-            File file = new File(FILE_PATH);
-            boolean[] modificato = { false }; // flag per sapere se l'utente ha modificato il testo
-
-            // Carica il contenuto del file nel text area
-            caricaContenuto(file, textArea);
-            modificato[0] = false; // dopo il caricamento, non ci sono modifiche
-
-            // Listener per sapere quando il testo è stato modificato
-            textArea.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-                public void insertUpdate(javax.swing.event.DocumentEvent e) {
-                    modificato[0] = true;
-                }
-
-                public void removeUpdate(javax.swing.event.DocumentEvent e) {
-                    modificato[0] = true;
-                }
-
-                public void changedUpdate(javax.swing.event.DocumentEvent e) {
-                    modificato[0] = true;
-                }
-            });
-
-            // Crea il pulsante Salva
-            JButton salvaButton = new JButton("Salva");
-            salvaButton.addActionListener(e -> {
-                salvaContenuto(file, textArea); // salva su file
-                modificato[0] = false; // dopo il salvataggio, non ci sono modifiche
-            });
-
-            // Aggiungiamo il pulsante in basso
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.add(salvaButton);
-            frame.add(buttonPanel, BorderLayout.SOUTH);
-
-            // Gestione della chiusura finestra (es. clic sulla X)
-            frame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    if (modificato[0]) {
-                        Object[] opzioni = {"Sì", "No", "Annulla"};
-                        int scelta = JOptionPane.showOptionDialog(frame,
-                        "Hai modificato il taccuino. Vuoi salvare prima di uscire?",
-                        "Salvataggio",
-                        JOptionPane.YES_NO_CANCEL_OPTION,
-                        JOptionPane.WARNING_MESSAGE,
-                        null,
-                        opzioni,
-                        opzioni[0]);
-
-                        if (scelta == JOptionPane.YES_OPTION) {
-                            salvaContenuto(file, textArea);
-                            JOptionPane.showMessageDialog(frame,
-                                    "Hai chiuso il taccuino. Puoi consultarlo di nuovo in qualsiasi momento, finché resterà nel tuo inventario.",
-                                    "Chiusura taccuino",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            frame.dispose();
-                        } else if (scelta == JOptionPane.NO_OPTION) {
-                            JOptionPane.showMessageDialog(frame,
-                                    "Hai chiuso il taccuino. Puoi consultarlo di nuovo in qualsiasi momento, finché resterà nel tuo inventario.",
-                                    "Chiusura taccuino",
-                                    JOptionPane.INFORMATION_MESSAGE);
-                            frame.dispose();
-                        }
-                        // CANCEL: non chiudere
-                    } else {
-                        JOptionPane.showMessageDialog(frame,
-                                "Hai chiuso il taccuino. Puoi consultarlo di nuovo in qualsiasi momento, finché resterà nel tuo inventario.",
-                                "Chiusura taccuino",
-                                JOptionPane.INFORMATION_MESSAGE);
-                        frame.dispose();
-                    }
-                }
-            });
-
-            frame.setVisible(true); // mostra la finestra
-        });
-    }
-
-    // Metodo per leggere il contenuto del file e inserirlo nel JTextArea
-    private void caricaContenuto(File file, JTextArea textArea) {
-        try {
-            if (!file.exists()) {
-                file.createNewFile(); // crea il file se non esiste
-            }
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                textArea.append(line + "\n"); // aggiunge ogni riga al text area
-            }
-            reader.close();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Errore nella lettura del file.", "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    // Metodo per salvare il contenuto del JTextArea nel file
-    private void salvaContenuto(File file, JTextArea textArea) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            writer.write(textArea.getText()); // scrive tutto il contenuto
-            writer.close();
-            JOptionPane.showMessageDialog(null, "Taccuino salvato con successo!", "Salvato",
-                    JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Errore nel salvataggio del file.", "Errore",
-                    JOptionPane.ERROR_MESSAGE);
-        }
     }
 
 }

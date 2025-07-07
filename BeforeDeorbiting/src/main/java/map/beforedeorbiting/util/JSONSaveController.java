@@ -1,39 +1,50 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package map.beforedeorbiting.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
+import map.beforedeorbiting.BeforeDeorbiting;
 import map.beforedeorbiting.GameDesc;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- *
- * @author ronzu
- */
-/**
  * Gestisce il salvataggio e caricamento dello stato di gioco in file JSON con timestamp.
+ * Ora registra un InstanceCreator per GameDesc in modo da istanziare BeforeDeorbiting().
+ * 
+ * @author ronzu
  */
 public class JSONSaveController {
 
-    private static final Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .create();
-
+    private static final DateTimeFormatter TIMESTAMP_FORMAT =
+            DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
     private static final Path SAVE_DIR = Path.of("saves");
-    private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     /**
-     * Salva il gioco creando un file con timestamp, es.save_20250702_153055.json
-     * @param game
-     * @throws java.io.IOException
+     * Il Gson configurato con pretty printing e con il TypeAdapter per GameDesc.
+     */
+    private static final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            // Registriamo un InstanceCreator per GameDesc
+            .registerTypeAdapter(GameDesc.class, new InstanceCreator<GameDesc>() {
+                @Override
+                public GameDesc createInstance(Type type) {
+                    // Ogni volta che serve un GameDesc, ne creiamo uno di tipo BeforeDeorbiting
+                    return new BeforeDeorbiting();
+                }
+            })
+            .create();
+
+    /**
+     * Salva il gioco creando un file con timestamp, es. save_20250702_153055.json
+     * @param game il GameDesc da serializzare
+     * @throws IOException se il write fallisce
+>>>>>>> 05173d8 (Tante modifiche bro)
      */
     public static void saveGameWithTimestamp(GameDesc game) throws IOException {
         Files.createDirectories(SAVE_DIR); // crea la cartella se non esiste
@@ -50,13 +61,13 @@ public class JSONSaveController {
 
     /**
      * Carica un file di gioco da un percorso specifico.
-     * @param path
-     * @return 
-     * @throws java.io.IOException
+     * Grazie all’InstanceCreator, il GameDesc astratto verrà materializzato come BeforeDeorbiting.
+     * @param path percorso del file .json
+     * @return il GameDesc deserializzato
+     * @throws IOException se il read fallisce
      */
     public static GameDesc loadGame(Path path) throws IOException {
         String json = Files.readString(path, StandardCharsets.UTF_8);
         return gson.fromJson(json, GameDesc.class);
     }
-    
 }

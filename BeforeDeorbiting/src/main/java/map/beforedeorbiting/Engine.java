@@ -7,19 +7,20 @@ import map.beforedeorbiting.parser.Parser;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.database.DBConfig;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.io.BufferedReader;
-import java.util.HashSet;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Collectors;
+import map.beforedeorbiting.type.Inventory;
 
 /**
  *
@@ -38,6 +39,13 @@ public class Engine {
      */
     public Engine(GameDesc game) {
         this.game = game;
+        this.game.setNotebookText("");
+        try {
+            Files.writeString(Path.of("notebook.txt"), "", StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        Inventory.getInstance().getList().clear();
         try {
             this.game.init();
         } catch (Exception ex) {
@@ -52,29 +60,7 @@ public class Engine {
             System.out.println(ex);
         }
     }
-
-    public Engine(GameDesc game, boolean load) {
-        this.game = game;
-        if (!load) {
-            try {
-                this.game.init();
-            } catch (Exception ex) {
-                System.out.println(ex);
-            }
-        }
-        try (InputStream in = Engine.class.getResourceAsStream("/stopwords.txt"); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-            Set<String> stopwords = br.lines()
-                    .map(s -> s.trim().toLowerCase())
-                    .collect(Collectors.toSet());
-            parser = new Parser(stopwords);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-    }
-    
     /**
-     * Restituisce l'istanza di GameDesc.
-     * 
      * @return il gioco.
      */
     public GameDesc getGame() {
@@ -137,23 +123,25 @@ public class Engine {
 
     /**
      * Carica le righe di un file in un set di stringhe
-     *
-     * @param file
+     * @param resourcePath il percorso della risorsa da caricare
      * @return
      * @throws java.io.IOException
      */
-    public static Set<String> loadFileListInSet(File file) throws IOException {
-        if (file == null) {
-            throw new IllegalArgumentException("Il file non può essere nullo");
+    public static Set<String> loadFileListInSet(String resourcePath) throws IOException {
+        if (resourcePath == null || resourcePath.isEmpty()) {
+            throw new IllegalArgumentException("Il percorso della risorsa non può essere nullo o vuoto");
         }
 
-        Set<String> set = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                set.add(line.trim().toLowerCase());
+        try (InputStream in = Engine.class.getResourceAsStream(resourcePath)) {
+            if (in == null) {
+                throw new IOException("Impossibile trovare la risorsa: " + resourcePath);
+            }
+
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+                return br.lines()
+                        .map(s -> s.trim().toLowerCase())
+                        .collect(Collectors.toSet());
             }
         }
-        return set;
     }
 }

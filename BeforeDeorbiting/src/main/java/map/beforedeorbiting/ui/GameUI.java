@@ -1,63 +1,57 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package map.beforedeorbiting.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JToolBar;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
+import javax.swing.JTextPane;
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
+import javax.swing.Box;
+import javax.swing.UIManager;
+
+import map.beforedeorbiting.Engine;
+import map.beforedeorbiting.GameDesc;
+import map.beforedeorbiting.util.JSONSaveController;
+import map.beforedeorbiting.parser.Parser;
+
+import javax.swing.SwingUtilities;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.GroupLayout;
+import javax.swing.SwingConstants;
+import javax.sound.sampled.Mixer;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.LayoutStyle;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import map.beforedeorbiting.parser.*;
-import map.beforedeorbiting.Engine;
-import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.BeforeDeorbiting;
-import map.beforedeorbiting.util.JSONSaveController;
+import map.beforedeorbiting.parser.ParserOutput;
 
 /**
- *
- * @author ronzu
+ * Classe che mostra la GUI del gioco.
+>>>>>>> 05173d8 (Tante modifiche bro)
  */
 public class GameUI extends JFrame {
 
@@ -66,14 +60,11 @@ public class GameUI extends JFrame {
     private static final Color BACKGROUND_PURPLE = new Color(79, 1, 71);
     private static final Color TEXT = new Color(6, 6, 6);
     private static final Color RED = new Color(238, 75, 43);
-    private static final Color GREEN = new Color(9, 121, 105);
 
-    // private final MusicHandler musicHTN = new MusicHandler(); DA CAMBIARE
+    //private final MusicHandler musicHTN = new MusicHandler();
     private Parser parser = null;
     private Engine engine;
     private GameDesc game;
-
-    private final JFrame parentFrame;
     private JFrame confermaChiusura;
     private JTextPane textPane;
     private JScrollPane scrollPane;
@@ -88,45 +79,77 @@ public class GameUI extends JFrame {
     private JMenu tendina;
     private JMenuItem impostazioniItem;
 
-    // private HTN_Printer printer; DA CAMBIARE
+    private PrinterUI printer;
+
     /**
      * Costruttore della classe GameUI.
      *
-     * @param parentFrame Finestra padre.
-     * @throws Exception Se c'è un problema durante l'inizializzazione.
      */
-    public GameUI(JFrame parentFrame) throws Exception {
-        initComponents();
-        this.parentFrame = parentFrame;
-        mainComponents(false, null);
+    public GameUI() {
+        // 1) crea lo stato di gioco “vergine”
+        BeforeDeorbiting newGame = new BeforeDeorbiting();
+        Engine engine = new Engine(newGame);
+        // 2) delega tutto il setup a initWithEngine
+        initWithEngine(engine);
     }
 
     /**
-     * Costruttore della classe GameUI con caricamento di un salvataggio.
+     * Costruttore per partita caricata da JSON
      *
-     * @param parentFrame Finestra padre.
-     * @param file File di salvataggio da caricare.
-     * @throws Exception Se c'è un problema durante l'inizializzazione o il
-     * caricamento.
+     * @param savePath il Path del file .json da cui caricare lo stato
+     * @throws java.io.IOException
      */
-    public GameUI(JFrame parentFrame, File file) throws Exception {
-        this.parentFrame = parentFrame;
-        initComponents();
-        mainComponents(true, file);
+    public GameUI(Path savePath) throws IOException {
+        // 1) deserializza lo stato dal JSON
+        GameDesc loadedGame = JSONSaveController.loadGame(savePath);
+        // 2) crea l’engine in modalità “load”
+        Engine engine = new Engine(loadedGame, true);
+        // 3) delega tutto il setup a initWithEngine
+        initWithEngine(engine);
+    }
+
+    /**
+     * Punto unico di inizializzazione della GUI a partire da un Engine.
+     */
+    private void initWithEngine(Engine engine) {
+        this.engine = engine;
+        this.game = engine.getGame();
+
+        // Swing setup
+        UIManager.put("ScrollBar.width", 0);
+        SwingUtilities.updateComponentTreeUI(this);
+        try {
+            initComponents();
+        } catch (InterruptedException ex) {
+            System.getLogger(GameUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        try {
+            mainComponents(false, null);
+        } catch (Exception ex) {
+            Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        //initCurrentImage();
+
+        // Se usi Parser, lo lasci dentro Engine (non qui)
+        // Mostra subito stanza e testo
+        //writeOnPanel(game.getCurrentRoom().getDescription());
+        //setRoomImage(game.getCurrentRoom().getName());
+        // Avvia il timer
+        //updateTimerLabel();
     }
 
     /**
      * Conclude la partita e mostra la finestra di fine gioco.
      */
+    /*
     public void concludiPartita() {
-        // musicHTN.stopMusica(); DA CAMBIARE
+        musicHTN.stopMusica();
         SwingUtilities.invokeLater(() -> {
-            /// HTN_InterfacciaEnding endingFrame = new HTN_InterfacciaEnding(this); DA CAMBIARE
-            // endingFrame.setVisible(true); DA CAMBIARE
+            HTN_InterfacciaEnding endingFrame = new HTN_InterfacciaEnding(this);
+            endingFrame.setVisible(true);
             this.setVisible(false);
         });
-    }
-
+    }*/
     /**
      * Inizializza i componenti principali dell'interfaccia.
      *
@@ -137,49 +160,19 @@ public class GameUI extends JFrame {
      */
     private void mainComponents(boolean loadGame, File file) throws Exception {
         game = new BeforeDeorbiting();
-
-        try (InputStream in = Engine.class.getResourceAsStream("/stopwords.txt"); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-            Set<String> stopwords = br.lines()
-                    .map(s -> s.trim().toLowerCase())
-                    .collect(Collectors.toSet());
-            parser = new Parser(stopwords);
-        } catch (IOException ex) {
-            throw new IOException("Errore nel caricamento delle stopwords.");
-        }
-
-        if (!loadGame) {
-            engine = new Engine(game);
-        } else {
-            try {
-                game = JSONSaveController.loadGame(file.toPath());
-                engine = new Engine(game, true);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new IOException("Errore nel caricamento del gioco da JSON.");
-            }
-        }
-        
-        // TimeSpent startTimeSpent = TimeSpent.getInstance(); DA CAMBIARE
-        // startTimeSpent.startTime(); DA CAMBIARE
+        Set<String> stopwords = Engine.loadFileListInSet("/stopwords.txt");
+        parser = new Parser(stopwords);
+        engine = !loadGame ? new Engine(game) : new Engine(game, true);
 
         PrintStream ps = new PrintStream(new JTextPaneOutputStream(textPane), true, StandardCharsets.UTF_8) {
             @Override
             public void println(String x) {
-                // printer.print(x + "\n"); DA CAMBIARE
+                printer.print(x + "\n");
             }
         };
-        engine.getGame().nextMove(null, ps); // Passa un PrintStream valido al gioco
 
-        /*printer.print("""
-                      ========================
-                                Hymn to Ninkasi   
-                                  developed by        
-                                    NinTeam           
-                      ========================
-                      
-                      """ + engine.getGame().getWelcomeMsg() + "\n"
-                + engine.getGame().getCurrentRoom().getDescription()
-                + "\n-> "); DA CAMBIARE*/
+        // Chiama normalmente nextMove() con null per l'avvio del gioco.
+        engine.getGame().nextMove(null, ps);
     }
 
     /**
@@ -192,7 +185,7 @@ public class GameUI extends JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                parentFrame.setVisible(true);
+//                parentFrame.setVisible(true);
                 dispose();
             }
         });
@@ -283,7 +276,7 @@ public class GameUI extends JFrame {
         confermaChiusura.getContentPane().add(panel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Hymn To Ninkasi");
+        setTitle("Before Deorbiting");
         setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
         setResizable(false);
 
@@ -335,7 +328,7 @@ public class GameUI extends JFrame {
         impostazioniItem.setForeground(TEXT);
         impostazioniItem.setText("Impostazioni");
         impostazioniItem.setPreferredSize(new Dimension(105, 30));
-        impostazioniItem.addActionListener(this::impostazioniMouseClicked);
+        // impostazioniItem.addActionListener(this::impostazioniMouseClicked);
 
         tendina.setText("Opzioni");
         tendina.setPreferredSize(new Dimension(90, 30));
@@ -350,18 +343,17 @@ public class GameUI extends JFrame {
         menuBar.setBackground(BACKGROUND_PINK);
         menuBar.setForeground(TEXT);
         setJMenuBar(menuBar);
-
-        // musicHTN.playMusic("src\\music\\HTN_gameplaylist.wav"); DA CAMBIARE
-
+        // musicHTN.playMusic("src\\music\\HTN_gameplaylist.wav");
         musicButton.setText("Mute");
         musicButton.setBackground(BACKGROUND_PINK);
         musicButton.setForeground(RED);
         musicButton.setPreferredSize(new Dimension(105, 30));
 
         musicButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            //@Override
-            /*public void mouseClicked(java.awt.event.MouseEvent evt) {
-                if (musicHTN.isPlaying()) {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                /*if (musicHTN.isPlaying()) {
+>>>>>>> 05173d8 (Tante modifiche bro)
                     musicHTN.pausaMusica();
                     musicButton.setText("Play");
                     musicButton.setForeground(GREEN);
@@ -369,15 +361,15 @@ public class GameUI extends JFrame {
                     musicHTN.riprendiMusica();
                     musicButton.setText("Mute");
                     musicButton.setForeground(RED);
-                }
-            } DA CAMBIARE*/ 
+                }*/
+            }
         });
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent evt) {
-                // musicHTN.stopMusica(); DA CAMBIARE
-                // printer.shutdown(); DA CAMBIARE
+                //  musicHTN.stopMusica();
+                printer.shutdown();
             }
         });
 
@@ -390,7 +382,7 @@ public class GameUI extends JFrame {
                 } else {
                     musicButton.setText("Play");
                     musicButton.setForeground(GREEN);
-                } DA CAMBIARE */
+                }*/
             }
 
             @Override
@@ -462,8 +454,7 @@ public class GameUI extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
-
-        // printer = new HTN_Printer(textPane); DA CAMBIARE
+        printer = new PrinterUI(textPane);
     }
 
     /**
@@ -486,16 +477,20 @@ public class GameUI extends JFrame {
     private void elaborateInput(ActionEvent evt) {
         String input = textBox.getText();
         if (!input.isBlank()) {
-            // printer.print("?> " + input + "\n\n"); DA CAMBIARE
+            printer.print("?> " + input + "\n\n");
             textBox.setText("");
+
             ParserOutput p = parser.parse(input.toLowerCase(), engine.getGame().getCommands(), engine.getGame().getListObj(), engine.getGame().getInventory().getList());
+
             PrintStream ps = new PrintStream(new JTextPaneOutputStream(textPane), true, StandardCharsets.UTF_8) {
                 @Override
                 public void println(String x) {
-                    // printer.print(x + "\n"); DA CAMBIARE
+                    printer.print(x + "\n");
                 }
             };
-            engine.getGame().nextMove(p, ps);
+
+            engine.getGame().nextMove(p, ps); // <-- CHIAMATA CORRETTA QUI
+
             if (engine.getGame().getCurrentRoom() != null) {
                 updateRoomImage(engine.getGame().getCurrentRoom().getName());
             }
@@ -507,12 +502,11 @@ public class GameUI extends JFrame {
      * Mostra la finestra delle impostazioni.
      *
      * @param evt Evento di azione.
+     *
+     * private void impostazioniMouseClicked(ActionEvent evt) {
+     * HTN_InterfacciaSettings impostazioni = new GameUI(GameUI.this);
+     * impostazioni.setVisible(true); }*
      */
-    private void impostazioniMouseClicked(ActionEvent evt) {
-        /* HTN_InterfacciaSettings impostazioni = new HTN_InterfacciaSettings(GameUI.this);
-        impostazioni.setVisible(true); DA CAMBIARE */
-    }
-
     /**
      * Gestisce l'evento di clic sul pulsante per tornare al menu principale.
      *
@@ -544,7 +538,7 @@ public class GameUI extends JFrame {
     private void esciButtonMouseClicked(java.awt.event.MouseEvent evt) {
         setEnabled(false);
         confermaChiusura.setLocationRelativeTo(null);
-        confermaChiusura.setTitle("Hymn To Ninkasi - Menù d'uscita");
+        confermaChiusura.setTitle("Before Deorbiting");
         confermaChiusura.setVisible(true);
     }
 
@@ -552,11 +546,9 @@ public class GameUI extends JFrame {
      * Restituisce il gestore della musica.
      *
      * @return Il gestore della musica.
+     *
+     * public MusicHandler getMusica() { return musicHTN; }
      */
-    /* public MusicHandler getMusica() {
-        return musicHTN;
-    } DA CAMBIARE */
-
     /**
      * Controlla se il gioco è terminato.
      */
@@ -568,7 +560,7 @@ public class GameUI extends JFrame {
         }
 
         if (isGameOver) {
-            concludiPartita();
+            //concludiPartita();
         }
     }
 

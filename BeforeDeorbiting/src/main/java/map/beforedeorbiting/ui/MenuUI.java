@@ -1,255 +1,316 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package map.beforedeorbiting.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+import map.beforedeorbiting.BeforeDeorbiting;
+import map.beforedeorbiting.Engine;
+import map.beforedeorbiting.GameDesc;
+import map.beforedeorbiting.util.JSONSaveController;
 
 /**
+ * Classe che rappresenta il menu principale del gioco Before Deorbiting.
+ * Contiene pulsanti per avviare, caricare e visualizzare comandi/crediti, più
+ * un toggle per l'audio.
  *
  * @author ronzu
  */
-public class MenuUI extends javax.swing.JFrame {
-    private final Color BACKGROUND = new Color(230, 170, 206);
-    private final Color TEXT = new Color(79, 1, 71);
-    private final Color WHITE = new Color(250, 249, 246);
-    // private final MusicHandler musicHTN = new MusicHandler(); DA CAMBIARE
-    private JProgressBar progressBar;
-    private Thread serverThread;
-    private static boolean serverOn = false;
+public class MenuUI extends JFrame {
 
-    /**
-     * Costruttore della classe MenuUI.
-     * Inizializza il server e i componenti dell'interfaccia.
-     * 
-     * @throws InterruptedException Se c'è un problema durante l'inizializzazione.
-     */
+    private static final Color BACKGROUND = new Color(13, 12, 33);
+    private static final Color BORDER = new Color(10, 9, 26);
+    private static final Color TEXT = new Color(182, 180, 209);
+
+    private static boolean serverOn = false;
+    private boolean audioOn = true;
+
+    private JPanel background;
+    private JButton start;
+    private JButton load;
+    private JButton commands;
+    private JButton credits;
+    private JButton audio;
+    private JFileChooser fileChooser;
+    private JProgressBar progressBar;
+
     public MenuUI() throws InterruptedException {
         if (!serverOn) {
             serverOn = true;
-            startServer();
             Thread.sleep(1200);
         }
         initComponents();
     }
-    
-    /**
-     * Avvia il server REST.
-     */
-    private void startServer() {
-        // serverThread = new Thread(new RESTServer()); DA CAMBIARE
-        // serverThread.start(); DA CAMBIARE
-    }
 
-    /**
-     * Ferma il server REST.
-     * 
-     * @deprecated Lascia il server aperto.
-     */
-    private void stopServer() {
-        // RESTServer.stopServer(); DA CAMBIARE
-        try {
-            serverThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Inizializza i componenti della GUI.
-     * 
-     * @throws InterruptedException Se c'è un problema durante l'inizializzazione.
-     */
     private void initComponents() {
-        // musicHTN.playMusic("src\\music\\HTN_mainmenu.wav");DA CAMBIARE
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                //if (!musicHTN.isPlaying())
-                    //musicHTN.playMusic("src\\music\\HTN_mainmenu.wav"); DA CAMBIARE
-            }
-        });
-
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            @Override
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                //if (!musicHTN.isPlaying()) 
-                  //  musicHTN.playMusic("src\\music\\HTN_mainmenu.wav"); DA CAMBIARE
-            }
-
-            @Override
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-                
-            }
-        });
-
-        background = new javax.swing.JLabel();
-        background.setIcon(new ImageIcon(new ImageIcon("src\\img\\HTN_Intro.png").getImage().getScaledInstance(1100, 700, Image.SCALE_DEFAULT)));
-        macroPanel = new javax.swing.JPanel(); 
-        start = new javax.swing.JButton();
-        load = new javax.swing.JButton();
-        leaderboard = new javax.swing.JButton();
-        exit = new javax.swing.JButton();
-        fileChooser = new javax.swing.JFileChooser();
-        progressBar = new JProgressBar(0, 100);
-
-        // Configura i colori direttamente sulla progress bar
-        progressBar.setForeground(new Color(79, 1, 71)); // Colore del riempimento
-        progressBar.setBackground(new Color(230, 170, 206)); // Colore dello sfondo
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Before Deorbiting");
         setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
-        setPreferredSize(new java.awt.Dimension(1100, 700));
+        setPreferredSize(new Dimension(1100, 700));
         setResizable(false);
-        getContentPane().add(background, java.awt.BorderLayout.CENTER);
 
-        macroPanel.setBackground(BACKGROUND);
-
-        start.setBackground(BACKGROUND);
-        start.setForeground(TEXT);
-        start.setText("Nuovo gioco");
-        start.setPreferredSize(new java.awt.Dimension(140, 23));
-        start.addMouseListener(new java.awt.event.MouseAdapter() {
+        // --- pannello con sfondo ---
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/intro.png"));
+        Image bgImg = icon.getImage().getScaledInstance(1100, 700, Image.SCALE_SMOOTH);
+        background = new JPanel() {
             @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                try {
-                    startGame(evt);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(bgImg, 0, 0, getWidth(), getHeight(), this);
             }
-        });
-        macroPanel.add(start);
+        };
 
-        load.setBackground(BACKGROUND);
-        load.setForeground(TEXT);
-        load.setText("Continua");
-        load.setPreferredSize(new java.awt.Dimension(140, 23));
+        // --- bottoni di testo (custom paintComponent per mantenere α) ---
+        start = createTextButton("Nuova Partita");
+        load = createTextButton("Carica Partita");
+        commands = createTextButton("Comandi di Gioco");
+        credits = createTextButton("Crediti e Classifica");
 
-        fileChooser.setDialogTitle("Recupero del salvataggio");
-        fileChooser.setCurrentDirectory(new java.io.File("./saves"));
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Files .json", "json"));
+        // --- pulsante audio come immagine ---
+        audio = new JButton();
+        audio.setPreferredSize(new Dimension(64, 64));
+        audio.setMargin(new Insets(0, 0, 0, 0));
+        audio.setBorder(BorderFactory.createLineBorder(BORDER, 5));
+        audio.setContentAreaFilled(false);
+        Icon ico = loadAudioIcon();
+        audio.setIcon(ico);
+        audio.setRolloverIcon(ico);
+        audio.setPressedIcon(ico);
+
+        // file chooser
+        fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("./saves"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("File JSON", "json"));
         fileChooser.setAcceptAllFileFilterUsed(false);
 
-        load.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                int returnVal = fileChooser.showOpenDialog(MenuUI.this);
-                if (returnVal == javax.swing.JFileChooser.APPROVE_OPTION) {
-                    try {
-                        java.io.File file = fileChooser.getSelectedFile();
-                        //musicHTN.stopMusica(); DA CAMBIARE
-                        GameUI gioco = new GameUI(MenuUI.this, file);
-                        gioco.setVisible(true);
-                        setVisible(false);
-                    } catch (Exception e) {
-                        // musicHTN.playMusic("src\\music\\HTN_mainmenu.wav");DA CAMBIARE
-                        JOptionPane.showMessageDialog(MenuUI.this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
+        // azioni
+        start.addActionListener(this::onStart);
+        load.addActionListener(this::onLoad);
+        commands.addActionListener(e -> {/* TODO: mostra comandi */
         });
-        macroPanel.add(load);
+        credits.addActionListener(e -> System.exit(0));
+        audio.addActionListener(e -> toggleAudio());
 
-        leaderboard.setBackground(BACKGROUND);
-        leaderboard.setForeground(TEXT);
-        leaderboard.setText("Scoreboard");
-        leaderboard.setPreferredSize(new java.awt.Dimension(140, 23));
-        leaderboard.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                // HTN_InterfacciaScoreboard scoreboard;DA CAMBIARE
-                try {
-                    // scoreboard = new HTN_InterfacciaScoreboard(); DA CAMBIARE
-                    // scoreboard.setVisible(true); DA CAMBIARE
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(MenuUI.this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        macroPanel.add(leaderboard);
-
-        exit.setBackground(BACKGROUND);
-        exit.setForeground(TEXT);
-        exit.setText("Esci");
-        exit.setPreferredSize(new java.awt.Dimension(140, 23));
-        exit.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                // musicHTN.stopMusica(); DA CAMBIARE
-                closeWindow(evt);
-            }
-        });
-        macroPanel.add(exit);
-        macroPanel.setBackground(WHITE);
-
-        getContentPane().add(macroPanel, java.awt.BorderLayout.PAGE_END);
-
-        getAccessibleContext().setAccessibleName("Before Deorbiting");
-
+        // layout
+        setGroupLayout();
         pack();
         setLocationRelativeTo(null);
     }
 
-    /**
-     * Chiude la finestra del gioco.
-     * 
-     * @param evt Evento di clic del mouse.
-     */
-    private void closeWindow(java.awt.event.MouseEvent evt) {
-        System.exit(0);
+    private void onStart(ActionEvent e) {
+        /*
+         * // 1) Rimuovo tutti i componenti del menu
+         * getContentPane().removeAll();
+         * repaint();
+         * 
+         * // 2) Creo e aggiungo LoadBarUI alla stessa finestra
+         * LoadBarUI loadBarPanel = new LoadBarUI();
+         * setResizable(false);// mantieni non ridimensionabile
+         * setTitle("Caricamento in corso...");
+         * getContentPane().add(loadBarPanel);
+         * validate(); // obbligatorio per aggiornare il layout
+         * 
+         * // 3) Listener per isFinished
+         * loadBarPanel.addPropertyChangeListener(evt -> {
+         * if ("isFinished".equals(evt.getPropertyName())
+         * && Boolean.TRUE.equals(evt.getNewValue())) {
+         * // quando finisce, sostituisco con GameUI
+         * setTitle("Before Deorbiting");
+         * getContentPane().removeAll();
+         * GameUI gioco = new GameUI();
+         * getContentPane().add(gioco.getContentPane()); // o il suo JPanel principale
+         * validate();
+         * repaint();
+         * }
+         * });
+         * 
+         * // 4) Avvio l'animazione
+         * loadBarPanel.startLoadBar();
+         */
+        // 1) Rimuovo tutti i componenti del menu
+        getContentPane().removeAll();
+        repaint();
+
+        // 2) Creo e aggiungo LoadBarUI alla stessa finestra
+        LoadBarUI loadBarPanel = new LoadBarUI();
+        setResizable(false);
+        setTitle("Caricamento in corso...");
+        getContentPane().add(loadBarPanel);
+        validate();
+        // 3) Listener per isFinished
+        loadBarPanel.addPropertyChangeListener(evt -> {
+            if ("isFinished".equals(evt.getPropertyName()) && Boolean.TRUE.equals(evt.getNewValue())) {
+                // Avvia il gioco dopo il caricamento
+                SwingUtilities.invokeLater(() -> {
+                    GameUI gameUI = new GameUI();
+                    gameUI.setVisible(true);
+                    dispose();
+                });
+            }
+        });
+
+        // 4) Avvio l'animazione
+        loadBarPanel.startLoadBar();
+
     }
 
-    /**
-     * Avvia il gioco con una barra di progresso.
-     * 
-     * @param evt Evento di clic del mouse.
-     * @throws InterruptedException Se c'è un problema durante l'avvio del gioco.
-     */
-    private void startGame(java.awt.event.MouseEvent evt) throws InterruptedException {
-        macroPanel.removeAll();
-        macroPanel.add(progressBar);
-        macroPanel.revalidate();
-        macroPanel.repaint();
-        progressBar.setValue(0);
-
-        // StartGameThread startGameThread = new StartGameThread(progressBar, musicHTN, this); DA CAMBIARE
-        //Thread startThread = new Thread(startGameThread); DA CAMBIARE
-        // startThread.start(); DA CAMBIARE
-        System.out.println("");
-        System.out.println("GIOCO CARICATO CORRETTAMENTE");
-        System.out.println("");
+    private void onLoad(ActionEvent e) {
+        fileChooser.setDialogTitle("Seleziona salvataggio JSON");
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            Path path = fileChooser.getSelectedFile().toPath();
+            try {
+                // avvia GameUI caricando direttamente dal JSON
+                GameUI gioco = new GameUI(path);
+                gioco.setVisible(true);
+                this.dispose(); // chiude il menu principale
+            } catch (IOException ex) {
+                Logger.getLogger(MenuUI.class.getName())
+                        .log(Level.SEVERE, "Errore nel caricamento del JSON", ex);
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Impossibile caricare il salvataggio:\n" + ex.getMessage(),
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
-    /**
-     * Metodo main per avviare l'interfaccia iniziale del gioco.
-     * 
-     * @param args Argomenti della riga di comando.
-     */
-    public static void main(String args[]) {
+    private JButton createTextButton(String text) {
+        // Colore di fondo semitrasparente
+        int alpha = (int) (255 * 0.75);
+        Color bg = new Color(
+                BACKGROUND.getRed(),
+                BACKGROUND.getGreen(),
+                BACKGROUND.getBlue(),
+                alpha);
+        JButton btn = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // dipingi sempre lo sfondo con α desiderata
+                g.setColor(bg);
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        btn.setFocusPainted(false);
+        btn.setForeground(TEXT);
+        btn.setOpaque(false); // disabilita fill LAF
+        btn.setContentAreaFilled(false); // disabilita fill LAF
+        btn.setBorder(BorderFactory.createLineBorder(BORDER, 5));
+        Dimension sz = new Dimension(200, 64);
+        btn.setPreferredSize(sz);
+        btn.setMinimumSize(sz);
+        btn.setMaximumSize(sz);
+        btn.setMargin(new Insets(0, 0, 0, 0));
+        return btn;
+    }
+
+    private Icon loadAudioIcon() {
+        String path = audioOn ? "/img/audio_on.png" : "/img/audio_off.png";
+        java.net.URL resource = getClass().getResource(path);
+        if (resource == null) {
+            // Fallback: icona di sistema se il file non viene trovato
+            return UIManager.getIcon("OptionPane.informationIcon");
+        }
+        ImageIcon ico = new ImageIcon(resource);
+        Image img = ico.getImage().getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
+    }
+
+    private void toggleAudio() {
+        // Inverti lo stato
+        audioOn = !audioOn;
+        // Ricarica l'icona in base al nuovo stato
+        Icon icon = loadAudioIcon();
+        audio.setIcon(icon);
+        audio.setRolloverIcon(icon);
+        audio.setPressedIcon(icon);
+        audio.repaint();
+    }
+
+    private void setGroupLayout() {
+        GroupLayout gl = new GroupLayout(background);
+        background.setLayout(gl);
+
+        gl.setHorizontalGroup(
+                gl.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(gl.createSequentialGroup()
+                                .addGap(30)
+                                .addComponent(audio,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE))
+                        .addGroup(gl.createSequentialGroup()
+                                .addGap(450)
+                                .addGroup(gl.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addComponent(start, 200, 200, 200)
+                                        .addComponent(load, 200, 200, 200)
+                                        .addComponent(commands, 200, 200, 200)
+                                        .addComponent(credits, 200, 200, 200))));
+        gl.setVerticalGroup(
+                gl.createSequentialGroup()
+                        .addGap(130)
+                        .addComponent(audio, 64, 64, 64)
+                        .addGap(50)
+                        .addComponent(start, 64, 64, 64)
+                        .addGap(32)
+                        .addComponent(load, 64, 64, 64)
+                        .addGap(32)
+                        .addComponent(commands, 64, 64, 64)
+                        .addGap(32)
+                        .addComponent(credits, 64, 64, 64)
+                        .addGap(30));
+
+        GroupLayout fl = new GroupLayout(getContentPane());
+        getContentPane().setLayout(fl);
+        fl.setHorizontalGroup(
+                fl.createParallelGroup()
+                        .addComponent(background,
+                                GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE));
+        fl.setVerticalGroup(
+                fl.createParallelGroup()
+                        .addComponent(background,
+                                GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.DEFAULT_SIZE,
+                                Short.MAX_VALUE));
+    }
+
+    private void startGame() throws InterruptedException {
+        System.out.println("\nGIOCO CARICATO CORRETTAMENTE\n");
+    }
+
+    public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
             try {
                 new MenuUI().setVisible(true);
             } catch (InterruptedException ex) {
-                Logger.getLogger(MenuUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MenuUI.class.getName())
+                        .log(Level.SEVERE, null, ex);
             }
         });
     }
-
-    private javax.swing.JLabel background;
-    private javax.swing.JButton exit;
-    private javax.swing.JButton load;
-    private javax.swing.JPanel macroPanel;
-    private javax.swing.JButton start;
-    private javax.swing.JButton leaderboard;
-    private javax.swing.JFileChooser fileChooser;
 }

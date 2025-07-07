@@ -26,6 +26,8 @@ public abstract class GameDesc implements Serializable {
     private final List<Command> commands = new ArrayList<>();
 
     private final List<BDObject> listObj = new ArrayList<>();
+    
+    private String notebookText = "";
 
     private Inventory inventory = Inventory.getInstance();
 
@@ -69,6 +71,14 @@ public abstract class GameDesc implements Serializable {
      * @param out
      */
     public abstract void nextMove(ParserOutput p, PrintStream out);
+    
+    public String getNotebookText() {
+        return notebookText;
+    }
+
+    public void setNotebookText(String notebookText) {
+        this.notebookText = notebookText;
+    }
 
     public abstract String getWelcomeMessage();
 

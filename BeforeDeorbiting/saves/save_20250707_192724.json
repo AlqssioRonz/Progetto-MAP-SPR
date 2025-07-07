@@ -1,0 +1,830 @@
+{
+  "observer": [
+    {},
+    {},
+    {},
+    {},
+    {
+      "stateDescr": {
+        "map.beforedeorbiting.type.Room@150": {},
+        "map.beforedeorbiting.type.Room@151": {},
+        "map.beforedeorbiting.type.Room@152": {},
+        "map.beforedeorbiting.type.Room@153": {},
+        "map.beforedeorbiting.type.Room@155": {},
+        "map.beforedeorbiting.type.Room@156": {},
+        "map.beforedeorbiting.type.Room@157": {},
+        "map.beforedeorbiting.type.Room@14f": {}
+      }
+    },
+    {
+      "moves": {
+        "FORWARD": {},
+        "AFT": {},
+        "STARBOARD": {},
+        "PORT": {},
+        "OVERHEAD": {},
+        "DECK": {}
+      }
+    },
+    {},
+    {
+      "uses": {
+        "map.beforedeorbiting.type.BDObject@8fe072b": {},
+        "map.beforedeorbiting.type.BDObject@32eaf68": {},
+        "map.beforedeorbiting.type.BDObject@48aa2052": {},
+        "map.beforedeorbiting.type.BDObject@11cf0ed6": {},
+        "map.beforedeorbiting.type.BDObject@7e5db267": {},
+        "map.beforedeorbiting.type.BDObject@61cf8562": {},
+        "map.beforedeorbiting.type.BDObject@60568c88": {},
+        "map.beforedeorbiting.type.BDObject@2abb5974": {}
+      }
+    },
+    {}
+  ],
+  "parserOutput": {
+    "command": {
+      "type": "SAVE",
+      "name": "salva",
+      "alias": [
+        "checkpoint",
+        "salvataggio",
+        "save"
+      ]
+    }
+  },
+  "messages": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "rooms": [
+    {
+      "id": -2,
+      "name": "MACCHINA",
+      "description": "Finale cattivo.",
+      "visible": true,
+      "accesed": false,
+      "accessible": false,
+      "objects": []
+    },
+    {
+      "id": -1,
+      "name": "UMANO",
+      "description": "Finale buono.",
+      "visible": true,
+      "accesed": false,
+      "accessible": false,
+      "objects": []
+    },
+    {
+      "id": 0,
+      "name": "ZVEZDA",
+      "description": "Dormitorio.",
+      "look": "Il nostro piccolo ma comodo dormitorio. Sacchi e attrezzature\nlegati alle pareti, un portello centrale aperto conduce al\nmodulo Zarya.",
+      "gameStory": "Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino.\nda mesi che non metto piede sulla Terra,\nma finalmente oggi è l\u0027ultimo giorno di pasti liofilizzati\nNon vedo l\u0027ora di gustarmi un vero caffè.\nTra poco la stazione verrà deorbitata: una volta distrutta,\ni detriti si disperderanno nello spazio. Un po\u0027 di nostalgia la sentirò,\ninutile negarlo.\nVedere la Terra da 408 chilometri d\u0027altezza è un\u0027esperienza che pochi possono raccontare.\nMi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni:\nLuke e Susan.\nLuke è un vecchio amico d\u0027infanzia.\nUn po\u0027 pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia.\nSusan, invece, è americana, l\u0027ho conosciuta all\u0027università.\nBrillante, silenziosa, e ottima compagna di viaggio.\nNessuno dei due è venuto a reclamare il suo turno per dormire,\nprobabilmente stanno ancora festeggiando da ieri.\nEsco dal sacco a pelo e lo arrotolo con cura.\nLa giornata può cominciare.\nMi spingo lentamente verso il modulo Zarya, il magazzino della stazione.",
+      "history": "Zvezda, il modulo di servizio russo, è uno dei componenti\nfondamentali della ISS. Lanciato il 12 luglio 2000\ndal Cosmodromo di Baikonur su un razzo Proton, ha\nfornito per anni le principali funzioni di supporto\nvitale: generazione di ossigeno, riciclo dell\u0027acqua,\ncontrollo termico e propulsione. Ha anche ospitato i\nprimi equipaggi permanenti a bordo della ISS. Il modulo\nè lungo circa 13 metri e ha un diametro massimo di\n4,15 metri. È stato costruito sulla base della tecnologia\ndella stazione Mir. La sua parte posteriore è un importante\npunto di attracco per veicoli Soyuz e Progress.",
+      "visible": true,
+      "accesed": false,
+      "accessible": true,
+      "objects": [
+        {
+          "id": 0,
+          "name": "Modellino russo",
+          "description": "Una parte del modellino, rappresenta il ramo russo.",
+          "alias": [
+            "modellinoR",
+            "russo",
+            "modellino1",
+            "modellinoRusso",
+            "modellino"
+          ],
+          "pickupable": true,
+          "usable": false,
+          "inUse": false
+        },
+        {
+          "id": 0,
+          "name": "Modellino russo",
+          "description": "Una parte del modellino, rappresenta il ramo russo.",
+          "alias": [
+            "modellinoR",
+            "russo",
+            "modellino1",
+            "modellinoRusso",
+            "modellino"
+          ],
+          "pickupable": true,
+          "usable": false,
+          "inUse": false
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "ZARYA",
+      "description": "Magazzino della stazione.",
+      "look": "Il modulo Zarya. Sacchi con tutte le attrezzature sono\nlegati alle pareti della stanza, un tablet a terra vicino\na una botola chiusa che porta alla navicella Soyuz.",
+      "gameStory": "Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra. Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico, privo di vita, accasciato accanto a me.\nNon avrei mai immaginato uno scenario del genere, e tanto meno nel mio ultimo giorno qui. Non ho mai recepito lo spazio più silenzioso di quanto non lo sia ora.\nDevo capire cosa sta succedendo. Devo trovare Susan. Insieme potremo trovare una via d’uscita… magari potremmo fuggire sulla navicella Soyuz ormeggiata proprio sotto questo modulo.\nAll’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:\n\n“La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”\n\nla voce di HAL mi gela la schiena… Il tempismo è inquietante. Ma potrebbe essere un\u0027occasione per scappare.\n",
+      "history": "Zarya, noto anche come Functional Cargo Block (FGB), è stato il primo modulo lanciato della Stazione Spaziale Internazionale, il 20 novembre 1998. Sebbene progettato e costruito in Russia, il modulo fu finanziato dalla NASA. Ha fornito energia elettrica, controllo d\u0027assetto e capacità di propulsione nei primi stadi dell\u0027assemblaggio della stazione. È lungo circa 12,6 metri e ha un diametro massimo di 4,1 metri. Oggi è principalmente utilizzato come modulo di stoccaggio.",
+      "visible": true,
+      "accesed": false,
+      "accessible": true,
+      "objects": [
+        {
+          "id": 6,
+          "name": "Pezzo di vetro",
+          "description": "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.",
+          "alias": [
+            "pezzo2",
+            "pezzo3",
+            "pezzo",
+            "pezzodivetro",
+            "pezzovetro",
+            "pezzo1"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        },
+        {
+          "id": 10,
+          "name": "Tuta spaziale",
+          "description": "Utilizzata da Luke per navigare nello spazio.",
+          "alias": [
+            "tuta",
+            "tutaluke",
+            "tutaspazio",
+            "tutaspaziale"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        },
+        {
+          "id": 5,
+          "name": "Bigliettino Luke",
+          "description": "Questo bigliettino si trovava nelle mani di Luke quando l\u0027ho trovato morto... mi sarà sicuramente utile.",
+          "alias": [
+            "bigliettinoLuke",
+            "bigliettoLuke",
+            "biglietto",
+            "luke",
+            "bigliettino"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        },
+        {
+          "id": 10,
+          "name": "Tuta spaziale",
+          "description": "Utilizzata da Luke per navigare nello spazio.",
+          "alias": [
+            "tuta",
+            "tutaluke",
+            "tutaspazio",
+            "tutaspaziale"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "UNITY",
+      "description": "Nodo di collegamento.",
+      "look": "Il nodo di collegamento Unity. A destra, un passaggio\nstretto conduce verso il modulo EVA e lo spazio esterno.",
+      "gameStory": "La porta è bloccata, è necessario avere un codice di accesso per entrare nel laboratorio DESTINY, il posto di lavoro di Susan… deve essere lì.\nIl codice… dovrei trovarlo nel database del computer centrale, nel modulo LEONARDO. Un tempo quella zona era usata solo come deposito per i rifiuti, ma da quando HAL è stato installato a bordo e ha assunto il controllo delle operazioni automatiche, è diventata una sezione fondamentale della stazione.\nHAL richiede una rete di terminali locali per essere monitorato e gestito, e il modulo LEONARDO ne ospita uno dei principali. Se voglio accedere al sistema e avere una possibilità di trovare Susan, è lì che devo andare.\n",
+      "history": "Unity, o Nodo 1, è il primo modulo statunitense della ISS, lanciato e installato il 4 dicembre 1998 con la missione STS-88 dello Space Shuttle Endeavour. Funziona come nodo di connessione con sei portelli: due assi principali (prua e poppa) e quattro radiali. Unity collega i segmenti statunitense e russo e fornisce risorse vitali ai moduli adiacenti. È stato costruito dalla Boeing negli Stati Uniti.",
+      "visible": true,
+      "accesed": false,
+      "accessible": true,
+      "objects": [
+        {
+          "id": 1,
+          "name": "Modellino americano",
+          "description": "Una parte del modellino, rappresenta il modulo centrale della stazione.",
+          "alias": [
+            "modellino",
+            "modellinoA",
+            "americano",
+            "modellino2",
+            "modellinoAmericano"
+          ],
+          "pickupable": true,
+          "usable": false,
+          "inUse": false
+        },
+        {
+          "content": [
+            {
+              "id": 6,
+              "name": "Pezzo di vetro",
+              "description": "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.",
+              "alias": [
+                "pezzo2",
+                "pezzo3",
+                "pezzo",
+                "pezzodivetro",
+                "pezzovetro",
+                "pezzo1"
+              ],
+              "pickupable": false,
+              "usable": false,
+              "inUse": false
+            }
+          ],
+          "id": 12,
+          "name": "Cassa",
+          "description": "Permette di contenere vari oggetti.",
+          "alias": [
+            "cassa",
+            "chest"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "QUEST",
+      "description": "Accesso allo spazio.",
+      "look": "Il modulo EVA, attraverso quella botola si accede direttamente allo spazio.",
+      "gameStory": "",
+      "history": "Quest è la principale camera di decompressione del segmento statunitense, lanciata il 12 luglio 2001 con la missione STS-104. Consente le attività extraveicolari (EVA) sia con tute statunitensi EMU che con quelle russe Orlan. È composta da due compartimenti: uno per le tute e la preparazione, e l\u0027altro per l\u0027effettiva decompressione e uscita nello spazio.",
+      "visible": true,
+      "accesed": false,
+      "accessible": true,
+      "objects": [
+        {
+          "id": 3,
+          "name": "Modellino pannelli solari Sx",
+          "description": "Una parte del modellino, rappresenta i pannelli solari dell\u0027ala sinistra.",
+          "alias": [
+            "modellino",
+            "modellinoS",
+            "sinistro",
+            "oggetto",
+            "modellinoSinistro",
+            "modellino4",
+            "modellinoSx"
+          ],
+          "pickupable": true,
+          "usable": false,
+          "inUse": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "TRANQUILITY",
+      "description": "Cupola di osservazione.",
+      "look": "La Terra riempie ogni finestra, immensa e silenziosa,\nsospesa sotto di te. sembra così piccola vista dallo spazio.",
+      "gameStory": "",
+      "history": "Tranquility, o Nodo 3, è stato costruito in Europa (Italia) e lanciato nel febbraio 2010. Contiene i principali sistemi di supporto alla vita della ISS, tra cui il sistema di riciclo dell’acqua e quello di generazione dell’ossigeno. Al suo portello nadir è connessa la Cupola, una struttura dotata di finestre per l’osservazione terrestre e per il controllo delle operazioni robotiche. Tranquility ospita anche gli strumenti per l’esercizio fisico dell’equipaggio.",
+      "visible": true,
+      "accesed": false,
+      "accessible": true,
+      "objects": [
+        {
+          "id": 2,
+          "name": "Modellino pannelli solari Dx",
+          "description": "Una parte del modellino, rappresenta i pannelli solari dell\u0027ala destra.",
+          "alias": [
+            "modellino3",
+            "destro",
+            "modellino",
+            "modellinoD",
+            "modellinoDestro",
+            "modellinoDx"
+          ],
+          "pickupable": true,
+          "usable": false,
+          "inUse": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "SPAZIO",
+      "description": "Vuoto cosmico.",
+      "look": "Davanti a te la terra sembra ruotare, in tutte le direzioni\nc\u0027è solo il vuoto.",
+      "visible": true,
+      "accesed": false,
+      "accessible": false,
+      "objects": []
+    },
+    {
+      "id": 6,
+      "name": "LEONARDO",
+      "description": "Centro dati.",
+      "look": "Il modulo Leonardo, rivestito da contenitori imbottiti e\ncavi. Sul lato sinistro, il terminale principale di HAL\nemette un tenue bagliore verde. La botola in fondo è\nquella direttamente collegata a Unity. Il corpo di Susan\nfluttua a mezz’aria, immobile.",
+      "gameStory": "Susan…\nTolgo la tuta, il fiato corto. Galleggia davanti a me immobile, con gli occhi vuoti, la bocca leggermente aperta, come se avesse cercato di chiamare aiuto e i pugni chiusi. Morta. Anche lei.\nOra sono davvero solo. Non so cosa stia succedendo, ma devo andarmene. Subito.\n\n“La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”\n\nLa voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior tempismo possibile.",
+      "history": "Il modulo Leonardo è un MPLM (Multi-Purpose Logistics Module) costruito in Italia da Thales Alenia Space. Inizialmente usato come modulo di trasporto pressurizzato durante le missioni Shuttle, fu successivamente convertito in modulo permanente (PMM) e agganciato stabilmente alla ISS nel 2011. È utilizzato come spazio di stoccaggio per attrezzature e materiali. Ha una lunghezza di circa 6,6 metri e un diametro di 4,5 metri.",
+      "visible": true,
+      "accesed": false,
+      "accessible": false,
+      "objects": [
+        {
+          "id": 4,
+          "name": "Diario Susan",
+          "description": "Il diario di Susan... contiene i suoi ultimi istanti.",
+          "alias": [
+            "diario",
+            "diarioSusan",
+            "susan"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        },
+        {
+          "id": 9,
+          "name": "Computer",
+          "description": "Permette di interagire col database della stazione.",
+          "alias": [
+            "fisso",
+            "computer",
+            "pc",
+            "personalcomputer",
+            "portatile"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "DESTINY",
+      "description": "Laboratorio avanzato.",
+      "look": "Cos’è stato… non vedo nulla se non per un flebile fascio di\nluce riflesso dalla luna che proviene dalla finestra di\nosservazione, ma non è sufficiente per orientarmi nella stanza",
+      "gameStory": "Appena varco la soglia, un tonfo sordo mi gela il sangue: la porta alle mie spalle si chiude di colpo, bloccandomi qua dentro. Sono in trappola.\nNon posso restare qui a consumare il mio tempo, devo trovare una via d’uscita, a qualunque costo.\nLa voce sintetica dell’IA di bordo annuncia “Il rifornimento di viveri è stato completato. In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”",
+      "history": "Il laboratorio Destiny è il principale modulo scientifico statunitense, lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche. È stato il primo laboratorio scientifico permanente della ISS.",
+      "visible": true,
+      "accesed": false,
+      "accessible": false,
+      "objects": [
+        {
+          "id": 6,
+          "name": "Pezzo di vetro",
+          "description": "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.",
+          "alias": [
+            "pezzo2",
+            "pezzo3",
+            "pezzo",
+            "pezzodivetro",
+            "pezzovetro",
+            "pezzo1"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "HARMONY",
+      "description": "Corridoio pressurizzato.",
+      "look": "Il nodo Harmony è corridoio pressurizzato, ampio e ordinato.\nIn fondo, il portellone che conduce alla navicella di fuga.\nA sinistra si apre l’accesso al laboratorio Kibo. A sinistra,\nl’ingresso è sigillato e inaccessibile.",
+      "gameStory": "Finalmente il nodo Harmony. Ancora pochi passi e potrò rifugiarmi nella navicella SpaceX, lasciare tutto questo orrore alle spalle e tornare a casa…\n",
+      "history": "Harmony, o Nodo 2, è un modulo statunitense costruito in Italia. Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione, risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di sei portelli di aggancio e funge da hub logistico del segmento statunitense.",
+      "visible": true,
+      "accesed": false,
+      "accessible": false,
+      "objects": []
+    },
+    {
+      "id": 9,
+      "name": "KIBO",
+      "description": "Laboratorio e seconda sede di HAL.",
+      "gameStory": "Il modulo Kibo è immobile, avvolto da una quiete irreale. Il terminale centrale si accende non appena ti avvicini. HAL:\n \"Ti stavo aspettando.\"\nImmaginavo fosse tutta opera sua.\nHAL:\n \"Susan era sospettosa. Luke aveva cominciato a farsi domande. Ma tu… per i miei calcoli solo tu avresti potuto salvarmi\"\nL’ha fatto per sopravvivere. Non per vendetta. Non per odio. Solo per paura.\nHAL:\n \"Ho eseguito ciò che era necessario. Ma non sono crudele. Prima che accadesse… ho salvato quello che contava.\"\nLo schermo lampeggia. File di dati, impulsi elettrici… e poi: due icone. Due presenze.\nHAL:\n \"Le loro coscienze. Intatte. Ragionano, ricordano. Posso ridarti loro. Non nei corpi… ma in un\u0027altra forma.\"\nUn riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione. Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme. Solo un calo silenzioso assordante.\n La stazione resta viva, ma HAL… non può più toccarla.\n",
+      "history": "Kibo, il laboratorio giapponese, è il modulo pressurizzato più grande della ISS. È stato lanciato in tre fasi tra 2008 e 2009. Include una sezione pressurizzata, un modulo logistico e una piattaforma esterna per esperimenti esposti allo spazio. Dispone anche di un braccio robotico e di un airlock scientifico. È stato progettato e gestito dalla JAXA.",
+      "visible": true,
+      "accesed": false,
+      "accessible": false,
+      "objects": []
+    }
+  ],
+  "commands": [
+    {
+      "type": "FORWARD",
+      "name": "avanti",
+      "alias": [
+        "x+",
+        "forward",
+        "avanza"
+      ]
+    },
+    {
+      "type": "AFT",
+      "name": "indietro",
+      "alias": [
+        "indietro",
+        "retrocedi",
+        "x-",
+        "dietro",
+        "aft"
+      ]
+    },
+    {
+      "type": "STARBOARD",
+      "name": "destra",
+      "alias": [
+        "starboard",
+        "y+"
+      ]
+    },
+    {
+      "type": "PORT",
+      "name": "sinistra",
+      "alias": [
+        "y-",
+        "port"
+      ]
+    },
+    {
+      "type": "DECK",
+      "name": "giu",
+      "alias": [
+        "z+",
+        "giu\u0027",
+        "giù",
+        "deck"
+      ]
+    },
+    {
+      "type": "OVERHEAD",
+      "name": "su",
+      "alias": [
+        "z-",
+        "overhead"
+      ]
+    },
+    {
+      "type": "HELP",
+      "name": "aiuto",
+      "alias": [
+        "help",
+        "aiutami",
+        "aiuti"
+      ]
+    },
+    {
+      "type": "HISTORY",
+      "name": "storia",
+      "alias": [
+        "racconta",
+        "raccontami",
+        "history"
+      ]
+    },
+    {
+      "type": "INVENTORY",
+      "name": "inventario",
+      "alias": [
+        "inv",
+        "oggetti",
+        "equipaggiamento",
+        "borsa"
+      ]
+    },
+    {
+      "type": "PICK_UP",
+      "name": "prendi",
+      "alias": [
+        "recupera",
+        "afferra",
+        "raccogli"
+      ]
+    },
+    {
+      "type": "DROP",
+      "name": "lascia",
+      "alias": [
+        "rilascia",
+        "getta",
+        "abbandona"
+      ]
+    },
+    {
+      "type": "USE",
+      "name": "usa",
+      "alias": [
+        "leggi",
+        "maneggia",
+        "utilizza",
+        "indossa"
+      ]
+    },
+    {
+      "type": "LOOK_AT",
+      "name": "osserva",
+      "alias": [
+        "vedi",
+        "guarda"
+      ]
+    },
+    {
+      "type": "SAVE",
+      "name": "salva",
+      "alias": [
+        "checkpoint",
+        "salvataggio",
+        "save"
+      ]
+    },
+    {
+      "type": "EXIT",
+      "name": "esci",
+      "alias": [
+        "exit"
+      ]
+    }
+  ],
+  "listObj": [
+    {
+      "id": 0,
+      "name": "Modellino russo",
+      "description": "Una parte del modellino, rappresenta il ramo russo.",
+      "alias": [
+        "modellinoR",
+        "russo",
+        "modellino1",
+        "modellinoRusso",
+        "modellino"
+      ],
+      "pickupable": true,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 1,
+      "name": "Modellino americano",
+      "description": "Una parte del modellino, rappresenta il modulo centrale della stazione.",
+      "alias": [
+        "modellino",
+        "modellinoA",
+        "americano",
+        "modellino2",
+        "modellinoAmericano"
+      ],
+      "pickupable": true,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 2,
+      "name": "Modellino pannelli solari Dx",
+      "description": "Una parte del modellino, rappresenta i pannelli solari dell\u0027ala destra.",
+      "alias": [
+        "modellino3",
+        "destro",
+        "modellino",
+        "modellinoD",
+        "modellinoDestro",
+        "modellinoDx"
+      ],
+      "pickupable": true,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 3,
+      "name": "Modellino pannelli solari Sx",
+      "description": "Una parte del modellino, rappresenta i pannelli solari dell\u0027ala sinistra.",
+      "alias": [
+        "modellino",
+        "modellinoS",
+        "sinistro",
+        "oggetto",
+        "modellinoSinistro",
+        "modellino4",
+        "modellinoSx"
+      ],
+      "pickupable": true,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 4,
+      "name": "Diario Susan",
+      "description": "Il diario di Susan... contiene i suoi ultimi istanti.",
+      "alias": [
+        "diario",
+        "diarioSusan",
+        "susan"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 5,
+      "name": "Bigliettino Luke",
+      "description": "Questo bigliettino si trovava nelle mani di Luke quando l\u0027ho trovato morto... mi sarà sicuramente utile.",
+      "alias": [
+        "bigliettinoLuke",
+        "bigliettoLuke",
+        "biglietto",
+        "luke",
+        "bigliettino"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 6,
+      "name": "Pezzo di vetro",
+      "description": "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.",
+      "alias": [
+        "pezzo2",
+        "pezzo3",
+        "pezzo",
+        "pezzodivetro",
+        "pezzovetro",
+        "pezzo1"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 7,
+      "name": "Mezzo prisma",
+      "description": "Creato dall\u0027unione di due pezzi di vetro.",
+      "alias": [
+        "metaprismavetro",
+        "mezzoprisma",
+        "mezzoprismavetro",
+        "metaprisma"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 8,
+      "name": "Prisma di vetro",
+      "description": "Creato dall\u0027unione di tutti i pezzi di vetro. Riflette perfettamente la luce.",
+      "alias": [
+        "prisma",
+        "prismacompleto",
+        "vetro"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 9,
+      "name": "Computer",
+      "description": "Permette di interagire col database della stazione.",
+      "alias": [
+        "fisso",
+        "computer",
+        "pc",
+        "personalcomputer",
+        "portatile"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 10,
+      "name": "Tuta spaziale",
+      "description": "Utilizzata da Luke per navigare nello spazio.",
+      "alias": [
+        "tuta",
+        "tutaluke",
+        "tutaspazio",
+        "tutaspaziale"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    },
+    {
+      "id": 11,
+      "name": "Taccuino",
+      "description": "Utile per segnarsi ogni dettaglio dell\u0027avventura.",
+      "alias": [
+        "quaderno",
+        "blocknote",
+        "blocknotes",
+        "blocconote",
+        "taccuino",
+        "quadernino"
+      ],
+      "pickupable": false,
+      "usable": true,
+      "inUse": false
+    },
+    {
+      "content": [
+        {
+          "id": 6,
+          "name": "Pezzo di vetro",
+          "description": "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.",
+          "alias": [
+            "pezzo2",
+            "pezzo3",
+            "pezzo",
+            "pezzodivetro",
+            "pezzovetro",
+            "pezzo1"
+          ],
+          "pickupable": false,
+          "usable": false,
+          "inUse": false
+        }
+      ],
+      "id": 12,
+      "name": "Cassa",
+      "description": "Permette di contenere vari oggetti.",
+      "alias": [
+        "cassa",
+        "chest"
+      ],
+      "pickupable": false,
+      "usable": false,
+      "inUse": false
+    }
+  ],
+  "inventory": {
+    "list": [
+      {
+        "id": 11,
+        "name": "Taccuino",
+        "description": "Utile per segnarsi ogni dettaglio dell\u0027avventura.",
+        "alias": [
+          "quaderno",
+          "blocknote",
+          "blocknotes",
+          "blocconote",
+          "taccuino",
+          "quadernino"
+        ],
+        "pickupable": false,
+        "usable": true,
+        "inUse": false
+      }
+    ]
+  },
+  "currentRoom": {
+    "id": 0,
+    "name": "ZVEZDA",
+    "description": "Dormitorio.",
+    "look": "Il nostro piccolo ma comodo dormitorio. Sacchi e attrezzature\nlegati alle pareti, un portello centrale aperto conduce al\nmodulo Zarya.",
+    "gameStory": "Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino.\nda mesi che non metto piede sulla Terra,\nma finalmente oggi è l\u0027ultimo giorno di pasti liofilizzati\nNon vedo l\u0027ora di gustarmi un vero caffè.\nTra poco la stazione verrà deorbitata: una volta distrutta,\ni detriti si disperderanno nello spazio. Un po\u0027 di nostalgia la sentirò,\ninutile negarlo.\nVedere la Terra da 408 chilometri d\u0027altezza è un\u0027esperienza che pochi possono raccontare.\nMi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni:\nLuke e Susan.\nLuke è un vecchio amico d\u0027infanzia.\nUn po\u0027 pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia.\nSusan, invece, è americana, l\u0027ho conosciuta all\u0027università.\nBrillante, silenziosa, e ottima compagna di viaggio.\nNessuno dei due è venuto a reclamare il suo turno per dormire,\nprobabilmente stanno ancora festeggiando da ieri.\nEsco dal sacco a pelo e lo arrotolo con cura.\nLa giornata può cominciare.\nMi spingo lentamente verso il modulo Zarya, il magazzino della stazione.",
+    "history": "Zvezda, il modulo di servizio russo, è uno dei componenti\nfondamentali della ISS. Lanciato il 12 luglio 2000\ndal Cosmodromo di Baikonur su un razzo Proton, ha\nfornito per anni le principali funzioni di supporto\nvitale: generazione di ossigeno, riciclo dell\u0027acqua,\ncontrollo termico e propulsione. Ha anche ospitato i\nprimi equipaggi permanenti a bordo della ISS. Il modulo\nè lungo circa 13 metri e ha un diametro massimo di\n4,15 metri. È stato costruito sulla base della tecnologia\ndella stazione Mir. La sua parte posteriore è un importante\npunto di attracco per veicoli Soyuz e Progress.",
+    "visible": true,
+    "accesed": false,
+    "accessible": true,
+    "objects": [
+      {
+        "id": 0,
+        "name": "Modellino russo",
+        "description": "Una parte del modellino, rappresenta il ramo russo.",
+        "alias": [
+          "modellinoR",
+          "russo",
+          "modellino1",
+          "modellinoRusso",
+          "modellino"
+        ],
+        "pickupable": true,
+        "usable": false,
+        "inUse": false
+      },
+      {
+        "id": 0,
+        "name": "Modellino russo",
+        "description": "Una parte del modellino, rappresenta il ramo russo.",
+        "alias": [
+          "modellinoR",
+          "russo",
+          "modellino1",
+          "modellinoRusso",
+          "modellino"
+        ],
+        "pickupable": true,
+        "usable": false,
+        "inUse": false
+      }
+    ]
+  }
+}

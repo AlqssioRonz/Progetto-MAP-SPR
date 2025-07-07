@@ -1,7 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package map.beforedeorbiting;
 
 import map.beforedeorbiting.parser.Parser;
@@ -44,8 +43,7 @@ public class Engine {
         } catch (Exception ex) {
             System.out.println(ex);
         }
-        try (InputStream in = Engine.class.getResourceAsStream("/stopwords.txt");
-             BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+        try (InputStream in = Engine.class.getResourceAsStream("/stopwords.txt"); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
             Set<String> stopwords = br.lines()
                     .map(s -> s.trim().toLowerCase())
                     .collect(Collectors.toSet());
@@ -55,14 +53,42 @@ public class Engine {
         }
     }
 
+    public Engine(GameDesc game, boolean load) {
+        this.game = game;
+        if (!load) {
+            try {
+                this.game.init();
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+        }
+        try (InputStream in = Engine.class.getResourceAsStream("/stopwords.txt"); BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+            Set<String> stopwords = br.lines()
+                    .map(s -> s.trim().toLowerCase())
+                    .collect(Collectors.toSet());
+            parser = new Parser(stopwords);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+    
+    /**
+     * Restituisce l'istanza di GameDesc.
+     * 
+     * @return il gioco.
+     */
+    public GameDesc getGame() {
+        return game;
+    }
+
     public void execute() {
-        System.out.println(game.getWelcomeMessage()+"\n\n"
+        System.out.println(game.getWelcomeMessage() + "\n\n"
                 + game.getCurrentRoom().getGameStory());
         System.out.print("> ");
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
-            ParserOutput p = parser.parse(command, game.getCommands(), 
+            ParserOutput p = parser.parse(command, game.getCommands(),
                     game.getListObj(), game.getInventory().getList());
             if (p == null || p.getCommand() == null) {
                 System.out.println("Quello che dici non ha senso, persino "
@@ -111,8 +137,9 @@ public class Engine {
 
     /**
      * Carica le righe di un file in un set di stringhe
+     *
      * @param file
-     * @return 
+     * @return
      * @throws java.io.IOException
      */
     public static Set<String> loadFileListInSet(File file) throws IOException {

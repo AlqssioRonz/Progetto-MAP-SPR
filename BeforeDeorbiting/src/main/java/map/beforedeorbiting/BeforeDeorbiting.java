@@ -12,6 +12,7 @@ import java.util.Set;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
+import map.beforedeorbiting.ui.GameUI;
 
 /**
  * Classe "principale" del gioco.
@@ -26,6 +27,12 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     private ParserOutput parserOutput;
     
     private final List<String> messages = new ArrayList<>();
+    
+    private GameUI gameUI;
+    
+    public void setGameUI(GameUI gameUI){
+        this.gameUI = gameUI;
+    }
     
     @Override
     public void init(){

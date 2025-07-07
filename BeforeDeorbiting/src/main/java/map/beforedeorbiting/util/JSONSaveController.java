@@ -31,7 +31,7 @@ public class JSONSaveController {
     private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
 
     /**
-     * Salva il gioco creando un file con timestamp, es.save_20250702_1530.json
+     * Salva il gioco creando un file con timestamp, es.save_20250702_153055.json
      * @param game
      * @throws java.io.IOException
      */

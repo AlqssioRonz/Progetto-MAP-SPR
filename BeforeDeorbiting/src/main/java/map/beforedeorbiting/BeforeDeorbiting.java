@@ -383,15 +383,11 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         // Setta la stanza iniziale
         setCurrentRoom(zvezda);
         this.getInventory().add(taccuino);
+        setNotebookText("");
     }
 
     @Override
     public void nextMove(ParserOutput p, PrintStream out) {
-        if (p == null || p.getCommand() == null) {
-            out.println(getWelcomeMessage());
-            out.println(getCurrentRoom().getDescription());
-            return; // Esce dal metodo senza eseguire azioni aggiuntive
-        }
         parserOutput = p;
         messages.clear();
         if (first) {

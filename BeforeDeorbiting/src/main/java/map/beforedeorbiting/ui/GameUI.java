@@ -78,6 +78,7 @@ public class GameUI extends JFrame {
     private JPanel underPanel;
     private JMenu tendina;
     private JMenuItem impostazioniItem;
+    private boolean load;
 
     private PrinterUI printer;
 
@@ -87,6 +88,7 @@ public class GameUI extends JFrame {
      */
     public GameUI() {
         // 1) crea lo stato di gioco “vergine”
+        this.load = false;
         BeforeDeorbiting newGame = new BeforeDeorbiting();
         Engine engine = new Engine(newGame);
         // 2) delega tutto il setup a initWithEngine
@@ -100,6 +102,7 @@ public class GameUI extends JFrame {
      * @throws java.io.IOException
      */
     public GameUI(Path savePath) throws IOException {
+        this.load = true;
         // 1) deserializza lo stato dal JSON
         GameDesc loadedGame = JSONSaveController.loadGame(savePath);
         // 2) crea l’engine in modalità “load”
@@ -456,6 +459,31 @@ public class GameUI extends JFrame {
         setLocationRelativeTo(null);
 
         printer = new PrinterUI(textPane);
+
+        if (load == false) {
+            printer.print("""
+                            Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. 
+                            da mesi che non metto piede sulla Terra, 
+                            ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
+                            Non vedo l'ora di gustarmi un vero caffè.
+                            Tra poco la stazione verrà deorbitata: una volta distrutta, 
+                            i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò, 
+                            inutile negarlo. 
+                            Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.
+                            Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni: 
+                            Luke e Susan.
+                            Luke è un vecchio amico d'infanzia. 
+                            Un po' pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia. 
+                            Susan, invece, è americana, l'ho conosciuta all'università. 
+                            Brillante, silenziosa, e ottima compagna di viaggio. 
+                            Nessuno dei due è venuto a reclamare il suo turno per dormire, 
+                            probabilmente stanno ancora festeggiando da ieri.
+                            Esco dal sacco a pelo e lo arrotolo con cura. 
+                            La giornata può cominciare. 
+                            Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione. \n""");
+        }
+
+        printer.print(engine.getGame().getWelcomeMessage());
     }
 
     /**

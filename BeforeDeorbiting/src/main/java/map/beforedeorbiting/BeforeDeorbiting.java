@@ -26,10 +26,12 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     private ParserOutput parserOutput;
 
     private final List<String> messages = new ArrayList<>();
+    
+    private boolean first = true;
 
     @Override
     public void init() {
-        getInventory().getList().clear();
+        Inventory.getInstance().getList().clear();
         Command forward = new Command(CommandType.FORWARD, "avanti");
         forward.setAlias(new String[]{"avanza", "forward", "x+"});
         getCommands().add(forward);
@@ -299,26 +301,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "robotico e di un airlock scientifico. È stato progettato e gestito dalla JAXA.");
 
         /*GameStory*/
-        zvezda.setGameStory("""
-                            Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. 
-                            da mesi che non metto piede sulla Terra, 
-                            ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
-                            Non vedo l'ora di gustarmi un vero caffè.
-                            Tra poco la stazione verrà deorbitata: una volta distrutta, 
-                            i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò, 
-                            inutile negarlo. 
-                            Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.
-                            Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni: 
-                            Luke e Susan.
-                            Luke è un vecchio amico d'infanzia. 
-                            Un po' pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia. 
-                            Susan, invece, è americana, l'ho conosciuta all'università. 
-                            Brillante, silenziosa, e ottima compagna di viaggio. 
-                            Nessuno dei due è venuto a reclamare il suo turno per dormire, 
-                            probabilmente stanno ancora festeggiando da ieri.
-                            Esco dal sacco a pelo e lo arrotolo con cura. 
-                            La giornata può cominciare. 
-                            Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione.""");
         zarya.setGameStory("Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra. "
                 + "Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico, "
                 + "privo di vita, accasciato accanto a me.\n"
@@ -412,10 +394,15 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         }
         parserOutput = p;
         messages.clear();
-        if (p.getCommand() == null) {
+        if (first) {
+            first = false;
+            return;
+        }
+
+        if (p == null || p.getCommand() == null) {
             out.println("""
-                        Comunicazione fuori fase. Sintonizza meglio le frequenze della tua richiesta.
-                        In attesa di un nuovo comando.""");
+                        Quello che dici non ha senso, persino 
+                        HAL alzerebbe un sopracciglio... se ne avesse uno.""");
         } else {
             notifyObservers();
             if (!messages.isEmpty()) {
@@ -436,14 +423,16 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     }
 
     @Override
-    public void attach(GameObserver o) {
+    public void attach(GameObserver o
+    ) {
         if (!observer.contains(o)) {
             observer.add(o);
         }
     }
 
     @Override
-    public void detach(GameObserver o) {
+    public void detach(GameObserver o
+    ) {
         observer.remove(o);
     }
 

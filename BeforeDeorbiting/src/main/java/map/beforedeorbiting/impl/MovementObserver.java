@@ -11,17 +11,19 @@ import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.type.Room;
 
 /**
- * Questa classe rappresenta l'observer di comandi di movimento,
- * permette di muoversi nella stanza desiderata, se esiste.
- * Per farlo, implmenta l'interfaccia GameObserver.
- * 
- * In questa classe utilizziamo un po' di programmazione funzionale per rendere 
+ * Questa classe rappresenta l'observer di comandi di movimento, permette di
+ * muoversi nella stanza desiderata, se esiste. Per farlo, implmenta
+ * l'interfaccia GameObserver.
+ *
+ * In questa classe utilizziamo un po' di programmazione funzionale per rendere
  * migliore il metodo update, di seguito una breve spiegazione:
- * 
- *  - il costruttore di MovementObserver crea un dizionario con chiave un enumeratore e valore una function
- *  - la Function viene utilizzata nella progrmmazione funzionale e permette di "trattare una funzione come una variabile"
- *  - la Function ha <input, output> e con l'operatore :: possiamo ottenere metodi del parametro
- *  - tramite il metodo apply() possiamo eseguire il metodo contenuto nella Function
+ *
+ * - il costruttore di MovementObserver crea un dizionario con chiave un
+ * enumeratore e valore una function - la Function viene utilizzata nella
+ * progrmmazione funzionale e permette di "trattare una funzione come una
+ * variabile" - la Function ha <input, output> e con l'operatore :: possiamo
+ * ottenere metodi del parametro - tramite il metodo apply() possiamo eseguire
+ * il metodo contenuto nella Function
  *
  * @lorenzopeluso
  */
@@ -41,36 +43,41 @@ public class MovementObserver implements GameObserver, Serializable {
     /**
      * Aggiorna lo stato del gioco in base all'output del parser e restituisce
      * un messaggio di risposta.
-     * 
-    * @param game l'oggetto GameDesc che rappresenta lo stato corrente del gioco
-    * @param parserOutput l'output del parser utile per conoscere l'input dell'utente
-    * @return il messaggio di risposta in base all'azione di movimento.
+     *
+     * @param game l'oggetto GameDesc che rappresenta lo stato corrente del
+     * gioco
+     * @param parserOutput l'output del parser utile per conoscere l'input
+     * dell'utente
+     * @return il messaggio di risposta in base all'azione di movimento.
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {
-        
+
         StringBuilder movementMessage = new StringBuilder();
-        
-        if (moves.containsKey(parserOutput.getCommand().getType())){
+
+        if (moves.containsKey(parserOutput.getCommand().getType())) {
 
             Function<Room, Room> nextRoomGetter = moves.get(parserOutput.getCommand().getType());
-            
+
             if (nextRoomGetter != null) {
                 Room current = game.getCurrentRoom();
                 if (current != null) {
                     Room target = nextRoomGetter.apply(current);
                     if (target != null && target.isAccessible()) {
                         game.setCurrentRoom(target);
-                        movementMessage.append(target.getGameStory())
-                                .append(target.getName()).append("\n")
+                        if (!game.getCurrentRoom().getName().equals("ZVEZDA")) {
+                            movementMessage.append(target.getGameStory());
+                        }
+                        movementMessage.append(target.getName()).append("\n")
                                 .append(target.getDescription());
                     } else if (target != null && !target.isAccessible()) {
                         //id 10 tuta spaziale
-                        if(target.equals(game.getRoomByName("SPAZIO")) && 
-                                !game.getObjectByID(10).isInUse())
+                        if (target.equals(game.getRoomByName("SPAZIO"))
+                                && !game.getObjectByID(10).isInUse()) {
                             movementMessage.append("""
                                                    Fare una camminata nello spazio senza indossare 
                                                    una tuta spaziale sarebbe un suicidio.""");
+                        }
                         movementMessage.append("""
                                                Quel modulo sembra essere inaccessibile,
                                                forse potrei aprirlo in quealche modo...""");
@@ -81,6 +88,6 @@ public class MovementObserver implements GameObserver, Serializable {
             }
         }
         return movementMessage.toString();
-        
+
     }
 }

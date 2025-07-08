@@ -2,6 +2,7 @@ package map.beforedeorbiting.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
@@ -24,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.JPanel;
+import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import map.beforedeorbiting.BeforeDeorbiting;
@@ -108,7 +110,10 @@ public class MenuUI extends JFrame {
         // azioni
         start.addActionListener(this::onStart);
         load.addActionListener(this::onLoad);
-        commands.addActionListener(e -> {/* TODO: mostra comandi */
+        commands.addActionListener(e -> {
+            CommandsUI help = CommandsUI.getInstance();
+            help.setLocationRelativeTo(this);
+            help.setVisible(true);
         });
         credits.addActionListener(e -> System.exit(0));
         audio.addActionListener(e -> toggleAudio());
@@ -120,35 +125,6 @@ public class MenuUI extends JFrame {
     }
 
     private void onStart(ActionEvent e) {
-        /*
-         * // 1) Rimuovo tutti i componenti del menu
-         * getContentPane().removeAll();
-         * repaint();
-         * 
-         * // 2) Creo e aggiungo LoadBarUI alla stessa finestra
-         * LoadBarUI loadBarPanel = new LoadBarUI();
-         * setResizable(false);// mantieni non ridimensionabile
-         * setTitle("Caricamento in corso...");
-         * getContentPane().add(loadBarPanel);
-         * validate(); // obbligatorio per aggiornare il layout
-         * 
-         * // 3) Listener per isFinished
-         * loadBarPanel.addPropertyChangeListener(evt -> {
-         * if ("isFinished".equals(evt.getPropertyName())
-         * && Boolean.TRUE.equals(evt.getNewValue())) {
-         * // quando finisce, sostituisco con GameUI
-         * setTitle("Before Deorbiting");
-         * getContentPane().removeAll();
-         * GameUI gioco = new GameUI();
-         * getContentPane().add(gioco.getContentPane()); // o il suo JPanel principale
-         * validate();
-         * repaint();
-         * }
-         * });
-         * 
-         * // 4) Avvio l'animazione
-         * loadBarPanel.startLoadBar();
-         */
         // 1) Rimuovo tutti i componenti del menu
         getContentPane().removeAll();
         repaint();
@@ -213,9 +189,11 @@ public class MenuUI extends JFrame {
                 g.fillRect(0, 0, getWidth(), getHeight());
                 super.paintComponent(g);
             }
+
         };
         btn.setFocusPainted(false);
         btn.setForeground(TEXT);
+        btn.setFont(new Font("Consolas", Font.BOLD, 16));
         btn.setOpaque(false); // disabilita fill LAF
         btn.setContentAreaFilled(false); // disabilita fill LAF
         btn.setBorder(BorderFactory.createLineBorder(BORDER, 5));
@@ -257,23 +235,25 @@ public class MenuUI extends JFrame {
         gl.setHorizontalGroup(
                 gl.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(gl.createSequentialGroup()
-                                .addGap(30)
-                                .addComponent(audio,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.PREFERRED_SIZE))
-                        .addGroup(gl.createSequentialGroup()
-                                .addGap(450)
+                                .addGap(50)
                                 .addGroup(gl.createParallelGroup(GroupLayout.Alignment.LEADING)
                                         .addComponent(start, 200, 200, 200)
                                         .addComponent(load, 200, 200, 200)
                                         .addComponent(commands, 200, 200, 200)
-                                        .addComponent(credits, 200, 200, 200))));
+                                        .addComponent(credits, 200, 200, 200)))
+                        .addGroup(gl.createSequentialGroup()
+                                .addContainerGap(0, Short.MAX_VALUE) // “spinge” tutto a sinistra
+                                .addComponent(audio,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addGap(50) // 30px dal bordo destro
+                        )
+        );
+
         gl.setVerticalGroup(
                 gl.createSequentialGroup()
-                        .addGap(130)
-                        .addComponent(audio, 64, 64, 64)
-                        .addGap(50)
+                        .addGap(200)
                         .addComponent(start, 64, 64, 64)
                         .addGap(32)
                         .addComponent(load, 64, 64, 64)
@@ -281,7 +261,11 @@ public class MenuUI extends JFrame {
                         .addComponent(commands, 64, 64, 64)
                         .addGap(32)
                         .addComponent(credits, 64, 64, 64)
-                        .addGap(30));
+                        .addGap(30)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, Short.MAX_VALUE, Short.MAX_VALUE)
+                        .addComponent(audio, 64, 64, 64)
+                        .addGap(50)
+        );
 
         GroupLayout fl = new GroupLayout(getContentPane());
         getContentPane().setLayout(fl);

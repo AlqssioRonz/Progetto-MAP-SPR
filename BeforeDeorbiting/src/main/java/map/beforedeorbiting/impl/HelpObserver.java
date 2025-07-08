@@ -5,6 +5,7 @@ import java.io.Serializable;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.GameDesc;
+import map.beforedeorbiting.ui.CommandsUI;
 
 /**
  * Questa classe rappresenta l'observer del comando 'AIUTO', permette di
@@ -27,25 +28,11 @@ public class HelpObserver implements GameObserver, Serializable {
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {
-        StringBuilder helpmsg = new StringBuilder();
-        if (parserOutput.getCommand().getType() == CommandType.HELP) {
-            helpmsg.append("Per eseguire un comando, scrivi il nome del comando e, se dovesse servire, aggiungi gli oggetti da utilizzare");
-            helpmsg.append("I comandi disponibili sono:\n"
-                    + "INVENTARIO: visualizza gli oggetti nell'inventario\n"
-                    + "AVANTI: per muoverti in avanti\n"
-                    + "INDIETRO: per muoverti indietro\n"
-                    + "DESTRA: per muoverti a destra\n"
-                    + "SINISTRA: per muoverti a sinistra\n"
-                    + "SOPRA: per andare sopra\n"
-                    + "SOTTO: per andare sotto\n"
-                    + "PRENDI: per prendere un oggetto\n"
-                    + "LASCIA: per lasciare un oggetto\n"
-                    + "USA: per usare un oggetto o più se concatenati\n"
-                    + "OSSERVA: per osservare l'ambiente circostante o un oggetto\n"
-                    + "SALVA: per salvare la partita\n"
-                    + "AIUTO: per visualizzare la lista dei comandi\n");
+        if (parserOutput.getCommand() != null && parserOutput
+                .getCommand().getType() == CommandType.HELP) {
+            CommandsUI help = CommandsUI.getInstance();
+            help.setVisible(true);
         }
-        return helpmsg.toString();
+        return "";
     }
-
 }

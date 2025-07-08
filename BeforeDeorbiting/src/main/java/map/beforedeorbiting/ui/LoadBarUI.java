@@ -14,17 +14,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicProgressBarUI;
 
 /**
  *
  * @author andre
  */
 public class LoadBarUI extends JPanel {
-    
 
     private JProgressBar progressBar;
     private JLabel progressBarLabel;
@@ -51,14 +52,37 @@ public class LoadBarUI extends JPanel {
         background.setLayout(null);
 
         // Load bar
-        int border=5;
+        int border = 5;
         progressBar = new JProgressBar();
-        progressBar.setForeground(new Color(0, 200, 170));
+        progressBar.setForeground(Color.decode("#00e1d4"));
         progressBar.setBackground(Color.BLACK);
         progressBar.setOpaque(true);
         progressBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, border));
         progressBar.setLayout(new BorderLayout());
-        progressBar.setBounds(100, 615+border, 900, 50-2*border);
+        progressBar = new JProgressBar();
+        progressBar.setForeground(Color.decode("#00e1d4"));
+        progressBar.setBackground(Color.BLACK);
+        progressBar.setOpaque(true);
+        progressBar.setBorder(BorderFactory.createLineBorder(Color.BLACK, border));
+
+// ** override della UI per disegnare la fill a tutta larghezza percentuale **
+        progressBar.setUI(new BasicProgressBarUI() {
+
+            @Override
+            protected void paintDeterminate(Graphics g, JComponent c) {
+                double progress = progressBar.getPercentComplete();
+                int larghezza = (int) (c.getWidth() * progress);
+                int altezza = c.getHeight();
+                g.setColor(progressBar.getForeground());
+                g.fillRect(0, 0, larghezza, altezza);
+                // e poi disegniamo il bordo esterno come al solito
+                g.setColor(Color.BLACK);
+                g.drawRect(0, 0, c.getWidth() - 1, c.getHeight() - 1);
+            }
+        });
+
+        progressBar.setLayout(new BorderLayout());
+        progressBar.setBounds(100, 615 + border, 900, 50 - 2 * border);
 
         // Etichetta sulla barra
         progressBarLabel = new JLabel();
@@ -76,8 +100,6 @@ public class LoadBarUI extends JPanel {
         int startX = 100;
         int centerX = startX + arcWidth / 2;
         int centerY = 550;
-
-        
         // Pannello per disegnare il pennello
         imgPanel = new JPanel() {
             @Override
@@ -114,7 +136,6 @@ public class LoadBarUI extends JPanel {
             @Override
             public void run() {
                 if (counter < 100) {
-                   
                     progressBar.setValue(counter);
                     progressBarLabel.setText("Lancio della spazione... " + counter + "%");
 
@@ -127,7 +148,7 @@ public class LoadBarUI extends JPanel {
                     double t = counter / 100.0;
                     xPosition = (int) (startX + t * arcWidth);
                     double dx = xPosition - centerX;
-                    yPosition = (int) (centerY - Math.sqrt(Math.max(0, (arcWidth / 2.0) * (arcWidth / 2.0) - dx * dx)))-35;
+                    yPosition = (int) (centerY - Math.sqrt(Math.max(0, (arcWidth / 2.0) * (arcWidth / 2.0) - dx * dx))) - 35;
                     repaint(); // Ridisegna tutto il pannello
                     counter++;
                 } else {
@@ -145,7 +166,6 @@ public class LoadBarUI extends JPanel {
                 }
             }
         };
-        timer.scheduleAtFixedRate(taskProgressBar, 0, 20);         
+        timer.scheduleAtFixedRate(taskProgressBar, 0, 20);
     }
 }
-

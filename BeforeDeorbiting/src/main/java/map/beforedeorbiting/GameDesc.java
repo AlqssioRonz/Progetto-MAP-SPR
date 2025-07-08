@@ -26,14 +26,13 @@ public abstract class GameDesc implements Serializable {
     private final List<Command> commands = new ArrayList<>();
 
     private final List<BDObject> listObj = new ArrayList<>();
-    
-    private String notebookText = "";
 
     private Inventory inventory = Inventory.getInstance();
 
     private Room currentRoom;
 
     public List<Room> getRooms() {
+
         return rooms;
     }
 
@@ -63,6 +62,7 @@ public abstract class GameDesc implements Serializable {
     public void setCurrentRoom(Room currentRoom) {
         this.currentRoom = currentRoom;
     }
+
     /**
      * Metodi astratti per generalizzare GameDesc come template per una
      * avventura testuale
@@ -71,14 +71,6 @@ public abstract class GameDesc implements Serializable {
      * @param out
      */
     public abstract void nextMove(ParserOutput p, PrintStream out);
-    
-    public String getNotebookText() {
-        return notebookText;
-    }
-
-    public void setNotebookText(String notebookText) {
-        this.notebookText = notebookText;
-    }
 
     public abstract String getWelcomeMessage();
 
@@ -96,13 +88,13 @@ public abstract class GameDesc implements Serializable {
                 .filter(obj -> obj.getId() == id)
                 .count();
     }
-    
+
     public Room getRoomByName(String name) {
-        
+
         return rooms.stream()
-            .filter(room -> room.getName().equals(name))
-            .findFirst()
-            .orElse(null);
+                .filter(room -> room.getName().equals(name))
+                .findFirst()
+                .orElse(null);
     }
 
 }

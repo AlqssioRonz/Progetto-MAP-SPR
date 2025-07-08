@@ -14,19 +14,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Gestisce il salvataggio e caricamento dello stato di gioco in file JSON con timestamp.
- * Ora registra un InstanceCreator per GameDesc in modo da istanziare BeforeDeorbiting().
- * 
+ * Gestisce il salvataggio e caricamento dello stato di gioco in file JSON con
+ * timestamp. Ora registra un InstanceCreator per GameDesc in modo da istanziare
+ * BeforeDeorbiting().
+ *
  * @author ronzu
  */
 public class JSONSaveController {
-
-    private static final DateTimeFormatter TIMESTAMP_FORMAT =
-            DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+    private static final DateTimeFormatter TIMESTAMP_FORMAT
+            = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
     private static final Path SAVE_DIR = Path.of("saves");
 
     /**
-     * Il Gson configurato con pretty printing e con il TypeAdapter per GameDesc.
+     * Il Gson configurato con pretty printing e con il TypeAdapter per
+     * GameDesc.
+>>>>>>> 90d5649 (Modificate alcune cose)
      */
     private static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
@@ -41,7 +43,9 @@ public class JSONSaveController {
             .create();
 
     /**
-     * Salva il gioco creando un file con timestamp, es. save_20250702_153055.json
+     * Salva il gioco creando un file con timestamp, es.
+     * save_20250702_153055.json
+     *
      * @param game il GameDesc da serializzare
      * @throws IOException se il write fallisce
      */
@@ -59,8 +63,10 @@ public class JSONSaveController {
     }
 
     /**
-     * Carica un file di gioco da un percorso specifico.
-     * Grazie all’InstanceCreator, il GameDesc astratto verrà materializzato come BeforeDeorbiting.
+     * Carica un file di gioco da un percorso specifico. Grazie
+     * all’InstanceCreator, il GameDesc astratto verrà materializzato come
+     * BeforeDeorbiting.
+     *
      * @param path percorso del file .json
      * @return il GameDesc deserializzato
      * @throws IOException se il read fallisce

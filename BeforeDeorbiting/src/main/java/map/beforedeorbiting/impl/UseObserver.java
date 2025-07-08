@@ -150,7 +150,7 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String useNotebook(GameDesc game) {
         System.out.println("Apri il taccuino!");
-        NotebookUI.show();
+        NotebookUI.show(game);
         return "";
     }
 

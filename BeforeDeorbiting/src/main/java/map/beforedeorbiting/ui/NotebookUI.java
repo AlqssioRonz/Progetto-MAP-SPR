@@ -19,9 +19,13 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -45,7 +49,7 @@ public class NotebookUI {
 
     private static final String FILE_PATH = "notebook.txt";
 
-    public static void show() {
+    public static void show(GameDesc game) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame();
             frame.setUndecorated(true);
@@ -101,9 +105,9 @@ public class NotebookUI {
             mainPanel.add(scrollPane, BorderLayout.CENTER);
 
             File file = new File(FILE_PATH);
-            boolean[] modificato = {false};
+            boolean[] modificato = { false };
 
-            caricaContenuto(file, textArea);
+            caricaContenuto(file, textArea, game);
 
             textArea.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -125,7 +129,7 @@ public class NotebookUI {
             salvaButton.setFocusPainted(false);
             salvaButton.setBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40));
             salvaButton.addActionListener(e -> {
-                salvaContenuto(file, textArea, frame);
+                salvaContenuto(file, textArea, frame, game);
                 modificato[0] = false;
             });
 
@@ -141,11 +145,11 @@ public class NotebookUI {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     if (modificato[0]) {
-                        Object[] opzioni = {"Sì", "No", "Annulla"};
+                        Object[] opzioni = { "Sì", "No", "Annulla" };
                         int scelta = mostraMessaggioChiusuraSalvataggio(frame);
 
                         if (scelta == JOptionPane.YES_OPTION) {
-                            salvaContenuto(file, textArea, frame);
+                            salvaContenuto(file, textArea, frame, game);
                             chiudi(frame);
                         } else if (scelta == JOptionPane.NO_OPTION) {
                             chiudi(frame);
@@ -162,7 +166,7 @@ public class NotebookUI {
                 }
             });
 
-            final Point[] clickOffset = {new Point()};
+            final Point[] clickOffset = { new Point() };
 
             frame.addMouseListener(new MouseAdapter() {
                 @Override
@@ -185,29 +189,54 @@ public class NotebookUI {
     }
 
     // Metodo per leggere il contenuto del file e inserirlo nel JTextArea
-    private static void caricaContenuto(File file, JTextArea textArea) {
-        try {
-            if (!file.exists()) {
-                file.createNewFile(); // crea il file se non esiste
+    private static void caricaContenuto(File file, JTextArea textArea, GameDesc game) {
+        // Assicuro che il file esista
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,
+                        "Impossibile creare il file del taccuino.",
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+        }
+
+        // Leggo tutto il contenuto in UTF-8
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream(file),
+                        StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                textArea.append(line + "\n"); // aggiunge ogni riga al text area
+                sb.append(line).append("\n");
             }
-            reader.close();
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Errore nella lettura del file.", "Errore", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,
+                    "Errore nella lettura del file.",
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        // Settare tutto in una volta (evita doppioni se il metodo viene richiamato)
+        String contenuto = sb.toString();
+        textArea.setText(contenuto);
+
+        // Tieni in memoria anche nel GameDesc
+        game.setNotebookText(contenuto);
     }
 
     // Metodo per salvare il contenuto del JTextArea nel file
-    private static void salvaContenuto(File file, JTextArea textArea, JFrame parentFrame) {
+    private static void salvaContenuto(File file, JTextArea textArea, JFrame parentFrame, GameDesc game) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(textArea.getText());
             writer.close();
             mostraMesaggioSalvataggio(parentFrame);
+            game.setNotebookText(textArea.getText());
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Errore nel salvataggio del file.", "Errore",
                     JOptionPane.ERROR_MESSAGE);
@@ -230,7 +259,9 @@ public class NotebookUI {
         titolo.setBorder(new EmptyBorder(10, 0, 0, 0));
 
         // Messaggio
-        JLabel messaggio = new JLabel("<html><center>Hai chiuso il taccuino.<br>Puoi consultarlo di nuovo in qualsiasi momento.</center></html>", SwingConstants.CENTER);
+        JLabel messaggio = new JLabel(
+                "<html><center>Hai chiuso il taccuino.<br>Puoi consultarlo di nuovo in qualsiasi momento.</center></html>",
+                SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.PLAIN, 18));
 
@@ -263,7 +294,8 @@ public class NotebookUI {
         dialog.getContentPane().setBackground(new Color(10, 10, 25));
         dialog.setLayout(new BorderLayout());
 
-        JLabel messaggio = new JLabel("<html><center> Taccuino salvato con successo! <html><center>", SwingConstants.CENTER);
+        JLabel messaggio = new JLabel("<html><center> Taccuino salvato con successo! <html><center>",
+                SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.BOLD, 18));
         messaggio.setBorder(new EmptyBorder(20, 10, 10, 10));
@@ -286,7 +318,7 @@ public class NotebookUI {
     }
 
     private static int mostraMessaggioChiusuraSalvataggio(JFrame frame) {
-        final int[] scelta = {-1}; // 0 = Sì, 1 = No, 2 = Annulla
+        final int[] scelta = { -1 }; // 0 = Sì, 1 = No, 2 = Annulla
 
         JDialog dialog = new JDialog(frame, "Salvataggio", true);
         dialog.setUndecorated(true);
@@ -296,7 +328,9 @@ public class NotebookUI {
         dialog.getContentPane().setBackground(new Color(10, 10, 25));
         dialog.setLayout(new BorderLayout());
 
-        JLabel messaggio = new JLabel("<html><center> Hai modificato il taccuino. Vuoi salvare prima di uscire?<html><center>", SwingConstants.CENTER);
+        JLabel messaggio = new JLabel(
+                "<html><center> Hai modificato il taccuino. Vuoi salvare prima di uscire?<html><center>",
+                SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.BOLD, 20));
         messaggio.setBorder(new EmptyBorder(20, 10, 10, 10));
@@ -306,7 +340,7 @@ public class NotebookUI {
         JButton noButton = new JButton("No");
         JButton annullaButton = new JButton("Annulla");
 
-        for (JButton btn : new JButton[]{siButton, noButton, annullaButton}) {
+        for (JButton btn : new JButton[] { siButton, noButton, annullaButton }) {
             btn.setBackground(Color.decode("#00e1d4"));
             btn.setForeground(new Color(15, 15, 30));
             btn.setFont(new Font("Consolas", Font.BOLD, 15));

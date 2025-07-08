@@ -10,7 +10,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -22,16 +26,11 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import map.beforedeorbiting.BeforeDeorbiting;
-import map.beforedeorbiting.Engine;
-import map.beforedeorbiting.GameDesc;
-import map.beforedeorbiting.util.JSONSaveController;
 
 /**
  * Classe che rappresenta il menu principale del gioco Before Deorbiting.
@@ -56,7 +55,6 @@ public class MenuUI extends JFrame {
     private JButton credits;
     private JButton audio;
     private JFileChooser fileChooser;
-    private JProgressBar progressBar;
 
     public MenuUI() throws InterruptedException {
         if (!serverOn) {
@@ -125,6 +123,20 @@ public class MenuUI extends JFrame {
     }
 
     private void onStart(ActionEvent e) {
+        // 0) Tronco il file notebook.txt
+        Path notebookFile = Paths.get("notebook.txt");
+        try {
+            Files.writeString(
+                    notebookFile,
+                    "", // contenuto vuoto
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException ex) {
+            Logger.getLogger(MenuUI.class.getName())
+                    .log(Level.SEVERE, "Impossibile resettare il taccuino", ex);
+        }
+
         // 1) Rimuovo tutti i componenti del menu
         getContentPane().removeAll();
         repaint();
@@ -135,10 +147,11 @@ public class MenuUI extends JFrame {
         setTitle("Caricamento in corso...");
         getContentPane().add(loadBarPanel);
         validate();
+
         // 3) Listener per isFinished
         loadBarPanel.addPropertyChangeListener(evt -> {
-            if ("isFinished".equals(evt.getPropertyName()) && Boolean.TRUE.equals(evt.getNewValue())) {
-                // Avvia il gioco dopo il caricamento
+            if ("isFinished".equals(evt.getPropertyName())
+                    && Boolean.TRUE.equals(evt.getNewValue())) {
                 SwingUtilities.invokeLater(() -> {
                     GameUI gameUI = new GameUI();
                     gameUI.setVisible(true);
@@ -149,7 +162,6 @@ public class MenuUI extends JFrame {
 
         // 4) Avvio l'animazione
         loadBarPanel.startLoadBar();
-
     }
 
     private void onLoad(ActionEvent e) {
@@ -248,8 +260,7 @@ public class MenuUI extends JFrame {
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
                                 .addGap(50) // 30px dal bordo destro
-                        )
-        );
+                        ));
 
         gl.setVerticalGroup(
                 gl.createSequentialGroup()
@@ -264,8 +275,7 @@ public class MenuUI extends JFrame {
                         .addGap(30)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, Short.MAX_VALUE, Short.MAX_VALUE)
                         .addComponent(audio, 64, 64, 64)
-                        .addGap(50)
-        );
+                        .addGap(50));
 
         GroupLayout fl = new GroupLayout(getContentPane());
         getContentPane().setLayout(fl);
@@ -281,6 +291,7 @@ public class MenuUI extends JFrame {
                                 GroupLayout.DEFAULT_SIZE,
                                 GroupLayout.DEFAULT_SIZE,
                                 Short.MAX_VALUE));
+
     }
 
     private void startGame() throws InterruptedException {

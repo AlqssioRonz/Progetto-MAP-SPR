@@ -670,5 +670,6 @@ public class GameUI extends JFrame {
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             }
         }
+
     }
 }

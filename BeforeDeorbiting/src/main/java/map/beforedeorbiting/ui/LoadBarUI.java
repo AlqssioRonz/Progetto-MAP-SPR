@@ -100,6 +100,7 @@ public class LoadBarUI extends JPanel {
         int startX = 100;
         int centerX = startX + arcWidth / 2;
         int centerY = 550;
+
         // Pannello per disegnare il pennello
         imgPanel = new JPanel() {
             @Override
@@ -136,6 +137,7 @@ public class LoadBarUI extends JPanel {
             @Override
             public void run() {
                 if (counter < 100) {
+
                     progressBar.setValue(counter);
                     progressBarLabel.setText("Lancio della spazione... " + counter + "%");
 

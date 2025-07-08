@@ -21,14 +21,13 @@ import java.time.format.DateTimeFormatter;
  * @author ronzu
  */
 public class JSONSaveController {
-    private static final DateTimeFormatter TIMESTAMP_FORMAT
-            = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+
+    private static final DateTimeFormatter TIMESTAMP_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
     private static final Path SAVE_DIR = Path.of("saves");
 
     /**
      * Il Gson configurato con pretty printing e con il TypeAdapter per
      * GameDesc.
->>>>>>> 90d5649 (Modificate alcune cose)
      */
     private static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
@@ -72,7 +71,27 @@ public class JSONSaveController {
      * @throws IOException se il read fallisce
      */
     public static GameDesc loadGame(Path path) throws IOException {
+        // 1. Leggi e deserializza
         String json = Files.readString(path, StandardCharsets.UTF_8);
-        return gson.fromJson(json, GameDesc.class);
+        GameDesc game = gson.fromJson(json, GameDesc.class);
+
+        // 2. Sincronizza il taccuino fisico con quello caricato dal JSON
+        String testo = game.getNotebookText();
+        // se è null, lo consideriamo vuoto
+        if (testo == null)
+            testo = "";
+        Path notebookFile = Path.of("notebook.txt");
+        // crea la cartella se serve e poi tronca/sovrascrive
+        Files.createDirectories(notebookFile.getParent() == null
+                ? Paths.get(".")
+                : notebookFile.getParent());
+        Files.writeString(
+                notebookFile,
+                testo,
+                StandardCharsets.UTF_8,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING);
+
+        return game;
     }
 }

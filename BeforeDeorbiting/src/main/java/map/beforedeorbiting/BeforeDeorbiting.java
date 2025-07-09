@@ -145,34 +145,34 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         umano.setRoomImage("src/main/resources/img/ISS.png");
         Room zvezda = new Room(0, "ZVEZDA", "Dormitorio.");
         zvezda.setRoomImage("src/main/resources/img/zvezda.jpeg");
-        zvezda.getObjects().add(modellinoRusso);
+        zvezda.addObject(modellinoRusso);
         Room zarya = new Room(1, "ZARYA", "Magazzino della stazione.");
         zarya.setRoomImage("src/main/resources/img/zarya_chiusa.jpeg");
-        zarya.getObjects().add(pezzoDiVetro);
-        zarya.getObjects().add(tutaSpaziale);
-        zarya.getObjects().add(bigliettinoLuke);
+        zarya.addObject(pezzoDiVetro);
+        zarya.addObject(tutaSpaziale);
+        zarya.addObject(bigliettinoLuke);
         Room unity = new Room(2, "UNITY", "Nodo di collegamento.");
         unity.setRoomImage("src/main/resources/img/node1.jpeg");
-        unity.getObjects().add(modellinoAmericano);
-        unity.getObjects().add(cassa);
+        unity.addObject(modellinoAmericano);
+        unity.addObject(cassa);
         cassa.add(pezzoDiVetro);
         Room quest = new Room(3, "QUEST", "Accesso allo spazio.");
         quest.setRoomImage("src/main/resources/img/airlock-quest.jpeg");
-        quest.getObjects().add(modellinoSx);
+        quest.addObject(modellinoSx);
         Room tranquility = new Room(4, "TRANQUILITY", "Cupola di osservazione.");
         tranquility.setRoomImage("src/main/resources/img/cupola.png");
-        tranquility.getObjects().add(modellinoDx);
+        tranquility.addObject(modellinoDx);
         Room spazio = new Room(5, "SPAZIO", "Vuoto cosmico.");
         spazio.setRoomImage("src/main/resources/img/SPAZIO1.jpg");
         spazio.setAccessible(false);
         Room leonardo = new Room(6, "LEONARDO", "Centro dati.");
         leonardo.setRoomImage("src/main/resources/img/leonardo.jpeg");
-        leonardo.getObjects().add(diarioSusan);
-        leonardo.getObjects().add(computer);
+        leonardo.addObject(diarioSusan);
+        leonardo.addObject(computer);
         leonardo.setAccessible(false);
         Room destiny = new Room(7, "DESTINY", "Laboratorio avanzato.");
         destiny.setRoomImage("src/main/resources/img/destiny_aperto.png");
-        destiny.getObjects().add(pezzoDiVetro);
+        destiny.addObject(pezzoDiVetro);
         destiny.setAccessible(false);
         Room harmony = new Room(8, "HARMONY", "Corridoio pressurizzato.");
         harmony.setRoomImage("src/main/resources/img/harmony.png");
@@ -211,11 +211,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         quest.setDeck(spazio);
         unity.setDeck(leonardo);
         leonardo.setOverhead(unity);
-
-        /*PosizionareGliOggettiNelleStanze*/
-        zvezda.addObject(modellinoRusso);
-
-        zarya.addObject(tutaSpaziale);
 
         /*RoomLook*/
         zvezda.setLook("""

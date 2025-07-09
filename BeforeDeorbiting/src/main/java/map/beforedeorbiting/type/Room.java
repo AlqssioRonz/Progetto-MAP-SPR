@@ -261,11 +261,15 @@ public class Room {
     }
 
     public void addObject(BDObject o) {
-        objects.add(o);
+        if (!objects.contains(o)) {
+            objects.add(o);
+        }
     }
 
     public void removeObject(BDObject o) {
-        objects.remove(o);
+        if (objects.contains(o)) {
+            objects.remove(o);
+        }
     }
 
     public BDObject getObject(int id) {

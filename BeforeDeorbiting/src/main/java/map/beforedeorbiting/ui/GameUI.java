@@ -466,7 +466,7 @@ public class GameUI extends JFrame {
         sep.setBackground(bluchiaro);
         sep.setPreferredSize(new Dimension(7, 0));
         sep.setMaximumSize(new Dimension(7, Integer.MAX_VALUE));
-
+    
         // 3a) colonna di SINISTRA (output + input)
         JPanel left = new JPanel(new BorderLayout());
         left.add(scrollPane, BorderLayout.CENTER);
@@ -486,9 +486,10 @@ public class GameUI extends JFrame {
         JPanel right = new JPanel(new BorderLayout());
         right.add(imageViewer, BorderLayout.CENTER);
 
-        JPanel inventory = new JPanel();
+        //INVENTARIO
+        JPanel inventory = new InventoryUI(game);
         inventory.setBackground(Color.decode("#3A3A3A"));
-        inventory.setPreferredSize(new Dimension(0, 100));
+        inventory.setPreferredSize(new Dimension(5, 100));
         inventory.setBorder(BorderFactory.createMatteBorder(7, 0, 0, 0, bluchiaro));
         right.add(inventory, BorderLayout.SOUTH);
 

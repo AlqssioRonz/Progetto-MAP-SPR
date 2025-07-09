@@ -15,11 +15,14 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.table.JTableHeader;
+
 import map.beforedeorbiting.database.DBConfig;
 
 public class HALterminal extends JFrame {
     private final CardLayout cardLayout;
     private final JPanel mainPanel;
+    
+    private boolean aiActive = true;
 
     private static final Color BG_COLOR = Color.decode("#0f111c");
     private static final Color PANEL_COLOR = Color.decode("#0f111c");
@@ -90,7 +93,6 @@ public class HALterminal extends JFrame {
         JToggleButton aiToggle = new JToggleButton("Disattiva Controllo AI");
         styleSciFiButton(aiToggle);
         aiToggle.addActionListener(new ActionListener() {
-            private boolean aiActive = true;
             @Override
             public void actionPerformed(ActionEvent e) {
                 aiActive = !aiActive;
@@ -143,7 +145,7 @@ public class HALterminal extends JFrame {
                 data[i][4] = a.getHoursOnISS();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Errore: "+e);
             data = new Object[0][5];
         }
 
@@ -213,5 +215,9 @@ public class HALterminal extends JFrame {
         HALterminal terminal = new HALterminal();
         terminal.setVisible(true);
     });
-}
+    }
+    
+    public boolean isActive() {
+        return aiActive;
+    }
 }

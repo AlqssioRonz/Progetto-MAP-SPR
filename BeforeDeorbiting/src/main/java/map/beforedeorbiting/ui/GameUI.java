@@ -30,21 +30,21 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import map.beforedeorbiting.BeforeDeorbiting;
 import map.beforedeorbiting.parser.ParserOutput;
+import map.beforedeorbiting.type.CommandType;
 
 /**
  * Classe che mostra la GUI del gioco.
@@ -55,7 +55,6 @@ public class GameUI extends JFrame {
     private static final Color bluscuro = Color.decode("#0f111c");
     private static final Color bluchiaro = Color.decode("#00e1d4");
     private static final Color TEXT = new Color(6, 6, 6);
-    private static final Color RED = new Color(238, 75, 43);
 
     // private final MusicHandler musicHTN = new MusicHandler();
     private Parser parser = null;
@@ -72,8 +71,6 @@ public class GameUI extends JFrame {
     private JPanel macroPanel;
     private ImagePanel imageViewer; // Changed to ImagePanel
     private JLabel imageLabel;
-
-    private JMenu tendina;
     private JMenuItem impostazioniItem;
     private boolean load;
 
@@ -155,9 +152,9 @@ public class GameUI extends JFrame {
      * Inizializza i componenti principali dell'interfaccia.
      *
      * @param loadGame Indica se caricare un salvataggio.
-     * @param file     File di salvataggio da caricare, se presente.
+     * @param file File di salvataggio da caricare, se presente.
      * @throws Exception Se c'è un problema durante l'inizializzazione o il
-     *                   caricamento.
+     * caricamento.
      */
     private void mainComponents(boolean loadGame, File file) throws Exception {
         if (!loadGame) {
@@ -191,7 +188,7 @@ public class GameUI extends JFrame {
      * Inizializza i componenti della GUI.
      *
      * @throws InterruptedException Se c'è un problema durante
-     *                              l'inizializzazione.
+     * l'inizializzazione.
      */
     private void initComponents() throws InterruptedException {
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -220,16 +217,15 @@ public class GameUI extends JFrame {
         JButton jButton1 = new JButton();
         JButton jButton2 = new JButton();
 
-        JButton esciButton = new JButton();
+        JButton tornaMenu = new JButton();
 
         musicButton = new JButton();
 
-        tendina = new JMenu();
         impostazioniItem = new JMenuItem();
 
         confermaChiusura.setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
         confermaChiusura.setResizable(false);
-        confermaChiusura.setSize(new Dimension(750, 480));
+        confermaChiusura.setSize(new Dimension(350, 150));
         confermaChiusura.setLocationRelativeTo(null);
         confermaChiusura.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         confermaChiusura.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -240,8 +236,10 @@ public class GameUI extends JFrame {
         });
         buttonPanelExit.setBackground(bluscuro);
 
-        jButton1.setBackground(bluscuro);
-        jButton1.setText("E-S-C-I");
+        jButton1.setText("Sì");
+        jButton1.setBackground(bluchiaro);
+        jButton1.setFocusPainted(false);
+        jButton1.setForeground(bluscuro);
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -254,8 +252,10 @@ public class GameUI extends JFrame {
         });
         buttonPanelExit.add(jButton1);
 
-        jButton2.setBackground(bluscuro);
-        jButton2.setText("ci ripenso");
+        jButton2.setText("No");
+        jButton2.setBackground(bluchiaro);
+        jButton2.setFocusPainted(false);
+        jButton2.setForeground(bluscuro);
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -265,17 +265,12 @@ public class GameUI extends JFrame {
         buttonPanelExit.add(jButton2);
 
         jTextArea2.setFont(FONT);
-        jTextArea2.setText("SAY 'ESCI' ONE MORE TIME");
-        jTextArea2.setBackground(bluscuro);
+        jTextArea2.setText("Ne sei proprio sicuro?");
+        jTextArea2.setForeground(bluchiaro);
         jTextArea2.setHorizontalAlignment(SwingConstants.CENTER);
         jTextArea2.setVerticalAlignment(SwingConstants.CENTER);
         jTextArea2.setFocusable(false);
         jTextArea2.setBorder(null);
-
-        imageLabel.setIcon(new ImageIcon("src\\img\\HTN_esci.png"));
-        imageLabel.setPreferredSize(new Dimension(682, 384));
-        imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         panel.setBackground(bluscuro);
         panel.setLayout(new BorderLayout());
@@ -335,59 +330,34 @@ public class GameUI extends JFrame {
         menuBar.setPreferredSize(new Dimension(0, 50));
 
         // crea JMenu “Opzioni”
-        tendina = new JMenu("Opzioni");
-        tendina.setBackground(bluscuro);
-        tendina.setForeground(TEXT);
-        tendina.setBorder(new LineBorder(bluscuro, 4));
-        menuBar.add(tendina);
+        JButton skipButton = new JButton("Skip testo");
+        skipButton.setBackground(bluchiaro);
+        skipButton.setFocusPainted(false);
+        skipButton.setMaximumSize(new Dimension(125, 30));
+        skipButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    skipButtonMouseClicked(e, printer);
+                } catch (InterruptedException ex) {
+                    System.getLogger(GameUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                }
+            }
+        });
+
+        menuBar.add(skipButton);
 
         // spinge i bottoni a destra
         menuBar.add(Box.createHorizontalGlue());
 
-        // configura e aggiungi il bottone Mute
-        musicButton.setText("Mute");
-        musicButton.setBackground(bluscuro);
-        musicButton.setForeground(RED);
-        musicButton.setPreferredSize(new Dimension(105, 30));
+        // configura e aggiungi il bottone Muta
+        musicButton.setText("Muta");
+        musicButton.setBackground(bluchiaro);
+        musicButton.setFocusPainted(false);
+        musicButton.setMaximumSize(new Dimension(125, 30));
         musicButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // il tuo listener esistente
-            }
-        });
-        menuBar.add(musicButton);
-
-        // configura e aggiungi il bottone Esci
-        esciButton.setText("Esci");
-        esciButton.setBackground(bluscuro);
-        esciButton.setForeground(TEXT);
-        esciButton.setPreferredSize(new Dimension(90, 30));
-        esciButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                esciButtonMouseClicked(e);
-            }
-        });
-        menuBar.add(esciButton);
-
-        setJMenuBar(menuBar);
-        // aggiunge un bordo inferiore di 7px viola alla menuBar
-        menuBar.setBorder(BorderFactory.createMatteBorder(
-                0, 0, // top, left
-                7, 0, // bottom, right
-                bluchiaro));
-
-        getContentPane().setBackground(bluscuro);
-
-        // musicHTN.playMusic("src\\music\\HTN_gameplaylist.wav");
-        musicButton.setText("Mute");
-        musicButton.setBackground(bluscuro);
-        musicButton.setForeground(RED);
-        musicButton.setPreferredSize(new Dimension(105, 30));
-
-        musicButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 /*
                  * if (musicHTN.isPlaying()) {
                  * musicHTN.pausaMusica();
@@ -401,6 +371,33 @@ public class GameUI extends JFrame {
                  */
             }
         });
+        menuBar.add(musicButton);
+
+        // configura e aggiungi il bottone Esci
+        tornaMenu.setText("Torna al menù");
+        tornaMenu.setBackground(bluchiaro);
+        tornaMenu.setFocusPainted(false);
+        tornaMenu.setMaximumSize(new Dimension(125, 30));
+        tornaMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    tornaMenuMouseClicked(e);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        menuBar.add(tornaMenu);
+
+        setJMenuBar(menuBar);
+        // aggiunge un bordo inferiore di 7px viola alla menuBar
+        menuBar.setBorder(BorderFactory.createMatteBorder(
+                0, 0, // top, left
+                7, 0, // bottom, right
+                bluchiaro));
+
+        getContentPane().setBackground(bluscuro);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -427,17 +424,6 @@ public class GameUI extends JFrame {
             @Override
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
                 // Niente da fare qui
-            }
-        });
-
-        esciButton.setBackground(bluscuro);
-        esciButton.setForeground(TEXT);
-        esciButton.setText("Esci");
-        esciButton.setPreferredSize(new Dimension(90, 30));
-        esciButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                esciButtonMouseClicked(evt);
             }
         });
 
@@ -492,7 +478,7 @@ public class GameUI extends JFrame {
         inventory.setBorder(BorderFactory.createMatteBorder(7, 0, 0, 0, bluchiaro));
         right.add(inventory, BorderLayout.SOUTH);
 
-        left.setPreferredSize(new Dimension(350, 0));
+        left.setPreferredSize(new Dimension(300, 0));
         right.setPreferredSize(null);
         center.add(left);
         center.add(sep);
@@ -585,9 +571,9 @@ public class GameUI extends JFrame {
      *
      * @param evt Evento di azione.
      *
-     *            private void impostazioniMouseClicked(ActionEvent evt) {
-     *            HTN_InterfacciaSettings impostazioni = new GameUI(GameUI.this);
-     *            impostazioni.setVisible(true); }*
+     * private void impostazioniMouseClicked(ActionEvent evt) {
+     * HTN_InterfacciaSettings impostazioni = new GameUI(GameUI.this);
+     * impostazioni.setVisible(true); }*
      */
     /**
      * Gestisce l'evento di clic sul pulsante per tornare al menu principale.
@@ -617,11 +603,22 @@ public class GameUI extends JFrame {
      *
      * @param evt Evento di clic del mouse.
      */
-    private void esciButtonMouseClicked(java.awt.event.MouseEvent evt) {
-        setEnabled(false);
-        confermaChiusura.setLocationRelativeTo(null);
-        confermaChiusura.setTitle("Before Deorbiting");
-        confermaChiusura.setVisible(true);
+    private void tornaMenuMouseClicked(java.awt.event.MouseEvent evt) throws InterruptedException {
+        if (game.getLastCommand() != null && game.getLastCommand().getType()  == CommandType.SAVE) {
+            jButton1goToMenu(evt);
+        } else {
+            setEnabled(false);
+            confermaChiusura.setLocationRelativeTo(null);
+            confermaChiusura.setTitle("Torna al menù");
+            confermaChiusura.setVisible(true);
+        }
+    }
+
+    private void skipButtonMouseClicked(java.awt.event.MouseEvent ev0, PrinterUI printer) throws InterruptedException {
+        int speed = printer.getSpeed();
+        printer.setSpeed(0);
+        TimeUnit.MILLISECONDS.sleep(100);
+        printer.setSpeed(speed);
     }
 
     /**
@@ -629,7 +626,7 @@ public class GameUI extends JFrame {
      *
      * @return Il gestore della musica.
      *
-     *         public MusicHandler getMusica() { return musicHTN; }
+     * public MusicHandler getMusica() { return musicHTN; }
      */
     /**
      * Controlla se il gioco è terminato.

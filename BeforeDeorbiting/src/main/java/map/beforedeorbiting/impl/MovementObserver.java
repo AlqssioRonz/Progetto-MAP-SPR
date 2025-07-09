@@ -59,7 +59,7 @@ public class MovementObserver implements GameObserver, Serializable {
 
             Function<Room, Room> nextRoomGetter = moves.get(parserOutput.getCommand().getType());
 
-            if (nextRoomGetter != null) {
+            if (nextRoomGetter.apply(game.getCurrentRoom()) != null) {
                 Room current = game.getCurrentRoom();
                 if (current != null) {
                     Room target = nextRoomGetter.apply(current);
@@ -84,7 +84,7 @@ public class MovementObserver implements GameObserver, Serializable {
                     }
                 }
             } else {
-                movementMessage.append("Non c'è nulla da quella parte, solo spazio profondo a -270°C");
+                movementMessage.append("Non c'è nulla da quella parte, dove pensi di andare? Contro il muro?");
             }
         }
         return movementMessage.toString();

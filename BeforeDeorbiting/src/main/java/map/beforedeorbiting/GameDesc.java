@@ -26,11 +26,22 @@ public abstract class GameDesc implements Serializable {
     private final List<Command> commands = new ArrayList<>();
 
     private final List<BDObject> listObj = new ArrayList<>();
+    
     private String notebookText = "";
+    
+    private Command lastCommand;
 
     private Inventory inventory = Inventory.getInstance();
 
     private Room currentRoom;
+
+    public Command getLastCommand() {
+        return lastCommand;
+    }
+
+    public void setLastCommand(Command lastCommand) {
+        this.lastCommand = lastCommand;
+    }
 
     public List<Room> getRooms() {
         return rooms;

@@ -81,6 +81,7 @@ public class JSONSaveController {
             bd.restoreAfterLoad();
         }
 
+
         // 2. Sincronizza il taccuino fisico con quello caricato dal JSON
         String testo = game.getNotebookText();
         // se è null, lo consideriamo vuoto

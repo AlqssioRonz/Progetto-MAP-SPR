@@ -16,13 +16,15 @@ import javax.swing.text.StyledDocument;
  * @author andre
  */
 public class PrinterUI {
+
     private final JTextPane textPane;
     private final ExecutorService executor;
     private final DefaultCaret caret;
+    private int speed = 20;
 
     /**
      * Costruttore che inizializza il JTextPane e l'ExecutorService.
-     * 
+     *
      * @param textPane il JTextPane su cui verrà stampato il testo.
      */
     public PrinterUI(JTextPane textPane) {
@@ -31,10 +33,18 @@ public class PrinterUI {
         this.caret = (DefaultCaret) textPane.getCaret();
     }
 
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     /**
-     * Stampa il testo nel JTextPane con un effetto di digitazione.
-     * Ogni carattere viene aggiunto con un ritardo di 33 millisecondi.
-     * 
+     * Stampa il testo nel JTextPane con un effetto di digitazione. Ogni
+     * carattere viene aggiunto con un ritardo di 33 millisecondi.
+     *
      * @param text il testo da stampare.
      */
     public void print(String text) {
@@ -55,7 +65,7 @@ public class PrinterUI {
                             e.printStackTrace();
                         }
                     });
-                    Thread.sleep(0); // Ritardo di 33ms tra i caratteri
+                    Thread.sleep(speed);
                 }
 
                 // Riabilita l'aggiornamento automatico del caret e imposta la posizione alla fine del documento
@@ -76,5 +86,3 @@ public class PrinterUI {
         executor.shutdownNow();
     }
 }
-
-

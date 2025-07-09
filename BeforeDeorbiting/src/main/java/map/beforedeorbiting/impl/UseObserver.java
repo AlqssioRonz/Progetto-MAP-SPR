@@ -15,6 +15,7 @@ import map.beforedeorbiting.type.BDObject;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.ui.NotebookUI;
 import map.beforedeorbiting.ui.HALterminal;
+import map.beforedeorbiting.ui.InventoryUI;
 
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore
@@ -60,6 +61,7 @@ public class UseObserver implements GameObserver, Serializable {
             if (parserOutput.getObject() != null && parserOutput.getObject().isUsable()) {
                 if (game.getInventory().getList().contains(parserOutput.getObject())) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
+                    InventoryUI.updateInventory(game);
                 } else {
                     useMsg.append("Non possiedi questo oggetto al momento! Riprova, magari sarai più fortunato.");
                 }

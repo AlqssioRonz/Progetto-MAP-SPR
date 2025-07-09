@@ -7,11 +7,11 @@ Progetto di Metodi Avanzati di Programmazione (Salonia - Peluso - Ronzullo)
 - [ ] Capire come usare le lambda express
 - [X] Engine
 - [ ] Timer partita - threads
-- [ ] Debugging 1
-- [ ] GUI scheletro - swing
-- [ ] GUI immagini
+- [X] Debugging 1
+- [X] GUI scheletro - swing
+- [X] GUI immagini
 - [ ] GUI Enigma EVA - threads timer
-- [ ] Enigma Leonardo - databases
+- [X] Enigma Leonardo - databases
   - [X] Creazione del db
 - [ ] GUI enigma buio prismi
 - [ ] Enigma CanadArm2

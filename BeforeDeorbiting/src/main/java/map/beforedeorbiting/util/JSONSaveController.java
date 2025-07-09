@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import map.beforedeorbiting.BeforeDeorbiting;
+import map.beforedeorbiting.GameDesc;
 
 /**
  * Gestisce il salvataggio e caricamento dello stato di gioco in file JSON con
@@ -74,6 +76,10 @@ public class JSONSaveController {
         // 1. Leggi e deserializza
         String json = Files.readString(path, StandardCharsets.UTF_8);
         GameDesc game = gson.fromJson(json, GameDesc.class);
+
+        if (game instanceof BeforeDeorbiting bd) {
+            bd.restoreAfterLoad();
+        }
 
         // 2. Sincronizza il taccuino fisico con quello caricato dal JSON
         String testo = game.getNotebookText();

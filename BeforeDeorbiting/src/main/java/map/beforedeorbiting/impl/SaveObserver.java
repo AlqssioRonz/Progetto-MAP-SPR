@@ -5,6 +5,9 @@
 package map.beforedeorbiting.impl;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
@@ -31,6 +34,12 @@ public class SaveObserver implements GameObserver {
         StringBuilder saveMsg = new StringBuilder();
         if (parserOutput.getCommand().getType() == CommandType.SAVE) {
             try {
+                Path notePath = Path.of("notebook.txt");
+                String text = "";
+                if (Files.exists(notePath)) {
+                    text = Files.readString(notePath, StandardCharsets.UTF_8);
+                }
+                game.setNotebookText(text);
                 JSONSaveController.saveGameWithTimestamp(game);
                 saveMsg.append("[✔] Salvataggio completato.");
             } catch (IOException e) {

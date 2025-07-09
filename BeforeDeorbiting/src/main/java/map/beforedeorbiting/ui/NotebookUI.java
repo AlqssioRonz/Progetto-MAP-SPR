@@ -19,13 +19,9 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -36,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -48,33 +45,36 @@ import map.beforedeorbiting.GameDesc;
 public class NotebookUI {
 
     private static final String FILE_PATH = "notebook.txt";
+    private static final Color bluscuro = Color.decode("#0f111c");
+    private static final Color bluchiaro = Color.decode("#00e1d4");
 
     public static void show(GameDesc game) {
+
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame();
             frame.setUndecorated(true);
             frame.setSize(600, 400);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            frame.getRootPane().setBorder(BorderFactory.createLineBorder(Color.decode("#00e1d4"), 8));
+            frame.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 8));
             ((JComponent) frame.getContentPane()).setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
             JPanel mainPanel = new JPanel(new BorderLayout());
-            mainPanel.setBackground(new Color(10, 10, 25));
+            mainPanel.setBackground(bluscuro);
             mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
             // Barra in alto con titolo e pulsante X
             JPanel topBar = new JPanel(new BorderLayout());
-            topBar.setBackground(new Color(10, 10, 25));
+            topBar.setBackground(bluscuro);
 
             JLabel titolo = new JLabel("Taccuino di bordo", SwingConstants.CENTER);
             titolo.setFont(new Font("Consolas", Font.BOLD, 20));
-            titolo.setForeground(Color.decode("#00e1d4"));
+            titolo.setForeground(bluchiaro);
             titolo.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 0));
 
             JButton closeButton = new JButton("X");
-            closeButton.setForeground(Color.decode("#00e1d4"));
-            closeButton.setBackground(new Color(10, 10, 25));
+            closeButton.setForeground(bluchiaro);
+            closeButton.setBackground(bluscuro);
             closeButton.setBorder(null);
             closeButton.setFocusPainted(false);
             closeButton.setFont(new Font("Consolas", Font.BOLD, 18));
@@ -99,15 +99,15 @@ public class NotebookUI {
             textArea.setBorder(null);
 
             JScrollPane scrollPane = new JScrollPane(textArea);
-            scrollPane.setBorder(BorderFactory.createLineBorder(Color.decode("#00e1d4"), 5));
-            scrollPane.setBackground(new Color(10, 10, 25));
+            scrollPane.setBorder(BorderFactory.createLineBorder(bluchiaro, 5));
+            scrollPane.setBackground(bluscuro);
 
             mainPanel.add(scrollPane, BorderLayout.CENTER);
 
             File file = new File(FILE_PATH);
-            boolean[] modificato = { false };
+            boolean[] modificato = {false};
 
-            caricaContenuto(file, textArea, game);
+            caricaContenuto(file, textArea);
 
             textArea.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
                 public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -124,17 +124,17 @@ public class NotebookUI {
             });
 
             JButton salvaButton = new JButton("SALVA");
-            salvaButton.setBackground(Color.decode("#00e1d4"));
+            salvaButton.setBackground(bluchiaro);
             salvaButton.setFont(new Font("Consolas", Font.BOLD, 18));
             salvaButton.setFocusPainted(false);
             salvaButton.setBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40));
             salvaButton.addActionListener(e -> {
-                salvaContenuto(file, textArea, frame, game);
+                salvaContenuto(file, textArea, frame);
                 modificato[0] = false;
             });
 
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            buttonPanel.setBackground(new Color(10, 10, 25));
+            buttonPanel.setBackground(bluscuro);
             buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
             buttonPanel.add(salvaButton);
 
@@ -145,11 +145,11 @@ public class NotebookUI {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     if (modificato[0]) {
-                        Object[] opzioni = { "Sì", "No", "Annulla" };
+                        Object[] opzioni = {"Sì", "No", "Annulla"};
                         int scelta = mostraMessaggioChiusuraSalvataggio(frame);
 
                         if (scelta == JOptionPane.YES_OPTION) {
-                            salvaContenuto(file, textArea, frame, game);
+                            salvaContenuto(file, textArea, frame);
                             chiudi(frame);
                         } else if (scelta == JOptionPane.NO_OPTION) {
                             chiudi(frame);
@@ -166,7 +166,7 @@ public class NotebookUI {
                 }
             });
 
-            final Point[] clickOffset = { new Point() };
+            final Point[] clickOffset = {new Point()};
 
             frame.addMouseListener(new MouseAdapter() {
                 @Override
@@ -189,54 +189,29 @@ public class NotebookUI {
     }
 
     // Metodo per leggere il contenuto del file e inserirlo nel JTextArea
-    private static void caricaContenuto(File file, JTextArea textArea, GameDesc game) {
-        // Assicuro che il file esista
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,
-                        "Impossibile creare il file del taccuino.",
-                        "Errore",
-                        JOptionPane.ERROR_MESSAGE);
-                return;
+    private static void caricaContenuto(File file, JTextArea textArea) {
+        try {
+            if (!file.exists()) {
+                file.createNewFile(); // crea il file se non esiste
             }
-        }
-
-        // Leggo tutto il contenuto in UTF-8
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(file),
-                        StandardCharsets.UTF_8))) {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
+                textArea.append(line + "\n"); // aggiunge ogni riga al text area
             }
+            reader.close();
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null,
-                    "Errore nella lettura del file.",
-                    "Errore",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
+            JOptionPane.showMessageDialog(null, "Errore nella lettura del file.", "Errore", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Settare tutto in una volta (evita doppioni se il metodo viene richiamato)
-        String contenuto = sb.toString();
-        textArea.setText(contenuto);
-
-        // Tieni in memoria anche nel GameDesc
-        game.setNotebookText(contenuto);
     }
 
     // Metodo per salvare il contenuto del JTextArea nel file
-    private static void salvaContenuto(File file, JTextArea textArea, JFrame parentFrame, GameDesc game) {
+    private static void salvaContenuto(File file, JTextArea textArea, JFrame parentFrame) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(textArea.getText());
             writer.close();
             mostraMesaggioSalvataggio(parentFrame);
-            game.setNotebookText(textArea.getText());
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Errore nel salvataggio del file.", "Errore",
                     JOptionPane.ERROR_MESSAGE);
@@ -248,34 +223,32 @@ public class NotebookUI {
         dialog.setUndecorated(true);
         dialog.setSize(400, 150);
         dialog.setLocationRelativeTo(parentFrame);
-        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(Color.decode("#00e1d4"), 5));
-        dialog.getContentPane().setBackground(new Color(10, 10, 25));
+        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 5));
+        dialog.getContentPane().setBackground(bluscuro);
         dialog.setLayout(new BorderLayout());
 
         // Titolo
         JLabel titolo = new JLabel("Taccuino chiuso", SwingConstants.CENTER);
-        titolo.setForeground(Color.decode("#00e1d4"));
+        titolo.setForeground(bluchiaro);
         titolo.setFont(new Font("Consolas", Font.BOLD, 20));
         titolo.setBorder(new EmptyBorder(10, 0, 0, 0));
 
         // Messaggio
-        JLabel messaggio = new JLabel(
-                "<html><center>Hai chiuso il taccuino.<br>Puoi consultarlo di nuovo in qualsiasi momento.</center></html>",
-                SwingConstants.CENTER);
+        JLabel messaggio = new JLabel("<html><center>Hai chiuso il taccuino.<br>Puoi consultarlo di nuovo in qualsiasi momento.</center></html>", SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.PLAIN, 18));
 
         // Pulsante OK
         JButton okButton = new JButton("OK");
-        okButton.setBackground(Color.decode("#00e1d4"));
-        okButton.setForeground(new Color(10, 10, 25));
+        okButton.setBackground(bluchiaro);
+        okButton.setForeground(bluscuro);
         okButton.setFont(new Font("Consolas", Font.BOLD, 14));
         okButton.setFocusPainted(false);
         okButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         okButton.addActionListener(e -> dialog.dispose());
 
         JPanel bottomPanel = new JPanel();
-        bottomPanel.setBackground(new Color(10, 10, 25));
+        bottomPanel.setBackground(bluscuro);
         bottomPanel.add(okButton);
 
         dialog.add(titolo, BorderLayout.NORTH);
@@ -290,19 +263,18 @@ public class NotebookUI {
         dialog.setUndecorated(true);
         dialog.setSize(300, 120);
         dialog.setLocationRelativeTo(parentFrame);
-        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(Color.decode("#00e1d4"), 5));
-        dialog.getContentPane().setBackground(new Color(10, 10, 25));
+        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 5));
+        dialog.getContentPane().setBackground(bluscuro);
         dialog.setLayout(new BorderLayout());
 
-        JLabel messaggio = new JLabel("<html><center> Taccuino salvato con successo! <html><center>",
-                SwingConstants.CENTER);
+        JLabel messaggio = new JLabel("<html><center> Taccuino salvato con successo! <html><center>", SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.BOLD, 18));
         messaggio.setBorder(new EmptyBorder(20, 10, 10, 10));
         dialog.add(messaggio, BorderLayout.CENTER);
 
         JButton okButton = new JButton("OK");
-        okButton.setBackground(Color.decode("#00e1d4"));
+        okButton.setBackground(bluchiaro);
         okButton.setForeground(new Color(15, 15, 30));
         okButton.setFont(new Font("Consolas", Font.BOLD, 15));
         okButton.setFocusPainted(false);
@@ -310,7 +282,7 @@ public class NotebookUI {
         okButton.addActionListener(e -> dialog.dispose());
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(new Color(10, 10, 25));
+        buttonPanel.setBackground(bluscuro);
         buttonPanel.add(okButton);
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -318,19 +290,17 @@ public class NotebookUI {
     }
 
     private static int mostraMessaggioChiusuraSalvataggio(JFrame frame) {
-        final int[] scelta = { -1 }; // 0 = Sì, 1 = No, 2 = Annulla
+        final int[] scelta = {-1}; // 0 = Sì, 1 = No, 2 = Annulla
 
         JDialog dialog = new JDialog(frame, "Salvataggio", true);
         dialog.setUndecorated(true);
         dialog.setSize(420, 160);
         dialog.setLocationRelativeTo(frame);
-        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(Color.decode("#00e1d4"), 3));
-        dialog.getContentPane().setBackground(new Color(10, 10, 25));
+        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 3));
+        dialog.getContentPane().setBackground(bluscuro);
         dialog.setLayout(new BorderLayout());
 
-        JLabel messaggio = new JLabel(
-                "<html><center> Hai modificato il taccuino. Vuoi salvare prima di uscire?<html><center>",
-                SwingConstants.CENTER);
+        JLabel messaggio = new JLabel("<html><center> Hai modificato il taccuino. Vuoi salvare prima di uscire?<html><center>", SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.BOLD, 20));
         messaggio.setBorder(new EmptyBorder(20, 10, 10, 10));
@@ -340,8 +310,8 @@ public class NotebookUI {
         JButton noButton = new JButton("No");
         JButton annullaButton = new JButton("Annulla");
 
-        for (JButton btn : new JButton[] { siButton, noButton, annullaButton }) {
-            btn.setBackground(Color.decode("#00e1d4"));
+        for (JButton btn : new JButton[]{siButton, noButton, annullaButton}) {
+            btn.setBackground(bluchiaro);
             btn.setForeground(new Color(15, 15, 30));
             btn.setFont(new Font("Consolas", Font.BOLD, 15));
             btn.setFocusPainted(false);
@@ -364,7 +334,7 @@ public class NotebookUI {
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-        buttonPanel.setBackground(new Color(10, 10, 25));
+        buttonPanel.setBackground(bluscuro);
         buttonPanel.add(siButton);
         buttonPanel.add(noButton);
         buttonPanel.add(annullaButton);

@@ -26,6 +26,8 @@ public class Room {
     private String gameStory;
 
     private String history;
+    
+    private String roomImage;
 
     private boolean visible = true;
 
@@ -176,6 +178,14 @@ public class Room {
 
     public String getHistory() {
         return this.history;
+    }
+    
+    public void setRoomImage(String roomImage) {
+        this.roomImage = roomImage;
+    }
+
+    public String getRoomImage() {
+        return roomImage;
     }
 
     public boolean isVisible() {

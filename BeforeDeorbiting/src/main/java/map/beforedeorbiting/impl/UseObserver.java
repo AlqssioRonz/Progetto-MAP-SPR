@@ -143,6 +143,7 @@ public class UseObserver implements GameObserver, Serializable {
                 + "Iniziano a riaffiorare tutti i bei ricordi e le avventure passate insieme, "
                 + "causandoti tanta nostalgia.\n");
         game.getInventory().remove(game.getObjectByID(10));
+        game.getRoomByName("SPAZIO").setAccessible(true);
         // quando entrerà in leonardo, dopo il minigame, scrivere che la tuta si è
         // completamente rotta
         return wearSuit.toString();

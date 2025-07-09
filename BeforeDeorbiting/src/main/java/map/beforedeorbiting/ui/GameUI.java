@@ -2,11 +2,7 @@ package map.beforedeorbiting.ui;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JToolBar;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 import javax.swing.JTextPane;
 import javax.swing.JTextField;
 import javax.swing.ImageIcon;
@@ -20,13 +16,13 @@ import map.beforedeorbiting.parser.Parser;
 
 import javax.swing.SwingUtilities;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.GroupLayout;
 import javax.swing.SwingConstants;
-import javax.sound.sampled.Mixer;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,12 +32,13 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -55,12 +52,12 @@ import map.beforedeorbiting.parser.ParserOutput;
 public class GameUI extends JFrame {
 
     private static final Font FONT = new Font("Helvetica", Font.BOLD, 16);
-    private static final Color BACKGROUND_PINK = new Color(230, 170, 206);
-    private static final Color BACKGROUND_PURPLE = new Color(79, 1, 71);
+    private static final Color bluscuro = Color.decode("#0f111c");
+    private static final Color bluchiaro = Color.decode("#00e1d4");
     private static final Color TEXT = new Color(6, 6, 6);
     private static final Color RED = new Color(238, 75, 43);
 
-    //private final MusicHandler musicHTN = new MusicHandler();
+    // private final MusicHandler musicHTN = new MusicHandler();
     private Parser parser = null;
     private Engine engine;
     private GameDesc game;
@@ -75,7 +72,7 @@ public class GameUI extends JFrame {
     private JPanel macroPanel;
     private ImagePanel imageViewer; // Changed to ImagePanel
     private JLabel imageLabel;
-    private JPanel underPanel;
+
     private JMenu tendina;
     private JMenuItem impostazioniItem;
     private boolean load;
@@ -131,35 +128,36 @@ public class GameUI extends JFrame {
         } catch (Exception ex) {
             Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //initCurrentImage();
+        // initCurrentImage();
 
         // Se usi Parser, lo lasci dentro Engine (non qui)
         // Mostra subito stanza e testo
-        //writeOnPanel(game.getCurrentRoom().getDescription());
-        //setRoomImage(game.getCurrentRoom().getName());
+        // writeOnPanel(game.getCurrentRoom().getDescription());
+        // setRoomImage(game.getCurrentRoom().getName());
         // Avvia il timer
-        //updateTimerLabel();
+        // updateTimerLabel();
     }
 
     /**
      * Conclude la partita e mostra la finestra di fine gioco.
      */
     /*
-    public void concludiPartita() {
-        musicHTN.stopMusica();
-        SwingUtilities.invokeLater(() -> {
-            HTN_InterfacciaEnding endingFrame = new HTN_InterfacciaEnding(this);
-            endingFrame.setVisible(true);
-            this.setVisible(false);
-        });
-    }*/
+     * public void concludiPartita() {
+     * musicHTN.stopMusica();
+     * SwingUtilities.invokeLater(() -> {
+     * HTN_InterfacciaEnding endingFrame = new HTN_InterfacciaEnding(this);
+     * endingFrame.setVisible(true);
+     * this.setVisible(false);
+     * });
+     * }
+     */
     /**
      * Inizializza i componenti principali dell'interfaccia.
      *
      * @param loadGame Indica se caricare un salvataggio.
-     * @param file File di salvataggio da caricare, se presente.
+     * @param file     File di salvataggio da caricare, se presente.
      * @throws Exception Se c'è un problema durante l'inizializzazione o il
-     * caricamento.
+     *                   caricamento.
      */
     private void mainComponents(boolean loadGame, File file) throws Exception {
         game = new BeforeDeorbiting();
@@ -176,19 +174,24 @@ public class GameUI extends JFrame {
 
         // Chiama normalmente nextMove() con null per l'avvio del gioco.
         engine.getGame().nextMove(null, ps);
+
+        // Mostra l'immagine della stanza corrente appena la partita inizia
+        if (engine.getGame().getCurrentRoom() != null) {
+            updateRoomImage(engine.getGame().getCurrentRoom().getRoomImage());
+        }
     }
 
     /**
      * Inizializza i componenti della GUI.
      *
      * @throws InterruptedException Se c'è un problema durante
-     * l'inizializzazione.
+     *                              l'inizializzazione.
      */
     private void initComponents() throws InterruptedException {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
-//                parentFrame.setVisible(true);
+                // parentFrame.setVisible(true);
                 dispose();
             }
         });
@@ -198,19 +201,19 @@ public class GameUI extends JFrame {
         JPanel buttonPanelExit = new JPanel();
         macroPanel = new JPanel();
         imageViewer = new ImagePanel(); // Changed to ImagePanel
-        underPanel = new JPanel();
+
         JLabel jTextArea2 = new JLabel();
         textBox = new JTextField();
+        // textBox.setPreferredSize(new Dimension(800, 30));
+        textBox.addActionListener(this::elaborateInput);
         scrollPane = new JScrollPane();
         textPane = new JTextPane();
         imageLabel = new JLabel();
-        textBox = new JTextField();
         menuBar = new JMenuBar();
 
         JButton jButton1 = new JButton();
         JButton jButton2 = new JButton();
 
-        JButton inventarioButton = new JButton();
         JButton esciButton = new JButton();
 
         musicButton = new JButton();
@@ -229,9 +232,9 @@ public class GameUI extends JFrame {
                 continueGame(evt);
             }
         });
-        buttonPanelExit.setBackground(BACKGROUND_PINK);
+        buttonPanelExit.setBackground(bluscuro);
 
-        jButton1.setBackground(BACKGROUND_PINK);
+        jButton1.setBackground(bluscuro);
         jButton1.setText("E-S-C-I");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -245,7 +248,7 @@ public class GameUI extends JFrame {
         });
         buttonPanelExit.add(jButton1);
 
-        jButton2.setBackground(BACKGROUND_PINK);
+        jButton2.setBackground(bluscuro);
         jButton2.setText("ci ripenso");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -257,7 +260,7 @@ public class GameUI extends JFrame {
 
         jTextArea2.setFont(FONT);
         jTextArea2.setText("SAY 'ESCI' ONE MORE TIME");
-        jTextArea2.setBackground(BACKGROUND_PINK);
+        jTextArea2.setBackground(bluscuro);
         jTextArea2.setHorizontalAlignment(SwingConstants.CENTER);
         jTextArea2.setVerticalAlignment(SwingConstants.CENTER);
         jTextArea2.setFocusable(false);
@@ -268,7 +271,7 @@ public class GameUI extends JFrame {
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        panel.setBackground(BACKGROUND_PINK);
+        panel.setBackground(bluscuro);
         panel.setLayout(new BorderLayout());
 
         panel.add(imageLabel, BorderLayout.NORTH);
@@ -283,7 +286,7 @@ public class GameUI extends JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
         setResizable(false);
 
-        macroPanel.setBackground(BACKGROUND_PURPLE);
+        macroPanel.setBackground(bluchiaro);
 
         scrollPane.setBorder(null);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -300,78 +303,103 @@ public class GameUI extends JFrame {
 
         textPane.setEditable(true);
         textPane.setFocusable(false);
-        textPane.setBackground(BACKGROUND_PINK);
-        textPane.setForeground(BACKGROUND_PURPLE);
+        textPane.setBackground(bluscuro);
+        textPane.setForeground(bluchiaro);
         textPane.setPreferredSize(new Dimension(100, 100));
         textPane.setBorder(null);
         textPane.setCaretPosition(textPane.getDocument().getLength());
         textPane.setFont(FONT);
-        textPane.setBorder(BorderFactory.createLineBorder(BACKGROUND_PINK, 4));
+        textPane.setBorder(BorderFactory.createLineBorder(bluscuro, 4));
         scrollPane.setViewportView(textPane);
         imageViewer = new ImagePanel(); // Changed to ImagePanel
         textPane.setFont(new Font("Helvetica", Font.PLAIN, 18));
         imageViewer.setImage("src//img//HTN_Load.png");
         imageViewer.setPreferredSize(new Dimension(480, 270));
-
-        underPanel.setBackground(BACKGROUND_PINK);
-        underPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 10));
-
-        textBox.setPreferredSize(new Dimension(800, 30));
-        textBox.addActionListener(this::elaborateInput);
-        underPanel.add(textBox);
-
-        inventarioButton.setBackground(BACKGROUND_PINK);
-        inventarioButton.setForeground(TEXT);
-        inventarioButton.setText("Inventario");
-        inventarioButton.setPreferredSize(new Dimension(0, 30));
-
-        underPanel.add(inventarioButton);
-
-        impostazioniItem.setBackground(BACKGROUND_PINK);
+        impostazioniItem.setBackground(bluscuro);
         impostazioniItem.setForeground(TEXT);
         impostazioniItem.setText("Impostazioni");
         impostazioniItem.setPreferredSize(new Dimension(105, 30));
         // impostazioniItem.addActionListener(this::impostazioniMouseClicked);
 
-        tendina.setText("Opzioni");
-        tendina.setPreferredSize(new Dimension(90, 30));
-        tendina.setBorder(new javax.swing.border.LineBorder(BACKGROUND_PINK, 4));
-        tendina.setBackground(BACKGROUND_PINK);
-        tendina.setForeground(TEXT);
-        tendina.add(impostazioniItem);
+        // --- configura menuBar ---
+        menuBar = new JMenuBar();
+        menuBar.setBackground(bluscuro);
+        menuBar.setForeground(TEXT);
 
+        menuBar.setPreferredSize(new Dimension(0, 50));
+
+        // crea JMenu “Opzioni”
+        tendina = new JMenu("Opzioni");
+        tendina.setBackground(bluscuro);
+        tendina.setForeground(TEXT);
+        tendina.setBorder(new LineBorder(bluscuro, 4));
         menuBar.add(tendina);
+
+        // spinge i bottoni a destra
         menuBar.add(Box.createHorizontalGlue());
 
-        menuBar.setBackground(BACKGROUND_PINK);
-        menuBar.setForeground(TEXT);
+        // configura e aggiungi il bottone Mute
+        musicButton.setText("Mute");
+        musicButton.setBackground(bluscuro);
+        musicButton.setForeground(RED);
+        musicButton.setPreferredSize(new Dimension(105, 30));
+        musicButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // il tuo listener esistente
+            }
+        });
+        menuBar.add(musicButton);
+
+        // configura e aggiungi il bottone Esci
+        esciButton.setText("Esci");
+        esciButton.setBackground(bluscuro);
+        esciButton.setForeground(TEXT);
+        esciButton.setPreferredSize(new Dimension(90, 30));
+        esciButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                esciButtonMouseClicked(e);
+            }
+        });
+        menuBar.add(esciButton);
+
         setJMenuBar(menuBar);
+        // aggiunge un bordo inferiore di 7px viola alla menuBar
+        menuBar.setBorder(BorderFactory.createMatteBorder(
+                0, 0, // top, left
+                7, 0, // bottom, right
+                bluchiaro));
+
+        getContentPane().setBackground(bluscuro);
 
         // musicHTN.playMusic("src\\music\\HTN_gameplaylist.wav");
         musicButton.setText("Mute");
-        musicButton.setBackground(BACKGROUND_PINK);
+        musicButton.setBackground(bluscuro);
         musicButton.setForeground(RED);
         musicButton.setPreferredSize(new Dimension(105, 30));
 
         musicButton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                /*if (musicHTN.isPlaying()) {
-                    musicHTN.pausaMusica();
-                    musicButton.setText("Play");
-                    musicButton.setForeground(GREEN);
-                } else {
-                    musicHTN.riprendiMusica();
-                    musicButton.setText("Mute");
-                    musicButton.setForeground(RED);
-                }*/
+                /*
+                 * if (musicHTN.isPlaying()) {
+                 * musicHTN.pausaMusica();
+                 * musicButton.setText("Play");
+                 * musicButton.setForeground(GREEN);
+                 * } else {
+                 * musicHTN.riprendiMusica();
+                 * musicButton.setText("Mute");
+                 * musicButton.setForeground(RED);
+                 * }
+                 */
             }
         });
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent evt) {
-                //  musicHTN.stopMusica();
+                // musicHTN.stopMusica();
                 printer.shutdown();
             }
         });
@@ -379,13 +407,15 @@ public class GameUI extends JFrame {
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             @Override
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                /* if (musicHTN.isPlaying()) {
-                    musicButton.setText("Mute");
-                    musicButton.setForeground(RED);
-                } else {
-                    musicButton.setText("Play");
-                    musicButton.setForeground(GREEN);
-                }*/
+                /*
+                 * if (musicHTN.isPlaying()) {
+                 * musicButton.setText("Mute");
+                 * musicButton.setForeground(RED);
+                 * } else {
+                 * musicButton.setText("Play");
+                 * musicButton.setForeground(GREEN);
+                 * }
+                 */
             }
 
             @Override
@@ -394,9 +424,7 @@ public class GameUI extends JFrame {
             }
         });
 
-        underPanel.add(musicButton);
-
-        esciButton.setBackground(BACKGROUND_PINK);
+        esciButton.setBackground(bluscuro);
         esciButton.setForeground(TEXT);
         esciButton.setText("Esci");
         esciButton.setPreferredSize(new Dimension(90, 30));
@@ -407,8 +435,6 @@ public class GameUI extends JFrame {
             }
         });
 
-        underPanel.add(esciButton);
-
         JPanel rightPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -417,70 +443,89 @@ public class GameUI extends JFrame {
                 g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), null);
             }
         };
-        rightPanel.setBackground(BACKGROUND_PINK);
+        rightPanel.setBackground(bluscuro);
         rightPanel.setPreferredSize(new Dimension(200, 200));
-        GroupLayout macroPanelLayout = new GroupLayout(macroPanel);
-        macroPanel.setLayout(macroPanelLayout);
-        macroPanelLayout.setHorizontalGroup(
-                macroPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(GroupLayout.Alignment.TRAILING, macroPanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(macroPanelLayout
-                                        .createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addComponent(underPanel, GroupLayout.DEFAULT_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(macroPanelLayout.createSequentialGroup()
-                                                .addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 800,
-                                                        GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE,
-                                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
-                        .addComponent(imageViewer, GroupLayout.DEFAULT_SIZE,
-                                GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-        macroPanelLayout.setVerticalGroup(
-                macroPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(macroPanelLayout.createSequentialGroup()
-                                .addComponent(imageViewer, GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(macroPanelLayout
-                                        .createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(scrollPane)
-                                        .addComponent(rightPanel, GroupLayout.PREFERRED_SIZE,
-                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(underPanel, GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-        getContentPane().add(macroPanel, BorderLayout.CENTER);
 
+        // 1) crea il pannello principale
+        JPanel main = new JPanel(new BorderLayout());
+        main.setBackground(bluchiaro);
+
+        // 3) pannello centrale con 2 colonne
+        JPanel center = new JPanel();
+        center.setBackground(bluchiaro);
+        center.setLayout(new BoxLayout(center, BoxLayout.X_AXIS));
+
+        // separatore
+        JPanel sep = new JPanel();
+        sep.setBackground(bluchiaro);
+        sep.setPreferredSize(new Dimension(7, 0));
+        sep.setMaximumSize(new Dimension(7, Integer.MAX_VALUE));
+
+        // 3a) colonna di SINISTRA (output + input)
+        JPanel left = new JPanel(new BorderLayout());
+        left.add(scrollPane, BorderLayout.CENTER);
+        // 1) la linea viola
+        JPanel divider = new JPanel();
+        divider.setBackground(bluchiaro);
+        divider.setPreferredSize(new Dimension(0, 7));
+
+        // qui usiamo BorderLayout per far riempire interamente il textBox
+        JPanel inputBar = new JPanel(new BorderLayout());
+        inputBar.setBackground(Color.WHITE);
+        textBox.setPreferredSize(new Dimension(0, 40));
+        inputBar.add(textBox, BorderLayout.CENTER);
+        left.add(inputBar, BorderLayout.SOUTH);
+
+        // 3b) colonna di DESTRA (immagine + inventario nero)
+        JPanel right = new JPanel(new BorderLayout());
+        right.add(imageViewer, BorderLayout.CENTER);
+
+        JPanel inventory = new JPanel();
+        inventory.setBackground(Color.decode("#3A3A3A"));
+        inventory.setPreferredSize(new Dimension(0, 100));
+        inventory.setBorder(BorderFactory.createMatteBorder(7, 0, 0, 0, bluchiaro));
+        right.add(inventory, BorderLayout.SOUTH);
+
+        left.setPreferredSize(new Dimension(350, 0));
+        right.setPreferredSize(null);
+        center.add(left);
+        center.add(sep);
+        center.add(right);
+
+        // infine metto center dentro main
+        main.add(center, BorderLayout.CENTER); // aggiungi center al frame
+
+        // 4) applica al frame e chiudi initComponents()
+        setContentPane(main);
         pack();
+
+        setSize(1300, 800);
+
         setLocationRelativeTo(null);
 
         printer = new PrinterUI(textPane);
 
         if (load == false) {
             printer.print("""
-                            Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino. 
-                            da mesi che non metto piede sulla Terra, 
-                            ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
-                            Non vedo l'ora di gustarmi un vero caffè.
-                            Tra poco la stazione verrà deorbitata: una volta distrutta, 
-                            i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò, 
-                            inutile negarlo. 
-                            Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.
-                            Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni: 
-                            Luke e Susan.
-                            Luke è un vecchio amico d'infanzia. 
-                            Un po' pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia. 
-                            Susan, invece, è americana, l'ho conosciuta all'università. 
-                            Brillante, silenziosa, e ottima compagna di viaggio. 
-                            Nessuno dei due è venuto a reclamare il suo turno per dormire, 
-                            probabilmente stanno ancora festeggiando da ieri.
-                            Esco dal sacco a pelo e lo arrotolo con cura. 
-                            La giornata può cominciare. 
-                            Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione. \n""");
+                    Mi sveglio. Se fossi a casa, sarebbero le 7 del mattino.
+                    da mesi che non metto piede sulla Terra,
+                    ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
+                    Non vedo l'ora di gustarmi un vero caffè.
+                    Tra poco la stazione verrà deorbitata: una volta distrutta,
+                    i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò,
+                    inutile negarlo.
+                    Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.
+                    Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni:
+                    Luke e Susan.
+                    Luke è un vecchio amico d'infanzia.
+                    Un po' pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia.
+                    Susan, invece, è americana, l'ho conosciuta all'università.
+                    Brillante, silenziosa, e ottima compagna di viaggio.
+                    Nessuno dei due è venuto a reclamare il suo turno per dormire,
+                    probabilmente stanno ancora festeggiando da ieri.
+                    Esco dal sacco a pelo e lo arrotolo con cura.
+                    La giornata può cominciare.
+                    Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione. \n""");
         }
 
         printer.print(engine.getGame().getWelcomeMessage());
@@ -509,7 +554,8 @@ public class GameUI extends JFrame {
             printer.print("?> " + input + "\n\n");
             textBox.setText("");
 
-            ParserOutput p = parser.parse(input.toLowerCase(), engine.getGame().getCommands(), engine.getGame().getListObj(), engine.getGame().getInventory().getList());
+            ParserOutput p = parser.parse(input.toLowerCase(), engine.getGame().getCommands(),
+                    engine.getGame().getListObj(), engine.getGame().getInventory().getList());
 
             PrintStream ps = new PrintStream(new JTextPaneOutputStream(textPane), true, StandardCharsets.UTF_8) {
                 @Override
@@ -521,7 +567,7 @@ public class GameUI extends JFrame {
             engine.getGame().nextMove(p, ps); // <-- CHIAMATA CORRETTA QUI
 
             if (engine.getGame().getCurrentRoom() != null) {
-                updateRoomImage(engine.getGame().getCurrentRoom().getName());
+                updateRoomImage(engine.getGame().getCurrentRoom().getRoomImage());
             }
 
             checkEndGame();
@@ -533,9 +579,9 @@ public class GameUI extends JFrame {
      *
      * @param evt Evento di azione.
      *
-     * private void impostazioniMouseClicked(ActionEvent evt) {
-     * HTN_InterfacciaSettings impostazioni = new GameUI(GameUI.this);
-     * impostazioni.setVisible(true); }*
+     *            private void impostazioniMouseClicked(ActionEvent evt) {
+     *            HTN_InterfacciaSettings impostazioni = new GameUI(GameUI.this);
+     *            impostazioni.setVisible(true); }*
      */
     /**
      * Gestisce l'evento di clic sul pulsante per tornare al menu principale.
@@ -577,7 +623,7 @@ public class GameUI extends JFrame {
      *
      * @return Il gestore della musica.
      *
-     * public MusicHandler getMusica() { return musicHTN; }
+     *         public MusicHandler getMusica() { return musicHTN; }
      */
     /**
      * Controlla se il gioco è terminato.
@@ -590,7 +636,7 @@ public class GameUI extends JFrame {
         }
 
         if (isGameOver) {
-//            concludiPartita();
+            // concludiPartita();
         }
     }
 
@@ -599,29 +645,15 @@ public class GameUI extends JFrame {
      *
      * @param roomName Nome della stanza.
      */
-    public void updateRoomImage(String roomName) {
-        String imagePath;
-        switch (roomName) {
-            case "Terrazzo":
-                imagePath = "src/img/HTN_Terrazzo.png";
-                break;
-            case "Cucina":
-                imagePath = "src/img/HTN_Cucina.png";
-                break;
-            case "Ingresso":
-                imagePath = "src/img/HTN_Ingresso.png";
-                break;
-            case "Salotto":
-                imagePath = "src/img/HTN_Salotto.png";
-                break;
-            case "Bagno":
-                imagePath = "src/img/HTN_Bagno.png";
-                break;
-            default:
-                imagePath = "src/img/HTN_Terrazzo.png";
-                break;
+    /**
+     * Aggiorna l'immagine della stanza corrente usando il percorso fornito.
+     *
+     * @param imagePath Percorso dell'immagine da mostrare.
+     */
+    public void updateRoomImage(String imagePath) {
+        if (imagePath != null) {
+            updateImageViewer(imagePath);
         }
-        updateImageViewer(imagePath);
     }
 
     /**
@@ -670,6 +702,5 @@ public class GameUI extends JFrame {
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             }
         }
-
     }
 }

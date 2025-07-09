@@ -124,7 +124,7 @@ public class GameUI extends JFrame {
             System.getLogger(GameUI.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         try {
-            mainComponents(false, null);
+            mainComponents(this.load, null);
         } catch (Exception ex) {
             Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -160,10 +160,16 @@ public class GameUI extends JFrame {
      *                   caricamento.
      */
     private void mainComponents(boolean loadGame, File file) throws Exception {
-        game = new BeforeDeorbiting();
+        if (!loadGame) {
+            game = new BeforeDeorbiting();
+            engine = new Engine(game);
+        } else {
+            // keep the already provided engine and game
+            game = engine.getGame();
+        }
+
         Set<String> stopwords = Engine.loadFileListInSet("/stopwords.txt");
         parser = new Parser(stopwords);
-        engine = !loadGame ? new Engine(game) : new Engine(game, true);
 
         PrintStream ps = new PrintStream(new JTextPaneOutputStream(textPane), true, StandardCharsets.UTF_8) {
             @Override

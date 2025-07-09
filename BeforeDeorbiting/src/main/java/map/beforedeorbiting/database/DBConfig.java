@@ -28,6 +28,8 @@ public class DBConfig {
     public static void populateDatabase() {
         try (Connection conn = getConnection()) {
             System.out.println("Avviso: Connessione al database completata.");
+            AstronautsDAO astronautsdao = new AstronautsDAO(conn);
+            astronautsdao.createTable();
             RunScript.execute(conn, 
                     new InputStreamReader(DBConfig.class.getClassLoader()
                             .getResourceAsStream("populateDB.sql")));

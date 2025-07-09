@@ -9,6 +9,7 @@ import java.io.Serializable;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.GameDesc;
+import map.beforedeorbiting.ui.InventoryUI;
 
 /**
  * Questa classe rappresenta l'observer del comando 'PRENDI', permette di
@@ -55,6 +56,7 @@ public class PickUpObserver implements GameObserver, Serializable {
                         }
                         //Quando raccogli il diario di Susan c'è un altro messaggio del genere (forse anche altre volte)
                         pickUpmsg.append("Hai preso: ").append(parserOutput.getObject().getName()).append(" e si trova nel tuo inventario!");
+                        InventoryUI.updateInventory(game);
                     } else {
                         pickUpmsg.append("Purtroppo questo oggetto non può essere raccolto! Magari riflettici un paio di volte prima di farlo.");
                     }

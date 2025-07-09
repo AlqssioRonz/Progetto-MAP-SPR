@@ -14,6 +14,7 @@ import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.BDObject;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.ui.NotebookUI;
+import map.beforedeorbiting.ui.HALterminal;
 
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore
@@ -131,7 +132,8 @@ public class UseObserver implements GameObserver, Serializable {
         StringBuilder usingComputer = new StringBuilder();
         System.out.println("Hai acceso il computer!");
         game.getObjectByID(9).setInUse(true);
-        // METTERE L'UTILIZZO DEL DATABASE
+        HALterminal dbgame = new HALterminal();
+        
         game.getObjectByID(9).setInUse(false);
         usingComputer.append("Hai spento il pc!");
         return usingComputer.toString();

@@ -11,6 +11,7 @@ import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.type.BDObject;
 import map.beforedeorbiting.type.BDObjectChest;
+import map.beforedeorbiting.ui.InventoryUI;
 
     /**
      * Questa classe rappresenta l'observer del comando 'LASCIA', permette di
@@ -59,6 +60,7 @@ import map.beforedeorbiting.type.BDObjectChest;
                                     + "In caso volessi riprendere ").append(parserOutput.getInvObject().getName()).append(", lo ritrovi qui!");
                         }
                         game.getInventory().remove(parserOutput.getInvObject());
+                        InventoryUI.updateInventory(game);
                     } else {
                         dropmsg.append("Non puoi prendere questo oggetto, figurati lasciarlo...");
                     }

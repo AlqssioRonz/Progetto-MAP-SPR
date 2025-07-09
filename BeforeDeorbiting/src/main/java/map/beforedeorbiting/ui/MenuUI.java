@@ -32,6 +32,8 @@ import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
+import map.beforedeorbiting.database.DBConfig;
+
 /**
  * Classe che rappresenta il menu principale del gioco Before Deorbiting.
  * Contiene pulsanti per avviare, caricare e visualizzare comandi/crediti, più
@@ -294,12 +296,18 @@ public class MenuUI extends JFrame {
 
     }
 
+    @SuppressWarnings("unused")
     private void startGame() throws InterruptedException {
         System.out.println("\nGIOCO CARICATO CORRETTAMENTE\n");
     }
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
+            DBConfig.populateDatabase();
             try {
                 new MenuUI().setVisible(true);
             } catch (InterruptedException ex) {

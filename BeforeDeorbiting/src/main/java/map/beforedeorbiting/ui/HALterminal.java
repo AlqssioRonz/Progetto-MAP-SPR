@@ -22,7 +22,7 @@ public class HALterminal extends JFrame {
     private static final Color BG_COLOR = Color.decode("#0f111c");
     private static final Color PANEL_COLOR = Color.decode("#0f111c");
     private static final Color BUTTON_BG = Color.decode("#00e1d4");
-    private static final Color BUTTON_FG = Color.decode("#00e1d4");
+    private static final Color BUTTON_FG = Color.decode("#0f111c");
     private static final Font BUTTON_FONT = new Font("Consolas", Font.BOLD, 25);
 
     public HALterminal() {

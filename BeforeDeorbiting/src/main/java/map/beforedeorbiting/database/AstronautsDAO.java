@@ -28,7 +28,7 @@ public class AstronautsDAO {
     public void createTable() throws SQLException {
         String sql = """
             CREATE TABLE IF NOT EXISTS astronauts (
-                id INT AUTO INCREMENT PRIMARY KEY,
+                id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(100),
                 surname VARCHAR(100),
                 date_of_birth DATE,

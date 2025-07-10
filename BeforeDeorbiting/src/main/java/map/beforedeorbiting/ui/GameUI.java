@@ -45,6 +45,7 @@ import map.beforedeorbiting.BeforeDeorbiting;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.util.MusicController;
+import map.beforedeorbiting.util.ConcurrentChronometer;
 
 /**
  * Classe che mostra la GUI del gioco.
@@ -57,6 +58,9 @@ public class GameUI extends JFrame {
     private static final Color TEXT = new Color(6, 6, 6);
 
     private final MusicController music = new MusicController();
+    
+    private ConcurrentChronometer chronometer = new ConcurrentChronometer();
+    
     private Parser parser = null;
     private Engine engine;
     private GameDesc game;
@@ -309,8 +313,8 @@ public class GameUI extends JFrame {
         menuBar.setForeground(TEXT);
 
         menuBar.setPreferredSize(new Dimension(0, 50));
-
-        // crea JMenu “Opzioni”
+        
+        // crea skiptesto
         JButton skipButton = new JButton("Skip testo");
         skipButton.setBackground(bluchiaro);
         skipButton.setFocusPainted(false);
@@ -325,9 +329,32 @@ public class GameUI extends JFrame {
                 }
             }
         });
-
+        
         menuBar.add(skipButton);
-
+        
+        /* Creazione del tiemer di gioco:
+        *   - viene creato un bottone per posizionare il testo del timer
+        *   - viene creato il thread cronometro ed avviato
+        *     - autonomamente il thread aggiorna il testo ogni secondo
+        */
+        
+        JButton gametimer = new JButton();
+        gametimer.setBackground(bluscuro);
+        gametimer.setFocusPainted(false);
+        gametimer.setContentAreaFilled(false);
+        gametimer.setBorderPainted(false);
+        gametimer.setOpaque(false); 
+        gametimer.setForeground(Color.WHITE.brighter());
+        gametimer.setFont(new Font("Arial", Font.BOLD, 20));
+        gametimer.setMaximumSize(new Dimension(125, 30));
+        
+        chronometer.setButton(gametimer);
+        chronometer.start();
+      
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(gametimer);
+        menuBar.add(Box.createHorizontalGlue());
+        
         // spinge i bottoni a destra
         menuBar.add(Box.createHorizontalGlue());
 
@@ -368,7 +395,7 @@ public class GameUI extends JFrame {
             }
         });
         menuBar.add(tornaMenu);
-
+        
         setJMenuBar(menuBar);
         // aggiunge un bordo inferiore di 7px viola alla menuBar
         menuBar.setBorder(BorderFactory.createMatteBorder(

@@ -41,6 +41,10 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(9), this::useComputer);
         uses.put(game.getObjectByID(10), this::wearSpaceSuit);
         uses.put(game.getObjectByID(11), this::useNotebook);
+        uses.put(game.getObjectByID(0), this::combineModel);
+        uses.put(game.getObjectByID(1), this::combineModel);
+        uses.put(game.getObjectByID(2), this::combineModel);
+        uses.put(game.getObjectByID(3), this::combineModel);
     }
 
     /*
@@ -158,4 +162,28 @@ public class UseObserver implements GameObserver, Serializable {
         return "Apri il taccuino!";
     }
 
+    public String combineModel(GameDesc game) {   
+        StringBuilder modelMsg = new StringBuilder();
+        
+        if (game.getInventory().getList().contains(game.getObjectByID(0)) 
+                && game.getInventory().getList().contains(game.getObjectByID(1))
+                && game.getInventory().getList().contains(game.getObjectByID(2))
+                && game.getInventory().getList().contains(game.getObjectByID(3))) {
+            
+            game.getInventory().remove(game.getObjectByID(0));
+            game.getInventory().remove(game.getObjectByID(1));
+            game.getInventory().remove(game.getObjectByID(2));
+            game.getInventory().remove(game.getObjectByID(3));
+            
+            BDObject modellinoCompleto = new BDObject(0, "Modellino della Stazione",
+                "Un Modellino, rappresenta la stazione spaziale internazionale.");
+            
+            game.getInventory().add(modellinoCompleto);
+            
+            modelMsg.append("Hai ottenuto ").append(modellinoCompleto.getDescription());
+    
+        }
+        
+        return modelMsg.toString();
+    }
 }

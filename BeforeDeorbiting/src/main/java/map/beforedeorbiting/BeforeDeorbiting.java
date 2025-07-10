@@ -33,16 +33,16 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     public void init() {
         Inventory.getInstance().getList().clear();
         Command forward = new Command(CommandType.FORWARD, "avanti");
-        forward.setAlias(new String[]{"avanza", "forward", "x+"});
+        forward.setAlias(new String[]{"avanza", "forward", "x+", "nord"});
         getCommands().add(forward);
         Command aft = new Command(CommandType.AFT, "indietro");
-        aft.setAlias(new String[]{"dietro", "retrocedi", "aft", "x-", "indietro"});
+        aft.setAlias(new String[]{"sud", "dietro", "retrocedi", "aft", "x-", "indietro"});
         getCommands().add(aft);
         Command starboard = new Command(CommandType.STARBOARD, "destra");
-        starboard.setAlias(new String[]{"starboard", "y+"});
+        starboard.setAlias(new String[]{"est", "starboard", "y+"});
         getCommands().add(starboard);
         Command port = new Command(CommandType.PORT, "sinistra");
-        port.setAlias(new String[]{"port", "y-"});
+        port.setAlias(new String[]{"port", "y-", "ovest"});
         getCommands().add(port);
         Command deck = new Command(CommandType.DECK, "giu");
         deck.setAlias(new String[]{"giù", "giu'", "deck", "z+"});
@@ -81,22 +81,22 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         /* Lista di tutti gli oggetti del gioco */
         BDObject modellinoRusso = new BDObject(0, "Modellino russo",
                 "Una parte del modellino, rappresenta il ramo russo.");
-        modellinoRusso.setAlias(Set.of("modellinoRusso", "modellino1", "russo", "modellinoR", "modellino"));
+        modellinoRusso.setAlias(Set.of("modellinoRusso", "modellino1", "russo", "modellinoR", "modellino", "oggetto", "frammento"));
         modellinoRusso.setPickupable(true);
         BDObject modellinoAmericano = new BDObject(1, "Modellino americano",
                 "Una parte del modellino, rappresenta il modulo centrale della stazione.");
         modellinoAmericano.setAlias(
-                Set.of("modellinoAmericano", "modellino2", "americano", "modellinoA", "modellino"));
+                Set.of("modellinoAmericano", "modellino2", "americano", "modellinoA", "modellino", "oggetto", "frammento"));
         modellinoAmericano.setPickupable(true);
         BDObject modellinoDx = new BDObject(2, "Modellino pannelli solari Dx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala destra.");
-        modellinoDx.setAlias(Set.of("modellinoDestro", "modellino3", "destro", "modellinoDx", "modellinoD",
+        modellinoDx.setAlias(Set.of("modellinoDestro", "modellino3", "destro", "modellinoDx", "modellinoD","oggetto", "frammento",
                 "modellino"));
         modellinoDx.setPickupable(true);
         BDObject modellinoSx = new BDObject(3, "Modellino pannelli solari Sx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
         modellinoSx.setAlias(Set.of("oggetto", "modellinoSinistro", "modellino4", "sinistro", "modellinoSx",
-                "modellinoS", "modellino"));
+                "modellinoS", "modellino", "oggetto", "frammento"));
         modellinoSx.setPickupable(true);
         BDObject diarioSusan = new BDObject(4, "Diario Susan",
                 "Il diario di Susan... contiene i suoi ultimi istanti.");

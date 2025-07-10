@@ -187,10 +187,10 @@ public class LookAtObserver implements GameObserver, Serializable {
     }
 
     public String harmonyDescr(GameDesc game) {
-        return "";
+        return "Sembra che non ci sia nulla di che qui";
     }
 
     public String leonardoDescr(GameDesc game) {
-        return "";
+        return "Sembra che non ci sia nulla di che qui";
     }
 }

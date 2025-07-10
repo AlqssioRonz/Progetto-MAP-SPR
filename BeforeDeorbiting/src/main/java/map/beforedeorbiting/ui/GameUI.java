@@ -36,7 +36,6 @@ import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
@@ -45,6 +44,7 @@ import javax.swing.text.StyledDocument;
 import map.beforedeorbiting.BeforeDeorbiting;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
+import map.beforedeorbiting.util.MusicController;
 
 /**
  * Classe che mostra la GUI del gioco.
@@ -56,7 +56,7 @@ public class GameUI extends JFrame {
     private static final Color bluchiaro = Color.decode("#00e1d4");
     private static final Color TEXT = new Color(6, 6, 6);
 
-    // private final MusicHandler musicHTN = new MusicHandler();
+    private final MusicController music = new MusicController();
     private Parser parser = null;
     private Engine engine;
     private GameDesc game;
@@ -71,7 +71,6 @@ public class GameUI extends JFrame {
     private JPanel macroPanel;
     private ImagePanel imageViewer; // Changed to ImagePanel
     private JLabel imageLabel;
-    private JMenuItem impostazioniItem;
     private boolean load;
 
     private PrinterUI printer;
@@ -125,12 +124,7 @@ public class GameUI extends JFrame {
         } catch (Exception ex) {
             Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // initCurrentImage();
 
-        // Se usi Parser, lo lasci dentro Engine (non qui)
-        // Mostra subito stanza e testo
-        // writeOnPanel(game.getCurrentRoom().getDescription());
-        // setRoomImage(game.getCurrentRoom().getName());
         // Avvia il timer
         // updateTimerLabel();
     }
@@ -138,16 +132,10 @@ public class GameUI extends JFrame {
     /**
      * Conclude la partita e mostra la finestra di fine gioco.
      */
-    /*
-     * public void concludiPartita() {
-     * musicHTN.stopMusica();
-     * SwingUtilities.invokeLater(() -> {
-     * HTN_InterfacciaEnding endingFrame = new HTN_InterfacciaEnding(this);
-     * endingFrame.setVisible(true);
-     * this.setVisible(false);
-     * });
-     * }
-     */
+    public void concludiPartita() {
+        music.stopMusica();
+    }
+
     /**
      * Inizializza i componenti principali dell'interfaccia.
      *
@@ -220,8 +208,6 @@ public class GameUI extends JFrame {
         JButton tornaMenu = new JButton();
 
         musicButton = new JButton();
-
-        impostazioniItem = new JMenuItem();
 
         confermaChiusura.setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
         confermaChiusura.setResizable(false);
@@ -316,11 +302,6 @@ public class GameUI extends JFrame {
         textPane.setFont(new Font("Helvetica", Font.PLAIN, 18));
         imageViewer.setImage("src//img//HTN_Load.png");
         imageViewer.setPreferredSize(new Dimension(480, 270));
-        impostazioniItem.setBackground(bluscuro);
-        impostazioniItem.setForeground(TEXT);
-        impostazioniItem.setText("Impostazioni");
-        impostazioniItem.setPreferredSize(new Dimension(105, 30));
-        // impostazioniItem.addActionListener(this::impostazioniMouseClicked);
 
         // --- configura menuBar ---
         menuBar = new JMenuBar();
@@ -358,17 +339,15 @@ public class GameUI extends JFrame {
         musicButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                /*
-                 * if (musicHTN.isPlaying()) {
-                 * musicHTN.pausaMusica();
-                 * musicButton.setText("Play");
-                 * musicButton.setForeground(GREEN);
-                 * } else {
-                 * musicHTN.riprendiMusica();
-                 * musicButton.setText("Mute");
-                 * musicButton.setForeground(RED);
-                 * }
-                 */
+                if (music.isPlaying()) {
+                    music.pausaMusica();
+                    musicButton.setText("Play");
+                    musicButton.setForeground(Color.GREEN);
+                } else {
+                    music.riprendiMusica();
+                    musicButton.setText("Mute");
+                    musicButton.setForeground(Color.RED);
+                }
             }
         });
         menuBar.add(musicButton);
@@ -402,7 +381,7 @@ public class GameUI extends JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent evt) {
-                // musicHTN.stopMusica();
+                music.stopMusica();
                 printer.shutdown();
             }
         });
@@ -410,15 +389,13 @@ public class GameUI extends JFrame {
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             @Override
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                /*
-                 * if (musicHTN.isPlaying()) {
-                 * musicButton.setText("Mute");
-                 * musicButton.setForeground(RED);
-                 * } else {
-                 * musicButton.setText("Play");
-                 * musicButton.setForeground(GREEN);
-                 * }
-                 */
+                if (music.isPlaying()) {
+                    musicButton.setText("Mute");
+                    musicButton.setForeground(Color.RED);
+                } else {
+                    musicButton.setText("Play");
+                    musicButton.setForeground(Color.GREEN);
+                }
             }
 
             @Override
@@ -452,7 +429,7 @@ public class GameUI extends JFrame {
         sep.setBackground(bluchiaro);
         sep.setPreferredSize(new Dimension(7, 0));
         sep.setMaximumSize(new Dimension(7, Integer.MAX_VALUE));
-    
+
         // 3a) colonna di SINISTRA (output + input)
         JPanel left = new JPanel(new BorderLayout());
         left.add(scrollPane, BorderLayout.CENTER);
@@ -605,7 +582,7 @@ public class GameUI extends JFrame {
      * @param evt Evento di clic del mouse.
      */
     private void tornaMenuMouseClicked(java.awt.event.MouseEvent evt) throws InterruptedException {
-        if (game.getLastCommand() != null && game.getLastCommand().getType()  == CommandType.SAVE) {
+        if (game.getLastCommand() != null && game.getLastCommand().getType() == CommandType.SAVE) {
             jButton1goToMenu(evt);
         } else {
             setEnabled(false);
@@ -627,8 +604,11 @@ public class GameUI extends JFrame {
      *
      * @return Il gestore della musica.
      *
-     * public MusicHandler getMusica() { return musicHTN; }
      */
+    public MusicController getMusica() {
+        return music;
+    }
+
     /**
      * Controlla se il gioco è terminato.
      */
@@ -643,12 +623,7 @@ public class GameUI extends JFrame {
             // concludiPartita();
         }
     }
-
-    /**
-     * Aggiorna l'immagine della stanza corrente.
-     *
-     * @param roomName Nome della stanza.
-     */
+    
     /**
      * Aggiorna l'immagine della stanza corrente usando il percorso fornito.
      *

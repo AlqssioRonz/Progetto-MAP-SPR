@@ -33,6 +33,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import map.beforedeorbiting.database.DBConfig;
+import map.beforedeorbiting.util.MusicController;
 
 /**
  * Classe che rappresenta il menu principale del gioco Before Deorbiting.
@@ -46,6 +47,8 @@ public class MenuUI extends JFrame {
     private static final Color BACKGROUND = new Color(13, 12, 33);
     private static final Color BORDER = new Color(10, 9, 26);
     private static final Color TEXT = new Color(182, 180, 209);
+
+    private final MusicController music = new MusicController();
 
     private static boolean serverOn = false;
     private boolean audioOn = true;
@@ -70,6 +73,8 @@ public class MenuUI extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Before Deorbiting");
         setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
+        music.playMusic("/music/ZeldaMenu.wav");
+        music.setVolumePercent(100);
         setPreferredSize(new Dimension(1100, 700));
         setResizable(false);
 
@@ -155,6 +160,7 @@ public class MenuUI extends JFrame {
             if ("isFinished".equals(evt.getPropertyName())
                     && Boolean.TRUE.equals(evt.getNewValue())) {
                 SwingUtilities.invokeLater(() -> {
+                    music.stopMusica();
                     GameUI gameUI = new GameUI();
                     gameUI.setVisible(true);
                     dispose();
@@ -171,6 +177,7 @@ public class MenuUI extends JFrame {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             Path path = fileChooser.getSelectedFile().toPath();
             try {
+                music.stopMusica();
                 // avvia GameUI caricando direttamente dal JSON
                 GameUI gioco = new GameUI(path);
                 gioco.setVisible(true);
@@ -232,9 +239,15 @@ public class MenuUI extends JFrame {
     }
 
     private void toggleAudio() {
-        // Inverti lo stato
         audioOn = !audioOn;
-        // Ricarica l'icona in base al nuovo stato
+
+        if (audioOn) {
+            music.riprendiMusica(); // riprende la musica se era stata stoppata
+        } else {
+            music.pausaMusica(); // mette in pausa la musica
+        }
+
+        // aggiorna l'icona del pulsante
         Icon icon = loadAudioIcon();
         audio.setIcon(icon);
         audio.setRolloverIcon(icon);

@@ -21,8 +21,8 @@ public class HALterminal extends JFrame {
 
     private static final Color BG_COLOR = Color.decode("#0f111c");
     private static final Color PANEL_COLOR = Color.decode("#0f111c");
-    private static final Color BUTTON_BG = Color.decode("#00e1d4");
-    private static final Color BUTTON_FG = Color.decode("#0f111c");
+    private static final Color BUTTON_BG = Color.decode("#0f111c");
+    private static final Color BUTTON_FG = Color.decode("#00e1d4");
     private static final Font BUTTON_FONT = new Font("Consolas", Font.BOLD, 25);
 
     public HALterminal() {
@@ -74,14 +74,14 @@ public class HALterminal extends JFrame {
 
         JLabel title = new JLabel("Pannello di controllo ISS", SwingConstants.CENTER);
         title.setFont(new Font("Consolas", Font.BOLD, 26));
-        title.setForeground(BUTTON_BG);
+        title.setForeground(BUTTON_FG);
         panel.add(title, BorderLayout.NORTH);
 
         JTextArea statusArea = new JTextArea(getStatusText(true));
         statusArea.setEditable(false);
         statusArea.setFont(new Font("Consolas", Font.PLAIN, 18));
         statusArea.setBackground(BG_COLOR);
-        statusArea.setForeground(BUTTON_BG);
+        statusArea.setForeground(BUTTON_FG);
         statusArea.setBorder(new LineBorder(BUTTON_BG, 2));
         panel.add(new JScrollPane(statusArea), BorderLayout.CENTER);
 
@@ -114,14 +114,14 @@ public class HALterminal extends JFrame {
 
         JLabel title = new JLabel("Pannello di controllo ISS – Robotica", SwingConstants.CENTER);
         title.setFont(new Font("Consolas", Font.BOLD, 26));
-        title.setForeground(BUTTON_BG);
+        title.setForeground(BUTTON_FG);
         panel.add(title, BorderLayout.NORTH);
 
         roboticsStatusArea = new JTextArea(getStatusText(true));
         roboticsStatusArea.setEditable(false);
         roboticsStatusArea.setFont(new Font("Consolas", Font.PLAIN, 18));
         roboticsStatusArea.setBackground(BG_COLOR);
-        roboticsStatusArea.setForeground(BUTTON_BG);
+        roboticsStatusArea.setForeground(BUTTON_FG);
         roboticsStatusArea.setBorder(new LineBorder(BUTTON_BG, 2));
         panel.add(new JScrollPane(roboticsStatusArea), BorderLayout.CENTER);
 
@@ -159,7 +159,7 @@ public class HALterminal extends JFrame {
 
         JLabel title = new JLabel("Crew ISS", SwingConstants.CENTER);
         title.setFont(new Font("Consolas", Font.BOLD, 26));
-        title.setForeground(BUTTON_BG);
+        title.setForeground(BUTTON_FG);
         panel.add(title, BorderLayout.NORTH);
 
         String[] columnNames = {
@@ -186,21 +186,25 @@ public class HALterminal extends JFrame {
             data = new Object[0][5];
         }
 
-        JTable table = new JTable(data, columnNames);
+        JTable table = new JTable(data, columnNames) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         table.setFont(new Font("Consolas", Font.PLAIN, 14));
         table.setRowHeight(24);
 
         table.setBackground(BG_COLOR);
-        table.setForeground(BUTTON_BG);
+        table.setForeground(BUTTON_FG);
         table.setGridColor(BUTTON_BG);
         table.setShowGrid(true);
-        table.setSelectionBackground(BUTTON_BG.darker());
+        table.setSelectionBackground(BUTTON_FG.darker());
         table.setSelectionForeground(BG_COLOR);
 
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Consolas", Font.BOLD, 14));
         header.setBackground(BG_COLOR);
-        header.setForeground(BUTTON_BG);
+        header.setForeground(BUTTON_FG);
         header.setReorderingAllowed(false);
 
         JScrollPane scroll = new JScrollPane(table);
@@ -262,6 +266,7 @@ public class HALterminal extends JFrame {
                         -2 -2 -1  """);
 
         roboticsStatusArea.setText(String.join("\n", codes));
+        roboticsStatusArea.setCaretPosition(0);
     }
 
     private void styleSciFiButton(AbstractButton btn) {
@@ -269,7 +274,7 @@ public class HALterminal extends JFrame {
         btn.setBackground(BUTTON_BG);
         btn.setForeground(BUTTON_FG);
         btn.setFocusPainted(false);
-        btn.setBorder(new LineBorder(BUTTON_BG, 2));
+        btn.setBorder(new LineBorder(BUTTON_FG, 2));
     }
 
     private String getStatusText(boolean aiActive) {
@@ -281,6 +286,13 @@ public class HALterminal extends JFrame {
     }
 
     public static void main(String[] args) {
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+            }   
+        
         try (Connection conn = DBConfig.getConnection()) {
             DBConfig.populateDatabase();
         } catch (SQLException e) {

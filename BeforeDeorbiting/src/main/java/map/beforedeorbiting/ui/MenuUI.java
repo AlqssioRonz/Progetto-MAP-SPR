@@ -30,6 +30,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import map.beforedeorbiting.database.DBConfig;
@@ -321,6 +322,11 @@ public class MenuUI extends JFrame {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
             DBConfig.populateDatabase();
+            try {
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+                e.printStackTrace();
+            }
             try {
                 new MenuUI().setVisible(true);
             } catch (InterruptedException ex) {

@@ -71,6 +71,7 @@ public class UseObserver implements GameObserver, Serializable {
                 }
             } else {
                 useMsg.append("Come pensi di poterlo usare?!");
+                useMsg.append(parserOutput.getObject().getName());
             }
         }
         return useMsg.toString();
@@ -165,6 +166,10 @@ public class UseObserver implements GameObserver, Serializable {
     public String combineModel(GameDesc game) {   
         StringBuilder modelMsg = new StringBuilder();
         
+        String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale."
+                +"Unendo i pezzi del modellino compare una sequenza "
+                + "di direzioni scritta con un pennarello: su - giu - su - dx - su - sx. Che possa servire per sbloccare qualcosa?";
+        
         if (game.getInventory().getList().contains(game.getObjectByID(0)) 
                 && game.getInventory().getList().contains(game.getObjectByID(1))
                 && game.getInventory().getList().contains(game.getObjectByID(2))
@@ -175,13 +180,15 @@ public class UseObserver implements GameObserver, Serializable {
             game.getInventory().remove(game.getObjectByID(2));
             game.getInventory().remove(game.getObjectByID(3));
             
-            BDObject modellinoCompleto = new BDObject(0, "Modellino della Stazione",
-                "Un Modellino, rappresenta la stazione spaziale internazionale.");
+            BDObject modellinoCompleto = new BDObject(0123, "Modellino della Stazione",
+                descrModellino);
             
             game.getInventory().add(modellinoCompleto);
             
             modelMsg.append("Hai ottenuto ").append(modellinoCompleto.getDescription());
     
+        } else {
+            modelMsg.append("Non ho ancora tutti i pezzi del modellino.");
         }
         
         return modelMsg.toString();

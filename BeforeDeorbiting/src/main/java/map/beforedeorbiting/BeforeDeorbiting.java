@@ -80,24 +80,28 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
 
         /* Lista di tutti gli oggetti del gioco */
         BDObject modellinoRusso = new BDObject(0, "Modellino russo",
-                "Una parte del modellino, rappresenta il ramo russo.");
-        modellinoRusso.setAlias(Set.of("modellinoRusso", "modellino1", "russo", "modellinoR", "modellino", "oggetto", "frammento"));
+                "Una parte del modellino, rappresenta il ramo russo della stazione.");
+        modellinoRusso.setAlias(Set.of("modellinoRusso", "modellino1", "russo", "modellinoR", "modellino"));
         modellinoRusso.setPickupable(true);
+        modellinoRusso.setUsable(true);
         BDObject modellinoAmericano = new BDObject(1, "Modellino americano",
                 "Una parte del modellino, rappresenta il modulo centrale della stazione.");
         modellinoAmericano.setAlias(
-                Set.of("modellinoAmericano", "modellino2", "americano", "modellinoA", "modellino", "oggetto", "frammento"));
+                Set.of("modellinoAmericano", "modellino2", "americano", "modellinoA", "modellino"));
         modellinoAmericano.setPickupable(true);
+        modellinoAmericano.setUsable(true);
         BDObject modellinoDx = new BDObject(2, "Modellino pannelli solari Dx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala destra.");
-        modellinoDx.setAlias(Set.of("modellinoDestro", "modellino3", "destro", "modellinoDx", "modellinoD","oggetto", "frammento",
-                "modellino"));
+        modellinoDx.setAlias(Set.of("modellinoDestro", "modellino3", "destro", "modellinoDx",
+                "modellinoD", "modellino"));
         modellinoDx.setPickupable(true);
+        modellinoDx.setUsable(true);
         BDObject modellinoSx = new BDObject(3, "Modellino pannelli solari Sx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
         modellinoSx.setAlias(Set.of("oggetto", "modellinoSinistro", "modellino4", "sinistro", "modellinoSx",
-                "modellinoS", "modellino", "oggetto", "frammento"));
+                "modellinoS", "modellino"));
         modellinoSx.setPickupable(true);
+        modellinoSx.setUsable(true);
         BDObject diarioSusan = new BDObject(4, "Diario Susan",
                 "Il diario di Susan... contiene i suoi ultimi istanti.");
         diarioSusan.setAlias(Set.of("diario", "diarioSusan", "susan"));
@@ -222,6 +226,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         harmony.setPort(kibo);
         unity.setPort(tranquility);
         quest.setPort(unity);
+        quest.setForward(spazio);
         kibo.setStarboard(harmony);
         quest.setDeck(spazio);
         unity.setDeck(leonardo);

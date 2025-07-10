@@ -74,6 +74,7 @@ public class MovementObserver implements GameObserver, Serializable {
                         //id 10 tuta spaziale
                         if (target.equals(game.getRoomByName("SPAZIO"))
                                 && !game.getObjectByID(10).isInUse()) {
+                            game.setCurrentRoom(target);
                             movementMessage.append("""
                                                    Fare una camminata nello spazio senza indossare 
                                                    una tuta spaziale sarebbe un suicidio.""");

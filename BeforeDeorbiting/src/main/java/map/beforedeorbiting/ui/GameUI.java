@@ -350,6 +350,12 @@ public class GameUI extends JFrame {
         
         chronometer.setButton(gametimer);
         chronometer.start();
+
+        // passa lo stesso bottone al countdown. Il countdown avvierà
+        // autonomamente il proprio thread quando necessario
+        game.countdown.setButton(gametimer);
+        game.countdown.setConcurrentChronometerPrey(chronometer);
+        
       
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(gametimer);

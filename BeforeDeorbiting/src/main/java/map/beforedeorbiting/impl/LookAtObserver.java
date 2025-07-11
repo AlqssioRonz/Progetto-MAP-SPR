@@ -79,7 +79,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getCurrentRoom().getObject(0) != null) {
             msg = """
                   Tutto è in ordine tranne per uno strano 
-                  dettaglio… sembra, un pezzo di modellino1 
+                  dettaglio… sembra, un pezzo di modellino 
                   che galleggia in aria?""";
         } else {
             msg = """
@@ -136,12 +136,12 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getRoomByName("LEONARDO").isAccessible()) {
             msg.append("""
                        La botola sotto i miei piedi che conduce nel modulo Leonardo 
-                       è aperta.""");
+                       è aperta, ma non vorrei rivedere il cadavere di Susan. """);
         } else {
             msg.append("La botola sotto i miei piedi che conduce nel modulo Leonardo è chiuso.");
         }
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(1))) {
-            msg.append("Sul pavimento galleggia un piccolo modellino2, scuro difficile "
+            msg.append("Sul pavimento galleggia un piccolo oggetto scuro difficile "
                     + "non vederlo in un modulo così piccola");
         }
 
@@ -168,8 +168,7 @@ public class LookAtObserver implements GameObserver, Serializable {
             msg = """
                   In mezzo alla calma, qualcosa di minuscolo fluttua davanti 
                   all’oblò centrale: un frammento rigido, rettangolare, troppo 
-                  ordinato per essere solo un detrito, portrebbe essere un nuovo
-                  pezzo del modellino3.""";
+                  ordinato per essere solo un detrito.""";
         } else {
             msg = "";
         }
@@ -180,8 +179,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         String msg;
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(3))) {
             msg = """
-                  Uno strano e piccolo oggetto fluttua davanti alla botola. 
-                  Portrebbbe essere un altro pezzo del modellino4.""";
+                  Uno strano e piccolo oggetto fluttua davanti alla botola.""";
         } else {
             msg = "";
         }

@@ -20,6 +20,7 @@ public class ConcurrentChronometer extends Thread {
     private Instant end;
     
     private boolean runningThread = false;
+    private boolean hideDisplay = false;
     
     private JButton button;
     private JTextArea textarea;
@@ -63,19 +64,24 @@ public class ConcurrentChronometer extends Thread {
         runningThread = true;
         while (runningThread) {
             try {
-                
-                SwingUtilities.invokeLater(() -> {
-                    if(button != null)
-                        button.setText(getTimeToString());
-                    else if(textarea != null)
-                        textarea.setText(getTimeToString());
-                });
+                if(hideDisplay) {
+                    SwingUtilities.invokeLater(() -> {
+                        if(button != null)
+                            button.setText(getTimeToString());
+                        else if(textarea != null)
+                            textarea.setText(getTimeToString());
+                    });
+                }
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             }
         }
+    }
+    
+    public void setHideDisplay(boolean flag) {
+        this.hideDisplay = flag;
     }
     
     

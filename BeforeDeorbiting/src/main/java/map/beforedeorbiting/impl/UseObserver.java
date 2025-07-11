@@ -45,6 +45,7 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(1), this::combineModel);
         uses.put(game.getObjectByID(2), this::combineModel);
         uses.put(game.getObjectByID(3), this::combineModel);
+        uses.put(game.getObjectByID(13), this::directionsPuzzle);
     }
 
     /*
@@ -71,7 +72,6 @@ public class UseObserver implements GameObserver, Serializable {
                 }
             } else {
                 useMsg.append("Come pensi di poterlo usare?!");
-                useMsg.append(parserOutput.getObject().getName());
             }
         }
         return useMsg.toString();
@@ -140,7 +140,7 @@ public class UseObserver implements GameObserver, Serializable {
         System.out.println("Hai acceso il computer!");
         game.getObjectByID(9).setInUse(true);
         HALterminal dbgame = new HALterminal();
-        
+        dbgame.setVisible(true);
         game.getObjectByID(9).setInUse(false);
         usingComputer.append("Hai spento il pc!");
         return usingComputer.toString();
@@ -165,10 +165,9 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String combineModel(GameDesc game) {   
         StringBuilder modelMsg = new StringBuilder();
-        
         String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale."
                 +"Unendo i pezzi del modellino compare una sequenza "
-                + "di direzioni scritta con un pennarello: su - giu - su - dx - su - sx. Che possa servire per sbloccare qualcosa?";
+                + "di direzioni scritta con un pennarello: ↑ ↓ ↑ → ↑ ←. Che possa servire per sbloccare qualcosa?";
         
         if (game.getInventory().getList().contains(game.getObjectByID(0)) 
                 && game.getInventory().getList().contains(game.getObjectByID(1))
@@ -180,17 +179,24 @@ public class UseObserver implements GameObserver, Serializable {
             game.getInventory().remove(game.getObjectByID(2));
             game.getInventory().remove(game.getObjectByID(3));
             
-            BDObject modellinoCompleto = new BDObject(0123, "Modellino della Stazione",
-                descrModellino);
+            BDObject modellinoCompleto = new BDObject(0, "Modellino della Stazione",
+                "Un Modellino, rappresenta la stazione spaziale internazionale.");
             
             game.getInventory().add(modellinoCompleto);
             
             modelMsg.append("Hai ottenuto ").append(modellinoCompleto.getDescription());
     
-        } else {
-            modelMsg.append("Non ho ancora tutti i pezzi del modellino.");
         }
         
         return modelMsg.toString();
+    }
+    
+    public String directionsPuzzle(GameDesc game) {
+        
+        //chiamata alla finestra dal pacchetto ui
+        //se risolve la sequenza sposta il giocatore in leonardo e printa il necessario
+        //mette la tuta fuori uso e la lascia in leonardo e mette a false pickupable
+        
+        return "";
     }
 }

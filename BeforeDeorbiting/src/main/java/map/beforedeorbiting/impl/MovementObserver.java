@@ -1,6 +1,7 @@
 package map.beforedeorbiting.impl;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -9,6 +10,7 @@ import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.type.Room;
+import map.beforedeorbiting.util.ConcurrentCountdown;
 
 /**
  * Questa classe rappresenta l'observer di comandi di movimento, permette di
@@ -30,7 +32,10 @@ import map.beforedeorbiting.type.Room;
 public class MovementObserver implements GameObserver, Serializable {
 
     private final Map<CommandType, Function<Room, Room>> moves = new EnumMap<>(CommandType.class);
-
+    
+    private final Duration COUNTDOWNTIME = Duration.ofSeconds(100);
+    
+    
     public MovementObserver() {
         moves.put(CommandType.FORWARD, Room::getForward);
         moves.put(CommandType.AFT, Room::getAft);
@@ -73,8 +78,18 @@ public class MovementObserver implements GameObserver, Serializable {
                     } else if (target != null && !target.isAccessible()) {
                         //id 10 tuta spaziale
                         if (target.equals(game.getRoomByName("SPAZIO"))
-                                && !game.getObjectByID(10).isInUse()) {
-                            game.setCurrentRoom(target);
+                                && game.getObjectByID(10).isInUse()) {
+                            game.setCurrentRoom(target);                          
+                            
+                            game.countdown.startCountdown(); //avvia il countdown nello spazio
+                            game.countdown.setOnFinish(msg -> {
+                                movementMessage.append(msg);
+                                game.setCurrentRoom(current);
+                            });
+                      
+                        } else if (target.equals(game.getRoomByName("SPAZIO"))
+                                && !game.getObjectByID(10).isInUse()){
+
                             movementMessage.append("""
                                                    Fare una camminata nello spazio senza indossare 
                                                    una tuta spaziale sarebbe un suicidio.""");

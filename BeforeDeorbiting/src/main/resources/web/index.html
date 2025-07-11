@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/images/icon.ico" type="image/x-icon">
     <title>Before Deorbiting</title>
     <style>
         /* PROGRESS BAR */
@@ -174,6 +175,43 @@
         .back-to-top:hover {
             text-decoration: underline;
         }
+
+        /* HERO SECTION */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero img {
+            max-width: 200px;
+            width: 100%;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .hero img:hover {
+            transform: scale(1.1);
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: 64px;
+            letter-spacing: 10px;
+            color: #fff;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }
     </style>
 </head>
 
@@ -190,7 +228,11 @@
         <a href="#soluzioni">Soluzioni</a>
     </nav>
 
-    <h1>Before Deorbiting</h1>
+    <!-- Hero Section con immagine -->
+    <div class="hero">
+        <img src="images/icon.png" alt="Illustrazione di Before Deorbiting">
+        <h1>Before Deorbiting</h1>
+    </div>
 
     <!-- Sezioni Complete con Testo Originale -->
     <section id="spiegazione">
@@ -216,9 +258,16 @@
     <section id="trama">
         <h2>Trama del gioco</h2>
         <p>22 giugno 2030. Sei a bordo della Stazione Spaziale Internazionale, al termine di una lunga missione. È il
-            tuo ultimo giorno nello spazio: presto la stazione verrà deorbitata e distrutta.<br><br>Ma qualcosa
-            interrompe la routine: un silenzio anomalo, assenze inspiegabili, segnali che non tornano.<br><br>Dovrai
-            esplorare, raccogliere indizi e affrontare l’ignoto. Riuscirai a salvarla?</p>
+            tuo ultimo giorno nello spazio: presto la stazione verrà deorbitata e distrutta.
+            <br><br>
+            Ma qualcosa interrompe la routine. Un silenzio anomalo, assenze inspiegabili, segnali che non tornano. La
+            stazione, che fino a ieri era casa, ora sembra diversa. Più fredda. Più ostile.
+            <br><br>
+            Dovrai esplorare, raccogliere indizi, interagire con strumenti e terminali, e affrontare l’ignoto. Qualcosa
+            sta accadendo. E il tempo a disposizione sta finendo.
+            <br><br>
+            Riuscirai a capire cosa sta succedendo… prima del deorbitaggio?
+        </p>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
 

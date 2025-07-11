@@ -11,26 +11,26 @@ import java.io.IOException;
 import java.net.URI;
 
 public class RestServer {
+
     private HttpServer server;
 
     public void start() throws IOException {
         ResourceConfig cfg = new ResourceConfig()
-            // Registrazione manuale delle risorse JAX-RS
-            .register(HtmlResource.class)
-            .register(LeaderboardResource.class)
-            .register(JacksonFeature.class)
-            // Disabilita discovery automatica e WADL
-            .property(ServerProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true)
-            .property(ServerProperties.WADL_FEATURE_DISABLE, true);
+                // Registrazione manuale delle risorse JAX-RS
+                .register(HtmlResource.class)
+                .register(JacksonFeature.class)
+                // Disabilita discovery automatica e WADL
+                .property(ServerProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true)
+                .property(ServerProperties.WADL_FEATURE_DISABLE, true);
 
         // Crea il server REST
         server = GrizzlyHttpServerFactory.createHttpServer(
-            URI.create("http://localhost:8080/"), cfg, false);
+                URI.create("http://localhost:8080/"), cfg, false);
 
         // Serve tutto ciò che sta in src/main/resources/web/
         CLStaticHttpHandler staticHandler = new CLStaticHttpHandler(
-            RestServer.class.getClassLoader(),
-            "/web/"
+                RestServer.class.getClassLoader(),
+                "/web/"
         );
         server.getServerConfiguration().addHttpHandler(staticHandler, "/");
 
@@ -40,6 +40,8 @@ public class RestServer {
     }
 
     public void stop() {
-        if (server != null) server.shutdownNow();
+        if (server != null) {
+            server.shutdownNow();
+        }
     }
 }

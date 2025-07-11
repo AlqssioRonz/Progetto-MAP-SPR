@@ -73,7 +73,13 @@ public class MenuUI extends JFrame {
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Before Deorbiting");
-        setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
+        java.net.URL iconURL = getClass().getResource("/img/icon.png");
+        if (iconURL != null) {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        } else {
+            System.err.println("Warning: icona non trovata in /img/icon.png");
+        }
         music.playMusic("/music/ZeldaMenu.wav");
         music.setVolumePercent(100);
         setPreferredSize(new Dimension(1100, 700));
@@ -351,12 +357,13 @@ public class MenuUI extends JFrame {
             DBConfig.populateDatabase();
             try {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException
+                    | UnsupportedLookAndFeelException e) {
                 e.printStackTrace();
             }
-           
+
             new MenuUI().setVisible(true);
-            
+
         });
     }
 

@@ -285,7 +285,7 @@ public class HALterminal extends JFrame {
                 + "Communications: Online\n";
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -303,7 +303,7 @@ public class HALterminal extends JFrame {
             HALterminal terminal = new HALterminal();
             terminal.setVisible(true);
         });
-    }
+    }*/
 
     public boolean isActive() {
         return aiActive;

@@ -7,18 +7,11 @@ package map.beforedeorbiting;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
-import map.beforedeorbiting.ui.DirectionsPuzzleUI;
-import map.beforedeorbiting.ui.GameUI;
-
 /**
  * Classe "principale" del gioco. Setta tutte le impostazioni iniziali, quali:
  * stanze, oggetti, comandi, observer, storia e la stanza iniziale.
@@ -83,6 +76,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Command exit = new Command(CommandType.EXIT, "esci");
         exit.setAlias(new String[]{"exit"});
         getCommands().add(exit);
+        Command wait = new Command(CommandType.WAIT, "aspetta");
+        wait.setAlias(new String[]{"wait", "fermo", "tempo"});
+        getCommands().add(wait);
 
         /* Lista di tutti gli oggetti del gioco */
         BDObject modellinoRusso = new BDObject(0, "Modellino russo",
@@ -145,8 +141,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         // verrà mostrato un output "ti sei tolto la tuta"
         BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
         cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
-        BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire il codice direzionale per aprire il modulo dall'esterno");
-        tastierinoDirezioni.setAlias(Set.of("portellone", "codice"));
+        BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire la password per entrare in Destiny.");
+        tastierinoDirezioni.setAlias(Set.of("portellone", "codice", "tastierino", "tastiera"));
         tastierinoDirezioni.setUsable(true);
 
         getListObj().add(modellinoRusso);
@@ -183,6 +179,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         unity.setRoomImage("src/main/resources/img/node1.jpeg");
         unity.addObject(modellinoAmericano);
         unity.addObject(cassa);
+        unity.addObject(tastierinoDirezioni);
         cassa.add(pezzoDiVetro);
         Room quest = new Room(3, "QUEST", "Accesso allo spazio.");
         quest.setRoomImage("src/main/resources/img/airlock-quest.jpeg");
@@ -200,8 +197,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         leonardo.addObject(computer);
         leonardo.setAccessible(false);
         Room destiny = new Room(7, "DESTINY", "Laboratorio avanzato.");
-        destiny.setRoomImage("src/main/resources/img/destiny_aperto.png");
+        destiny.setRoomImage("src/main/resources/img/destiny_buio.png");
         destiny.addObject(pezzoDiVetro);
+        destiny.setVisible(false);
         destiny.setAccessible(false);
         Room harmony = new Room(8, "HARMONY", "Corridoio pressurizzato.");
         harmony.setRoomImage("src/main/resources/img/harmony.png");
@@ -432,6 +430,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(useObserver);
         GameObserver saveObserver = new SaveObserver();
         this.attach(saveObserver);
+        GameObserver waitObserver = new WaitObserver();
+        this.attach(waitObserver);
 
         // Setta la stanza iniziale
         setCurrentRoom(zvezda);

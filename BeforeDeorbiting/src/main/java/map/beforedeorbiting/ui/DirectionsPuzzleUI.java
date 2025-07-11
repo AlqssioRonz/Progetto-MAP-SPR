@@ -182,7 +182,7 @@ public class DirectionsPuzzleUI extends JPanel {
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception ex) {
@@ -198,5 +198,5 @@ public class DirectionsPuzzleUI extends JPanel {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
-    }
+    }*/
 }

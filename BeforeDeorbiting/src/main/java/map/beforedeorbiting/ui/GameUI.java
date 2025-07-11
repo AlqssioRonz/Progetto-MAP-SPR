@@ -150,7 +150,7 @@ public class GameUI extends JFrame {
      * @throws Exception Se c'è un problema durante l'inizializzazione o il
      * caricamento.
      */
-    private void mainComponents(boolean loadGame, File file) throws Exception {
+    private void mainComponents(boolean loadGame, File file) throws Exception { //<-------------------- interazione
         if (!loadGame) {
             game = new BeforeDeorbiting();
             engine = new Engine(game);
@@ -709,7 +709,7 @@ public class GameUI extends JFrame {
     }
     
     public void directionsMinigame() {
-        // 1) Definisco il pattern di frecce
+        //Definisco il pattern di frecce
         java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
         
         GameDesc game = engine.getGame();
@@ -717,16 +717,16 @@ public class GameUI extends JFrame {
         
         this.updateRoomImage(game.getRoomByName("SPAZIO").getRoomImage());
 
-        // 2) Costruisco il puzzle con callback
+        
         DirectionsPuzzleUI puzzle = new DirectionsPuzzleUI(pattern, result -> {
             SwingUtilities.invokeLater(() -> {
                 if (result == 0) {
                     // ha indovinato: disabilito lo spazio e sposto in LEONARDO
-                    game.getCurrentRoom().setAccessible(false);
+                    game.getRoomByName("SPAZIO").setAccessible(false);
                     game.getRoomByName("LEONARDO").setAccessible(true);
                     game.setCurrentRoom(game.getRoomByName("LEONARDO"));
-                    
                     this.updateRoomImage(game.getRoomByName("LEONARDO").getRoomImage());
+                    game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_botola_aperta.jpeg");
                     printer.print(engine.getGame().getCurrentRoom().getGameStory() + 
                              "\n" + engine.getGame().getCurrentRoom().getName() + "\n"+ engine.getGame()
                                         .getCurrentRoom().getDescription());
@@ -739,7 +739,6 @@ public class GameUI extends JFrame {
         });
         
         
-        // 3) Creo un dialogo modale che blocca il flow finché non chiude
         JDialog dialog = new JDialog((JFrame) null, "Puzzle Direzioni", true);
         dialog.getContentPane().add(puzzle);
         dialog.pack();

@@ -27,7 +27,7 @@ public class HALterminal extends JFrame {
 
     public HALterminal() {
         setTitle("Computer centrale della Stazione");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 400);
         setLocationRelativeTo(null);
         getContentPane().setBackground(BG_COLOR);

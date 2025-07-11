@@ -29,11 +29,13 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
@@ -350,12 +352,6 @@ public class GameUI extends JFrame {
         
         chronometer.setButton(gametimer);
         chronometer.start();
-
-        // passa lo stesso bottone al countdown. Il countdown avvierà
-        // autonomamente il proprio thread quando necessario
-        game.countdown.setButton(gametimer);
-        game.countdown.setConcurrentChronometerPrey(chronometer);
-        
       
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(gametimer);
@@ -568,14 +564,19 @@ public class GameUI extends JFrame {
             };
 
             engine.getGame().nextMove(p, ps); // <-- CHIAMATA CORRETTA QUI
-
+            
+            if(engine.getGame().getCurrentRoom().equals(engine.getGame().getRoomByName("SPAZIO"))) {
+                this.directionsMinigame();    
+            }
+            
             if (engine.getGame().getCurrentRoom() != null) {
                 updateRoomImage(engine.getGame().getCurrentRoom().getRoomImage());
             }
 
             checkEndGame();
-        }
-    }
+            
+            }
+        }  
 
     /**
      * Mostra la finestra delle impostazioni.
@@ -714,5 +715,44 @@ public class GameUI extends JFrame {
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             }
         }
+    }
+    
+    public void directionsMinigame() {
+        // 1) Definisco il pattern di frecce
+        java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
+        
+        GameDesc game = engine.getGame();
+        
+        
+        this.updateRoomImage(game.getRoomByName("SPAZIO").getRoomImage());
+
+        // 2) Costruisco il puzzle con callback
+        DirectionsPuzzleUI puzzle = new DirectionsPuzzleUI(pattern, result -> {
+            SwingUtilities.invokeLater(() -> {
+                if (result == 0) {
+                    // ha indovinato: disabilito lo spazio e sposto in LEONARDO
+                    game.getCurrentRoom().setAccessible(false);
+                    game.getRoomByName("LEONARDO").setAccessible(true);
+                    game.setCurrentRoom(game.getRoomByName("LEONARDO"));
+                    
+                    this.updateRoomImage(game.getRoomByName("LEONARDO").getRoomImage());
+                    printer.print(engine.getGame().getCurrentRoom().getGameStory() + 
+                             "\n" + engine.getGame().getCurrentRoom().getName() + "\n"+ engine.getGame()
+                                        .getCurrentRoom().getDescription());
+                    
+                } else {
+                    // sbagliato o timeout: torno alla stanza precedente
+                    game.setCurrentRoom(game.getRoomByName("QUEST"));
+                }
+            });
+        });
+        
+        
+        // 3) Creo un dialogo modale che blocca il flow finché non chiude
+        JDialog dialog = new JDialog((JFrame) null, "Puzzle Direzioni", true);
+        dialog.getContentPane().add(puzzle);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 }

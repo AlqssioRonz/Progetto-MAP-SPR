@@ -64,14 +64,12 @@ public class ConcurrentChronometer extends Thread {
         runningThread = true;
         while (runningThread) {
             try {
-                if(hideDisplay) {
-                    SwingUtilities.invokeLater(() -> {
-                        if(button != null)
-                            button.setText(getTimeToString());
-                        else if(textarea != null)
-                            textarea.setText(getTimeToString());
+                SwingUtilities.invokeLater(() -> {
+                    if(button != null)
+                        button.setText(getTimeToString());
+                    else if(textarea != null)
+                        textarea.setText(getTimeToString());
                     });
-                }
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();

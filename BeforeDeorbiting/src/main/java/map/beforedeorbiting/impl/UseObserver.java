@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.swing.SwingUtilities;
 
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
@@ -45,7 +46,6 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(1), this::combineModel);
         uses.put(game.getObjectByID(2), this::combineModel);
         uses.put(game.getObjectByID(3), this::combineModel);
-        uses.put(game.getObjectByID(13), this::directionsPuzzle);
     }
 
     /*
@@ -67,6 +67,8 @@ public class UseObserver implements GameObserver, Serializable {
                 if (game.getInventory().getList().contains(parserOutput.getObject())) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                     InventoryUI.updateInventory(game);
+                } else if (parserOutput.getObject().getId() == 9) {
+                    useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                 } else {
                     useMsg.append("Non possiedi questo oggetto al momento! Riprova, magari sarai più fortunato.");
                 }
@@ -137,12 +139,11 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String useComputer(GameDesc game) {
         StringBuilder usingComputer = new StringBuilder();
-        System.out.println("Hai acceso il computer!");
-        game.getObjectByID(9).setInUse(true);
-        HALterminal dbgame = new HALterminal();
-        dbgame.setVisible(true);
-        game.getObjectByID(9).setInUse(false);
-        usingComputer.append("Hai spento il pc!");
+        SwingUtilities.invokeLater(() -> {
+            HALterminal terminal = new HALterminal();
+            terminal.setVisible(true);
+        });
+        usingComputer.append("Hai acceso il computer.");
         return usingComputer.toString();
     }
 
@@ -167,7 +168,7 @@ public class UseObserver implements GameObserver, Serializable {
         StringBuilder modelMsg = new StringBuilder();
         String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale."
                 +"Unendo i pezzi del modellino compare una sequenza "
-                + "di direzioni scritta con un pennarello: ↑ ↓ ↑ → ↑ ←. Che possa servire per sbloccare qualcosa?";
+                + "di direzioni scritta con un pennarello: ↑ ↑ ↓ ↓ ← → ← →. Che possa servire per sbloccare qualcosa?";
         
         if (game.getInventory().getList().contains(game.getObjectByID(0)) 
                 && game.getInventory().getList().contains(game.getObjectByID(1))
@@ -179,24 +180,18 @@ public class UseObserver implements GameObserver, Serializable {
             game.getInventory().remove(game.getObjectByID(2));
             game.getInventory().remove(game.getObjectByID(3));
             
-            BDObject modellinoCompleto = new BDObject(0, "Modellino della Stazione",
-                "Un Modellino, rappresenta la stazione spaziale internazionale.");
+            BDObject modellinoCompleto = new BDObject(0123, "Modellino della Stazione",
+                descrModellino);
             
             game.getInventory().add(modellinoCompleto);
             
             modelMsg.append("Hai ottenuto ").append(modellinoCompleto.getDescription());
     
+        } else {
+            modelMsg.append("Non te ne puoi fare ancora nulla. Ti servono gli altri pezzi.");
         }
         
         return modelMsg.toString();
     }
     
-    public String directionsPuzzle(GameDesc game) {
-        
-        //chiamata alla finestra dal pacchetto ui
-        //se risolve la sequenza sposta il giocatore in leonardo e printa il necessario
-        //mette la tuta fuori uso e la lascia in leonardo e mette a false pickupable
-        
-        return "";
-    }
 }

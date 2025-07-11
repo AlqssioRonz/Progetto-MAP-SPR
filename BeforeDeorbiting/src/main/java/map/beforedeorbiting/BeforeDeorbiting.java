@@ -145,7 +145,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         // verrà mostrato un output "ti sei tolto la tuta"
         BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
         cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
-
         BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire il codice direzionale per aprire il modulo dall'esterno");
         tastierinoDirezioni.setAlias(Set.of("portellone", "codice"));
         tastierinoDirezioni.setUsable(true);
@@ -239,7 +238,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         quest.setPort(unity);
         quest.setForward(spazio);
         kibo.setStarboard(harmony);
-        quest.setDeck(spazio);
         unity.setDeck(leonardo);
         leonardo.setOverhead(unity);
 

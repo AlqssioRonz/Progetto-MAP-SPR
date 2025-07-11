@@ -18,10 +18,9 @@ public class ConcurrentChronometer extends Thread {
 
     private Instant start;
     private Instant end;
-    
+
     private boolean runningThread = false;
-    private boolean hideDisplay = false;
-    
+
     private JButton button;
     private JTextArea textarea;
 
@@ -53,7 +52,7 @@ public class ConcurrentChronometer extends Thread {
     public void setButton(JButton button) {
         this.button = button;
     }
-    
+
     public void setButton(JTextArea textarea) {
         this.textarea = textarea;
     }
@@ -65,11 +64,12 @@ public class ConcurrentChronometer extends Thread {
         while (runningThread) {
             try {
                 SwingUtilities.invokeLater(() -> {
-                    if(button != null)
+                    if (button != null) {
                         button.setText(getTimeToString());
-                    else if(textarea != null)
+                    } else if (textarea != null) {
                         textarea.setText(getTimeToString());
-                    });
+                    }
+                });
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -77,16 +77,10 @@ public class ConcurrentChronometer extends Thread {
             }
         }
     }
-    
-    public void setHideDisplay(boolean flag) {
-        this.hideDisplay = flag;
-    }
-    
-    
+
     public void stopTimer() {
         runningThread = false;
-        end = Instant.now();      
+        end = Instant.now();
     }
-    
-}
 
+}

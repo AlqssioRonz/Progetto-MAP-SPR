@@ -4,6 +4,7 @@
  */
 package map.beforedeorbiting.type;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,7 +19,7 @@ public class BDObject {
 
     private String description;
 
-    private Set<String> alias;
+    private Set<String> alias = new HashSet<>();
 
     private boolean pickupable = false;
 

@@ -52,8 +52,8 @@ import map.beforedeorbiting.util.MusicController;
 public class GameUI extends JFrame {
 
     private static final Font FONT = new Font("Helvetica", Font.BOLD, 16);
-    private static final Color bluscuro = Color.decode("#0f111c");
-    private static final Color bluchiaro = Color.decode("#00e1d4");
+    private static final Color BLUSCURO = Color.decode("#0f111c");
+    private static final Color BLUCHIARO = Color.decode("#00e1d4");
     private static final Color TEXT = new Color(6, 6, 6);
 
     private final MusicController music = new MusicController();
@@ -220,12 +220,12 @@ public class GameUI extends JFrame {
                 continueGame(evt);
             }
         });
-        buttonPanelExit.setBackground(bluscuro);
+        buttonPanelExit.setBackground(BLUSCURO);
 
         jButton1.setText("Sì");
-        jButton1.setBackground(bluchiaro);
+        jButton1.setBackground(BLUCHIARO);
         jButton1.setFocusPainted(false);
-        jButton1.setForeground(bluscuro);
+        jButton1.setForeground(BLUSCURO);
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -239,9 +239,9 @@ public class GameUI extends JFrame {
         buttonPanelExit.add(jButton1);
 
         jButton2.setText("No");
-        jButton2.setBackground(bluchiaro);
+        jButton2.setBackground(BLUCHIARO);
         jButton2.setFocusPainted(false);
-        jButton2.setForeground(bluscuro);
+        jButton2.setForeground(BLUSCURO);
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -252,13 +252,13 @@ public class GameUI extends JFrame {
 
         jTextArea2.setFont(FONT);
         jTextArea2.setText("Ne sei proprio sicuro?");
-        jTextArea2.setForeground(bluchiaro);
+        jTextArea2.setForeground(BLUCHIARO);
         jTextArea2.setHorizontalAlignment(SwingConstants.CENTER);
         jTextArea2.setVerticalAlignment(SwingConstants.CENTER);
         jTextArea2.setFocusable(false);
         jTextArea2.setBorder(null);
 
-        panel.setBackground(bluscuro);
+        panel.setBackground(BLUSCURO);
         panel.setLayout(new BorderLayout());
 
         panel.add(imageLabel, BorderLayout.NORTH);
@@ -273,7 +273,7 @@ public class GameUI extends JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
         setResizable(false);
 
-        macroPanel.setBackground(bluchiaro);
+        macroPanel.setBackground(BLUCHIARO);
 
         scrollPane.setBorder(null);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -290,13 +290,13 @@ public class GameUI extends JFrame {
 
         textPane.setEditable(true);
         textPane.setFocusable(false);
-        textPane.setBackground(bluscuro);
-        textPane.setForeground(bluchiaro);
+        textPane.setBackground(BLUSCURO);
+        textPane.setForeground(BLUCHIARO);
         textPane.setPreferredSize(new Dimension(100, 100));
         textPane.setBorder(null);
         textPane.setCaretPosition(textPane.getDocument().getLength());
         textPane.setFont(FONT);
-        textPane.setBorder(BorderFactory.createLineBorder(bluscuro, 4));
+        textPane.setBorder(BorderFactory.createLineBorder(BLUSCURO, 4));
         scrollPane.setViewportView(textPane);
         imageViewer = new ImagePanel(); // Changed to ImagePanel
         textPane.setFont(new Font("Helvetica", Font.PLAIN, 18));
@@ -305,14 +305,14 @@ public class GameUI extends JFrame {
 
         // --- configura menuBar ---
         menuBar = new JMenuBar();
-        menuBar.setBackground(bluscuro);
+        menuBar.setBackground(BLUSCURO);
         menuBar.setForeground(TEXT);
 
         menuBar.setPreferredSize(new Dimension(0, 50));
 
         // crea JMenu “Opzioni”
         JButton skipButton = new JButton("Skip testo");
-        skipButton.setBackground(bluchiaro);
+        skipButton.setBackground(BLUCHIARO);
         skipButton.setFocusPainted(false);
         skipButton.setMaximumSize(new Dimension(125, 30));
         skipButton.addMouseListener(new MouseAdapter() {
@@ -333,7 +333,7 @@ public class GameUI extends JFrame {
 
         // configura e aggiungi il bottone Muta
         musicButton.setText("Muta");
-        musicButton.setBackground(bluchiaro);
+        musicButton.setBackground(BLUCHIARO);
         musicButton.setFocusPainted(false);
         musicButton.setMaximumSize(new Dimension(125, 30));
         musicButton.addMouseListener(new MouseAdapter() {
@@ -354,7 +354,7 @@ public class GameUI extends JFrame {
 
         // configura e aggiungi il bottone Esci
         tornaMenu.setText("Torna al menù");
-        tornaMenu.setBackground(bluchiaro);
+        tornaMenu.setBackground(BLUCHIARO);
         tornaMenu.setFocusPainted(false);
         tornaMenu.setMaximumSize(new Dimension(125, 30));
         tornaMenu.addMouseListener(new MouseAdapter() {
@@ -374,9 +374,9 @@ public class GameUI extends JFrame {
         menuBar.setBorder(BorderFactory.createMatteBorder(
                 0, 0, // top, left
                 7, 0, // bottom, right
-                bluchiaro));
+                BLUCHIARO));
 
-        getContentPane().setBackground(bluscuro);
+        getContentPane().setBackground(BLUSCURO);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -412,21 +412,21 @@ public class GameUI extends JFrame {
                 g.drawImage(img.getImage(), 0, 0, getWidth(), getHeight(), null);
             }
         };
-        rightPanel.setBackground(bluscuro);
+        rightPanel.setBackground(BLUSCURO);
         rightPanel.setPreferredSize(new Dimension(200, 200));
 
         // 1) crea il pannello principale
         JPanel main = new JPanel(new BorderLayout());
-        main.setBackground(bluchiaro);
+        main.setBackground(BLUCHIARO);
 
         // 3) pannello centrale con 2 colonne
         JPanel center = new JPanel();
-        center.setBackground(bluchiaro);
+        center.setBackground(BLUCHIARO);
         center.setLayout(new BoxLayout(center, BoxLayout.X_AXIS));
 
         // separatore
         JPanel sep = new JPanel();
-        sep.setBackground(bluchiaro);
+        sep.setBackground(BLUCHIARO);
         sep.setPreferredSize(new Dimension(7, 0));
         sep.setMaximumSize(new Dimension(7, Integer.MAX_VALUE));
 
@@ -435,7 +435,7 @@ public class GameUI extends JFrame {
         left.add(scrollPane, BorderLayout.CENTER);
         // 1) la linea viola
         JPanel divider = new JPanel();
-        divider.setBackground(bluchiaro);
+        divider.setBackground(BLUCHIARO);
         divider.setPreferredSize(new Dimension(0, 7));
 
         // qui usiamo BorderLayout per far riempire interamente il textBox
@@ -453,7 +453,7 @@ public class GameUI extends JFrame {
         JPanel inventory = new InventoryUI(game);
         inventory.setBackground(Color.decode("#3A3A3A"));
         inventory.setPreferredSize(new Dimension(5, 100));
-        inventory.setBorder(BorderFactory.createMatteBorder(7, 0, 0, 0, bluchiaro));
+        inventory.setBorder(BorderFactory.createMatteBorder(7, 0, 0, 0, BLUCHIARO));
         right.add(inventory, BorderLayout.SOUTH);
 
         left.setPreferredSize(new Dimension(300, 0));
@@ -545,15 +545,6 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Mostra la finestra delle impostazioni.
-     *
-     * @param evt Evento di azione.
-     *
-     * private void impostazioniMouseClicked(ActionEvent evt) {
-     * HTN_InterfacciaSettings impostazioni = new GameUI(GameUI.this);
-     * impostazioni.setVisible(true); }*
-     */
-    /**
      * Gestisce l'evento di clic sul pulsante per tornare al menu principale.
      *
      * @param evt Evento di clic del mouse.
@@ -623,7 +614,7 @@ public class GameUI extends JFrame {
             // concludiPartita();
         }
     }
-    
+
     /**
      * Aggiorna l'immagine della stanza corrente usando il percorso fornito.
      *

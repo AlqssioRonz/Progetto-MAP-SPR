@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import map.beforedeorbiting.BeforeDeorbiting;
@@ -32,12 +34,15 @@ public class JSONSaveController {
      * GameDesc.
      */
     private static final Gson gson = new GsonBuilder()
+            // 1) registra i TypeAdapter per java.time
+            .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .registerTypeAdapter(Instant.class, new InstantAdapter())
+            // 2) pretty print
             .setPrettyPrinting()
-            // Registriamo un InstanceCreator per GameDesc
+            // 3) il tuo InstanceCreator per GameDesc â†’ BeforeDeorbiting
             .registerTypeAdapter(GameDesc.class, new InstanceCreator<GameDesc>() {
                 @Override
                 public GameDesc createInstance(Type type) {
-                    // Ogni volta che serve un GameDesc, ne creiamo uno di tipo BeforeDeorbiting
                     return new BeforeDeorbiting();
                 }
             })

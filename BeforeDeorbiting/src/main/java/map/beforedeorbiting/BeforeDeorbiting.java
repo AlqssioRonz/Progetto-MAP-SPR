@@ -7,11 +7,17 @@ package map.beforedeorbiting;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
+import map.beforedeorbiting.ui.DirectionsPuzzleUI;
+import map.beforedeorbiting.ui.GameUI;
 
 /**
  * Classe "principale" del gioco. Setta tutte le impostazioni iniziali, quali:
@@ -33,16 +39,16 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     public void init() {
         Inventory.getInstance().getList().clear();
         Command forward = new Command(CommandType.FORWARD, "avanti");
-        forward.setAlias(new String[]{"avanza", "forward", "x+"});
+        forward.setAlias(new String[]{"avanza", "forward", "x+", "nord"});
         getCommands().add(forward);
         Command aft = new Command(CommandType.AFT, "indietro");
-        aft.setAlias(new String[]{"dietro", "retrocedi", "aft", "x-", "indietro"});
+        aft.setAlias(new String[]{"sud", "dietro", "retrocedi", "aft", "x-", "indietro"});
         getCommands().add(aft);
         Command starboard = new Command(CommandType.STARBOARD, "destra");
-        starboard.setAlias(new String[]{"starboard", "y+"});
+        starboard.setAlias(new String[]{"est", "starboard", "y+"});
         getCommands().add(starboard);
         Command port = new Command(CommandType.PORT, "sinistra");
-        port.setAlias(new String[]{"port", "y-"});
+        port.setAlias(new String[]{"port", "y-", "ovest"});
         getCommands().add(port);
         Command deck = new Command(CommandType.DECK, "giu");
         deck.setAlias(new String[]{"giù", "giu'", "deck", "z+"});
@@ -83,18 +89,22 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 "Una parte del modellino, rappresenta il ramo russo.");
         modellinoRusso.setAlias(Set.of("modellinorusso", "modellino1", "russo", "modellinor"));
         modellinoRusso.setPickupable(true);
+        modellinoRusso.setUsable(true);
         BDObject modellinoAmericano = new BDObject(1, "Modellino americano",
                 "Una parte del modellino, rappresenta il modulo centrale della stazione.");
         modellinoAmericano.setAlias(Set.of("modellinoamericano", "modellino2", "americano", "modellinoa"));
         modellinoAmericano.setPickupable(true);
+        modellinoAmericano.setUsable(true);
         BDObject modellinoDx = new BDObject(2, "Modellino pannelli solari Dx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala destra.");
         modellinoDx.setAlias(Set.of("modellinodestro", "modellino3", "destro", "modellinodx", "modellinod"));
         modellinoDx.setPickupable(true);
+        modellinoDx.setUsable(true);
         BDObject modellinoSx = new BDObject(3, "Modellino pannelli solari Sx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
         modellinoSx.setAlias(Set.of("modellinosinistro", "modellino4", "sinistro", "modellinosx", "modellinos"));
         modellinoSx.setPickupable(true);
+        modellinoSx.setUsable(true);
         BDObject diarioSusan = new BDObject(4, "Diario Susan",
                 "Il diario di Susan... contiene i suoi ultimi istanti.");
         diarioSusan.setAlias(Set.of("diario", "diariosusan", "susan"));
@@ -136,6 +146,10 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
         cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
 
+        BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire il codice direzionale per aprire il modulo dall'esterno");
+        tastierinoDirezioni.setAlias(Set.of("portellone", "codice"));
+        tastierinoDirezioni.setUsable(true);
+
         getListObj().add(modellinoRusso);
         getListObj().add(modellinoAmericano);
         getListObj().add(modellinoDx);
@@ -149,6 +163,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         getListObj().add(tutaSpaziale);
         getListObj().add(taccuino);
         getListObj().add(cassa);
+        getListObj().add(tastierinoDirezioni);
 
         /* Lista di tutte le stanze */
         Room macchina = new Room(-2, "MACCHINA", "Finale cattivo.");
@@ -179,6 +194,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Room spazio = new Room(5, "SPAZIO", "Vuoto cosmico.");
         spazio.setRoomImage("src/main/resources/img/SPAZIO1.jpg");
         spazio.setAccessible(false);
+        spazio.addObject(tastierinoDirezioni);
         Room leonardo = new Room(6, "LEONARDO", "Centro dati.");
         leonardo.setRoomImage("src/main/resources/img/leonardo.jpeg");
         leonardo.addObject(diarioSusan);
@@ -221,6 +237,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         harmony.setPort(kibo);
         unity.setPort(tranquility);
         quest.setPort(unity);
+        quest.setForward(spazio);
         kibo.setStarboard(harmony);
         quest.setDeck(spazio);
         unity.setDeck(leonardo);
@@ -262,13 +279,12 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         leonardo.setLook("""
                                 Il modulo Leonardo, rivestito da contenitori imbottiti e
                                 cavi. Sul lato sinistro, il terminale principale di HAL
-                                emette un tenue bagliore verde. La botola in fondo è
-                                quella direttamente collegata a Unity. Il corpo di Susan
+                                emette un tenue bagliore verde. La botola su si è aperta e porta
+                                direttamente a Unity. Il corpo di Susan
                                 fluttua a mezz’aria, immobile.""");
 
         spazio.setLook("""
-                                Davanti a te la terra sembra ruotare, in tutte le direzioni
-                                c'è solo il vuoto.""");
+                                Per sbloccare il portellone ti serve una sequenza di direzioni. Dovrei utilizzare il tastierino per inserirli.""");
 
         // Inizializzare il formato base degli osserva - Lorenzo
         /* History */
@@ -393,6 +409,11 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme. "
                 + "Solo un calo silenzioso assordante.\n"
                 + " La stazione resta viva, ma HAL… non può più toccarla.\n");
+        spazio.setGameStory("Dopo la depressurizzazione esci nello spazio per una camminata spaziale nella tuta di Luke. "
+                + "La tuta non è in grandi condizioni ma può bastare. Usi i propulsori per raggiungere"
+                + " il punto di accesso esterno del modulo leonardo ma vedi un tastierino con delle direzioni. "
+                + "Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno"
+                + "finisca!\n");
 
         /* Lista di tutti gli Observer */
         GameObserver dropObserver = new DropObserver();
@@ -563,4 +584,5 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         GameObserver saveObserver = new SaveObserver();
         this.attach(saveObserver);
     }
+
 }

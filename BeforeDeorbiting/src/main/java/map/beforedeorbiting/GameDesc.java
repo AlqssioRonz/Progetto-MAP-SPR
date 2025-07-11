@@ -12,8 +12,10 @@ import map.beforedeorbiting.parser.ParserOutput;
 
 import java.io.Serializable;
 import java.io.PrintStream;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import map.beforedeorbiting.ui.GameUI;
 
 /**
  *
@@ -34,6 +36,8 @@ public abstract class GameDesc implements Serializable {
     private Inventory inventory = Inventory.getInstance();
 
     private Room currentRoom;
+    
+    private final Duration duration = Duration.ofSeconds(100);
 
     public Command getLastCommand() {
         return lastCommand;
@@ -92,6 +96,7 @@ public abstract class GameDesc implements Serializable {
     }
 
     public abstract String getWelcomeMessage();
+    
 
     public BDObject getObjectByID(int id) {
         return listObj.stream()

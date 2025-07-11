@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.swing.SwingUtilities;
 
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
@@ -41,6 +42,10 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(9), this::useComputer);
         uses.put(game.getObjectByID(10), this::wearSpaceSuit);
         uses.put(game.getObjectByID(11), this::useNotebook);
+        uses.put(game.getObjectByID(0), this::combineModel);
+        uses.put(game.getObjectByID(1), this::combineModel);
+        uses.put(game.getObjectByID(2), this::combineModel);
+        uses.put(game.getObjectByID(3), this::combineModel);
     }
 
     /*
@@ -62,6 +67,8 @@ public class UseObserver implements GameObserver, Serializable {
                 if (game.getInventory().getList().contains(parserOutput.getObject())) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                     InventoryUI.updateInventory(game);
+                } else if (parserOutput.getObject().getId() == 9) {
+                    useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                 } else {
                     useMsg.append("Non possiedi questo oggetto al momento! Riprova, magari sarai più fortunato.");
                 }
@@ -132,12 +139,11 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String useComputer(GameDesc game) {
         StringBuilder usingComputer = new StringBuilder();
-        System.out.println("Hai acceso il computer!");
-        game.getObjectByID(9).setInUse(true);
-        HALterminal dbgame = new HALterminal();
-        
-        game.getObjectByID(9).setInUse(false);
-        usingComputer.append("Hai spento il pc!");
+        SwingUtilities.invokeLater(() -> {
+            HALterminal terminal = new HALterminal();
+            terminal.setVisible(true);
+        });
+        usingComputer.append("Hai acceso il computer.");
         return usingComputer.toString();
     }
 
@@ -158,4 +164,34 @@ public class UseObserver implements GameObserver, Serializable {
         return "Apri il taccuino!";
     }
 
+    public String combineModel(GameDesc game) {   
+        StringBuilder modelMsg = new StringBuilder();
+        String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale."
+                +"Unendo i pezzi del modellino compare una sequenza "
+                + "di direzioni scritta con un pennarello: ↑ ↑ ↓ ↓ ← → ← →. Che possa servire per sbloccare qualcosa?";
+        
+        if (game.getInventory().getList().contains(game.getObjectByID(0)) 
+                && game.getInventory().getList().contains(game.getObjectByID(1))
+                && game.getInventory().getList().contains(game.getObjectByID(2))
+                && game.getInventory().getList().contains(game.getObjectByID(3))) {
+            
+            game.getInventory().remove(game.getObjectByID(0));
+            game.getInventory().remove(game.getObjectByID(1));
+            game.getInventory().remove(game.getObjectByID(2));
+            game.getInventory().remove(game.getObjectByID(3));
+            
+            BDObject modellinoCompleto = new BDObject(0123, "Modellino della Stazione",
+                descrModellino);
+            
+            game.getInventory().add(modellinoCompleto);
+            
+            modelMsg.append("Hai ottenuto ").append(modellinoCompleto.getDescription());
+    
+        } else {
+            modelMsg.append("Non te ne puoi fare ancora nulla. Ti servono gli altri pezzi.");
+        }
+        
+        return modelMsg.toString();
+    }
+    
 }

@@ -142,7 +142,8 @@ public class LookAtObserver implements GameObserver, Serializable {
         }
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(1))) {
             msg.append("Sul pavimento galleggia un piccolo oggetto scuro difficile "
-                    + "non vederlo in un modulo così piccola");
+                    + "non vederlo in un modulo così piccolo. Potrebbe essere un pezzo"
+                    + "del modellino2");
         }
 
         return msg.toString();
@@ -168,7 +169,8 @@ public class LookAtObserver implements GameObserver, Serializable {
             msg = """
                   In mezzo alla calma, qualcosa di minuscolo fluttua davanti 
                   all’oblò centrale: un frammento rigido, rettangolare, troppo 
-                  ordinato per essere solo un detrito.""";
+                  ordinato per essere solo un detrito. Postrebbe essere un altro 
+                  pezzo del modellino3""";
         } else {
             msg = "";
         }
@@ -179,7 +181,8 @@ public class LookAtObserver implements GameObserver, Serializable {
         String msg;
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(3))) {
             msg = """
-                  Uno strano e piccolo oggetto fluttua davanti alla botola.""";
+                  Uno strano e piccolo oggetto fluttua davanti alla botola.
+                  Postrebbe essere un alrro pezzo del modellino4""";
         } else {
             msg = "";
         }
@@ -187,10 +190,29 @@ public class LookAtObserver implements GameObserver, Serializable {
     }
 
     public String harmonyDescr(GameDesc game) {
-        return "";
+        return "Sembra che non ci sia nulla di che qui";
     }
 
     public String leonardoDescr(GameDesc game) {
-        return "";
+        String msg;
+        
+        if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(4))) {
+            msg = """
+                 Il modulo Leonardo, rivestito da contenitori imbottiti e
+                 cavi. Sul lato sinistro, il terminale principale di HAL
+                 emette un tenue bagliore verde. La botola su si è aperta e porta
+                 direttamente a Unity. Il corpo di Susan
+                 fluttua a mezz’aria, immobile. C'è un diario che vicino al corpo 
+                 di Susan""";
+        } else {
+            msg = """ 
+                  Il modulo Leonardo, rivestito da contenitori imbottiti e
+                  cavi. Sul lato sinistro, il terminale principale di HAL
+                  emette un tenue bagliore verde. La botola su si è aperta e porta
+                  direttamente a Unity. Il corpo di Susan
+                  fluttua a mezz’aria, immobile.""";
+        }
+        
+        return msg;
     }
 }

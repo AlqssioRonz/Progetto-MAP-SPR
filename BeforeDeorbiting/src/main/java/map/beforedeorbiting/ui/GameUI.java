@@ -29,11 +29,13 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
@@ -45,6 +47,7 @@ import map.beforedeorbiting.BeforeDeorbiting;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.util.MusicController;
+import map.beforedeorbiting.util.ConcurrentChronometer;
 
 /**
  * Classe che mostra la GUI del gioco.
@@ -57,6 +60,9 @@ public class GameUI extends JFrame {
     private static final Color TEXT = new Color(6, 6, 6);
 
     private final MusicController music = new MusicController();
+    
+    private ConcurrentChronometer chronometer = new ConcurrentChronometer();
+    
     private Parser parser = null;
     private Engine engine;
     private GameDesc game;
@@ -309,8 +315,8 @@ public class GameUI extends JFrame {
         menuBar.setForeground(TEXT);
 
         menuBar.setPreferredSize(new Dimension(0, 50));
-
-        // crea JMenu “Opzioni”
+        
+        // crea skiptesto
         JButton skipButton = new JButton("Skip testo");
         skipButton.setBackground(BLUCHIARO);
         skipButton.setFocusPainted(false);
@@ -325,9 +331,32 @@ public class GameUI extends JFrame {
                 }
             }
         });
-
+        
         menuBar.add(skipButton);
-
+        
+        /* Creazione del tiemer di gioco:
+        *   - viene creato un bottone per posizionare il testo del timer
+        *   - viene creato il thread cronometro ed avviato
+        *     - autonomamente il thread aggiorna il testo ogni secondo
+        */
+        
+        JButton gametimer = new JButton();
+        gametimer.setBackground(bluscuro);
+        gametimer.setFocusPainted(false);
+        gametimer.setContentAreaFilled(false);
+        gametimer.setBorderPainted(false);
+        gametimer.setOpaque(false); 
+        gametimer.setForeground(Color.WHITE.brighter());
+        gametimer.setFont(new Font("Arial", Font.BOLD, 20));
+        gametimer.setMaximumSize(new Dimension(125, 30));
+        
+        chronometer.setButton(gametimer);
+        chronometer.start();
+      
+        menuBar.add(Box.createHorizontalGlue());
+        menuBar.add(gametimer);
+        menuBar.add(Box.createHorizontalGlue());
+        
         // spinge i bottoni a destra
         menuBar.add(Box.createHorizontalGlue());
 
@@ -368,7 +397,7 @@ public class GameUI extends JFrame {
             }
         });
         menuBar.add(tornaMenu);
-
+        
         setJMenuBar(menuBar);
         // aggiunge un bordo inferiore di 7px viola alla menuBar
         menuBar.setBorder(BorderFactory.createMatteBorder(
@@ -535,14 +564,19 @@ public class GameUI extends JFrame {
             };
 
             engine.getGame().nextMove(p, ps); // <-- CHIAMATA CORRETTA QUI
-
+            
+            if(engine.getGame().getCurrentRoom().equals(engine.getGame().getRoomByName("SPAZIO"))) {
+                this.directionsMinigame();    
+            }
+            
             if (engine.getGame().getCurrentRoom() != null) {
                 updateRoomImage(engine.getGame().getCurrentRoom().getRoomImage());
             }
 
             checkEndGame();
-        }
-    }
+            
+            }
+        }  
 
     /**
      * Gestisce l'evento di clic sul pulsante per tornare al menu principale.
@@ -672,5 +706,44 @@ public class GameUI extends JFrame {
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             }
         }
+    }
+    
+    public void directionsMinigame() {
+        // 1) Definisco il pattern di frecce
+        java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
+        
+        GameDesc game = engine.getGame();
+        
+        
+        this.updateRoomImage(game.getRoomByName("SPAZIO").getRoomImage());
+
+        // 2) Costruisco il puzzle con callback
+        DirectionsPuzzleUI puzzle = new DirectionsPuzzleUI(pattern, result -> {
+            SwingUtilities.invokeLater(() -> {
+                if (result == 0) {
+                    // ha indovinato: disabilito lo spazio e sposto in LEONARDO
+                    game.getCurrentRoom().setAccessible(false);
+                    game.getRoomByName("LEONARDO").setAccessible(true);
+                    game.setCurrentRoom(game.getRoomByName("LEONARDO"));
+                    
+                    this.updateRoomImage(game.getRoomByName("LEONARDO").getRoomImage());
+                    printer.print(engine.getGame().getCurrentRoom().getGameStory() + 
+                             "\n" + engine.getGame().getCurrentRoom().getName() + "\n"+ engine.getGame()
+                                        .getCurrentRoom().getDescription());
+                    
+                } else {
+                    // sbagliato o timeout: torno alla stanza precedente
+                    game.setCurrentRoom(game.getRoomByName("QUEST"));
+                }
+            });
+        });
+        
+        
+        // 3) Creo un dialogo modale che blocca il flow finché non chiude
+        JDialog dialog = new JDialog((JFrame) null, "Puzzle Direzioni", true);
+        dialog.getContentPane().add(puzzle);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 }

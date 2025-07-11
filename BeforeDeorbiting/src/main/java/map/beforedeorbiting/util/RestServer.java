@@ -17,7 +17,6 @@ public class RestServer {
         ResourceConfig cfg = new ResourceConfig()
             // Registrazione manuale delle risorse JAX-RS
             .register(HtmlResource.class)
-            .register(LeaderboardResource.class)
             .register(JacksonFeature.class)
             // Disabilita discovery automatica e WADL
             .property(ServerProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true)

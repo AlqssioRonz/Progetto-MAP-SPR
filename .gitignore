@@ -30,3 +30,4 @@ BeforeDeorbiting/target/classes/map/beforedeorbiting/impl/InventoryObserver.clas
 *.class
 *.lst
 *.jar
+BeforeDeorbiting/target/classes/web/fonts/Mokoto Demo.ttf

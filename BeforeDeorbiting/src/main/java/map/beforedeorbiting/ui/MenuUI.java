@@ -356,12 +356,9 @@ public class MenuUI extends JFrame {
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
                 e.printStackTrace();
             }
-            try {
-                new MenuUI().setVisible(true);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MenuUI.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            }
+           
+            new MenuUI().setVisible(true);
+            
         });
     }
 

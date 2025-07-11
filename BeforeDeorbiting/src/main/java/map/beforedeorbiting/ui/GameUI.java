@@ -341,7 +341,7 @@ public class GameUI extends JFrame {
         */
         
         JButton gametimer = new JButton();
-        gametimer.setBackground(bluscuro);
+        gametimer.setBackground(BLUSCURO);
         gametimer.setFocusPainted(false);
         gametimer.setContentAreaFilled(false);
         gametimer.setBorderPainted(false);

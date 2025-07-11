@@ -17,6 +17,7 @@ import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.ui.NotebookUI;
 import map.beforedeorbiting.ui.HALterminal;
 import map.beforedeorbiting.ui.InventoryUI;
+import map.beforedeorbiting.ui.InsertPasswordUI;
 
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore
@@ -32,6 +33,8 @@ public class UseObserver implements GameObserver, Serializable {
      * oggetto, in base all'id scelto.
      */
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
+    
+    private final String DESTINY_PASSWORD = "NOESCAPE";
 
     public UseObserver(GameDesc game) {
         uses.put(game.getObjectByID(4), this::readSusanDiary);
@@ -46,6 +49,7 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(1), this::combineModel);
         uses.put(game.getObjectByID(2), this::combineModel);
         uses.put(game.getObjectByID(3), this::combineModel);
+        uses.put(game.getObjectByID(13), this::insertDestinyPassword);
     }
 
     /*
@@ -67,7 +71,7 @@ public class UseObserver implements GameObserver, Serializable {
                 if (game.getInventory().getList().contains(parserOutput.getObject())) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                     InventoryUI.updateInventory(game);
-                } else if (parserOutput.getObject().getId() == 9) {
+                } else if (parserOutput.getObject().getId() == 9 || parserOutput.getObject().getId() == 13) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                 } else {
                     useMsg.append("Non possiedi questo oggetto al momento! Riprova, magari sarai più fortunato.");
@@ -192,6 +196,22 @@ public class UseObserver implements GameObserver, Serializable {
         }
         
         return modelMsg.toString();
+    }
+    
+    public String insertDestinyPassword(GameDesc game) {
+        StringBuilder pswMsg = new StringBuilder();
+
+        boolean success = InsertPasswordUI.showPasswordDialog(DESTINY_PASSWORD);
+
+        if (success) {
+            pswMsg.append("Password Corretta. Apertura modulo Destiny");
+            game.getRoomByName("DESTINY").setAccessible(true);
+            game.getObjectByID(13).setUsable(false);
+        } else {
+            pswMsg.append("Password Errata");
+        }
+
+        return pswMsg.toString();
     }
     
 }

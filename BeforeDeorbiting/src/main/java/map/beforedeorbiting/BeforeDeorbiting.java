@@ -7,18 +7,11 @@ package map.beforedeorbiting;
 import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
-import map.beforedeorbiting.ui.DirectionsPuzzleUI;
-import map.beforedeorbiting.ui.GameUI;
-
 /**
  * Classe "principale" del gioco. Setta tutte le impostazioni iniziali, quali:
  * stanze, oggetti, comandi, observer, storia e la stanza iniziale.
@@ -146,8 +139,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
         cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
 
-        BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire il codice direzionale per aprire il modulo dall'esterno");
-        tastierinoDirezioni.setAlias(Set.of("portellone", "codice"));
+        BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire la password per entrare in Destiny.");
+        tastierinoDirezioni.setAlias(Set.of("portellone", "codice", "tastierino", "tastiera"));
         tastierinoDirezioni.setUsable(true);
 
         getListObj().add(modellinoRusso);
@@ -184,6 +177,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         unity.setRoomImage("src/main/resources/img/node1.jpeg");
         unity.addObject(modellinoAmericano);
         unity.addObject(cassa);
+        unity.addObject(tastierinoDirezioni);
         cassa.add(pezzoDiVetro);
         Room quest = new Room(3, "QUEST", "Accesso allo spazio.");
         quest.setRoomImage("src/main/resources/img/airlock-quest.jpeg");

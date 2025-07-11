@@ -207,6 +207,11 @@ public class UseObserver implements GameObserver, Serializable {
             pswMsg.append("Password Corretta. Apertura modulo Destiny");
             game.getRoomByName("DESTINY").setAccessible(true);
             game.getObjectByID(13).setUsable(false);
+            if(game.getRoomByName("LEONARDO").isAccessible()) {
+                game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
+            } else {
+                game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_avanti_aperto.png");
+            }
         } else {
             pswMsg.append("Password Errata");
         }

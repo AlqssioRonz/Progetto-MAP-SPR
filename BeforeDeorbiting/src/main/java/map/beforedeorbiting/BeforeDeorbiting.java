@@ -76,6 +76,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Command exit = new Command(CommandType.EXIT, "esci");
         exit.setAlias(new String[]{"exit"});
         getCommands().add(exit);
+        Command wait = new Command(CommandType.WAIT, "aspetta");
+        wait.setAlias(new String[]{"wait", "fermo", "tempo"});
+        getCommands().add(wait);
 
         /* Lista di tutti gli oggetti del gioco */
         BDObject modellinoRusso = new BDObject(0, "Modellino russo",
@@ -195,8 +198,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         leonardo.addObject(computer);
         leonardo.setAccessible(false);
         Room destiny = new Room(7, "DESTINY", "Laboratorio avanzato.");
-        destiny.setRoomImage("src/main/resources/img/destiny_aperto.png");
+        destiny.setRoomImage("src/main/resources/img/destiny_buio.png");
         destiny.addObject(pezzoDiVetro);
+        destiny.setVisible(false);
         destiny.setAccessible(false);
         Room harmony = new Room(8, "HARMONY", "Corridoio pressurizzato.");
         harmony.setRoomImage("src/main/resources/img/harmony.png");
@@ -428,6 +432,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(useObserver);
         GameObserver saveObserver = new SaveObserver();
         this.attach(saveObserver);
+        GameObserver waitObserver = new WaitObserver();
+        this.attach(waitObserver);
 
         // Setta la stanza iniziale
         setCurrentRoom(zvezda);

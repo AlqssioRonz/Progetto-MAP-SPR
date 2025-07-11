@@ -1,6 +1,5 @@
 package map.beforedeorbiting.ui;
 
-import com.sun.net.httpserver.HttpServer;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -13,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;

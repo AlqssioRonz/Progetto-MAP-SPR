@@ -16,23 +16,47 @@
     </properties>
 
     <dependencies>
-        <!--Aggiunta la dipendenza per l'uso di Gson per la gestione dei json-->
+        <!-- Gson per la gestione dei JSON -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.10.1</version>
         </dependency>
-        <!--Aggiunta la dipendenza per l'uso di del database H2-->
+        <!-- H2 Database -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.200</version>
         </dependency>
+        <!-- JAX-RS API -->
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- Jersey + Grizzly HTTP server -->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-grizzly2-http</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- Jersey HK2 dependency injection -->
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- Jersey JSON support via Jackson -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>3.1.0</version>
+        </dependency>
     </dependencies>
     
     <build>
         <plugins>
-            <!-- Plugin che serve per la creazione dell jar eseguibile con tutte le dipendenze -->
+            <!-- Jar eseguibile con tutte le dipendenze -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

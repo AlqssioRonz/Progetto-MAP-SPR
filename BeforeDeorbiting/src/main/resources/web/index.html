@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Before Deorbiting</title>
+    <style>
+        /* PROGRESS BAR */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #fff;
+            width: 0;
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        /* STICKY NAV */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2em;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background: #fff;
+        }
+
+        /* BACK-TO-TOP BUTTON */
+        #to-top {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s;
+        }
+
+        #to-top.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* BASE STYLES */
+        @font-face {
+            font-family: 'BDFont';
+            src: url('fonts/Mokoto Demo.ttf') format('truetype');
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'BDFont', sans-serif;
+            text-align: center;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+            background: url('images/websitebackground.png') no-repeat center center fixed;
+            background-size: cover;
+            padding-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 70px;
+            letter-spacing: 10px;
+            margin: 50px 0;
+        }
+
+        h2 {
+            font-size: 40px;
+            letter-spacing: 2px;
+            cursor: pointer;
+        }
+
+        h2 a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        section h2 {
+            font-size: 32px;
+            letter-spacing: 2px;
+        }
+
+        section h3,
+        section h4,
+        section h5,
+        section h6 {
+            letter-spacing: 2px;
+        }
+
+        /* REVEAL ANIMATION */
+        section {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 60px 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-left: 6px solid #68616b;
+            box-shadow:
+                inset 0 0 10px rgba(0, 0, 0, 0.5),
+                0 2px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .8s ease, transform .8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section p {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #eee;
+            text-align: left;
+        }
+
+        .features {
+            list-style: disc outside;
+            margin: 20px 0;
+            padding: 0 0 0 40px;
+            color: #eee;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .features li {
+            margin-bottom: 0.6em;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 0.9em;
+            text-decoration: none;
+            color: #ddd;
+        }
+
+        .back-to-top:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body id="top">
+
+    <!-- Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Sticky Nav -->
+    <nav>
+        <a href="#spiegazione">Spiegazione</a>
+        <a href="#trama">Trama</a>
+        <a href="#manuale">Manuale</a>
+        <a href="#soluzioni">Soluzioni</a>
+    </nav>
+
+    <h1>Before Deorbiting</h1>
+
+    <!-- Sezioni Complete con Testo Originale -->
+    <section id="spiegazione">
+        <h2>Spiegazione del progetto</h2>
+        <p>Before Deorbiting è un progetto sviluppato come lavoro finale dal Team SPR per il corso di Metodi Avanzati di
+            Programmazione, tenuto dal Prof. Pierpaolo Basile presso l’Università degli Studi di Bari “Aldo Moro”.</p>
+        <h3>Che cos'è un'avventura testuale?</h3>
+        <p>Un’avventura testuale è un videogioco in cui il giocatore interagisce con l’ambiente scrivendo comandi
+            testuali. Diffuso soprattutto agli albori dell’informatica, questo genere punta tutto sulla narrazione e
+            sull’immaginazione, offrendo un’esperienza interattiva senza elementi grafici.</p>
+        <h3>Caratteristiche principali</h3>
+        <p>Le caratteristiche principali sono:</p>
+        <ul class="features">
+            <li><strong>Interfaccia testuale:</strong> comandi scritti come “avanti”, “prendi biglietto” o “osserva”.
+            </li>
+            <li><strong>Descrizioni immersive:</strong> scene e oggetti descritti in dettaglio per stimolare
+                l’immaginazione.</li>
+            <li><strong>Enigmi e rompicapi:</strong> risolvi sfide usando inventario, logica e intuizione.</li>
+        </ul>
+        <a class="back-to-top" href="#top">↑ Torna su</a>
+    </section>
+
+    <section id="trama">
+        <h2>Trama del gioco</h2>
+        <p>22 giugno 2030. Sei a bordo della Stazione Spaziale Internazionale, al termine di una lunga missione. È il
+            tuo ultimo giorno nello spazio: presto la stazione verrà deorbitata e distrutta.<br><br>Ma qualcosa
+            interrompe la routine: un silenzio anomalo, assenze inspiegabili, segnali che non tornano.<br><br>Dovrai
+            esplorare, raccogliere indizi e affrontare l’ignoto. Riuscirai a salvarla?</p>
+        <a class="back-to-top" href="#top">↑ Torna su</a>
+    </section>
+
+    <section id="manuale">
+        <h2>Manuale utente</h2>
+        <p>Di seguito i comandi e i controlli dell’interfaccia:</p>
+        <ul class="features">
+            <li><strong>INVENTARIO:</strong> visualizza gli oggetti nell'inventario</li>
+            <li><strong>AVANTI:</strong> per muoverti in avanti</li>
+            <li><strong>INDIETRO:</strong> per muoverti indietro</li>
+            <li><strong>DESTRA:</strong> per muoverti a destra</li>
+            <li><strong>SINISTRA:</strong> per muoverti a sinistra</li>
+            <li><strong>SOPRA:</strong> per andare sopra</li>
+            <li><strong>SOTTO:</strong> per andare sotto</li>
+            <li><strong>PRENDI:</strong> per prendere un oggetto</li>
+            <li><strong>LASCIA:</strong> per lasciare un oggetto</li>
+            <li><strong>USA:</strong> per usare un oggetto o concatenarne più di uno</li>
+            <li><strong>OSSERVA:</strong> per osservare l'ambiente o un oggetto</li>
+            <li><strong>SALVA:</strong> per salvare la partita</li>
+            <li><strong>AIUTO:</strong> per mostrare questa lista di comandi</li>
+            <li><strong>MUTE/PLAY:</strong> pulsante per attivare/disattivare la musica</li>
+            <li><strong>MENU:</strong> pulsante per tornare al menu principale</li>
+            <li><strong>SKIP:</strong> pulsante per mostrare tutto il testo immediatamente</li>
+            <li><strong>TIMER:</strong> indica il tempo di gioco</li>
+        </ul>
+        <a class="back-to-top" href="#top">↑ Torna su</a>
+    </section>
+
+    <section id="soluzioni">
+        <h2>Soluzioni del gioco</h2>
+        <p>In questa parte sono raccolte le soluzioni alle sfide e agli enigmi presenti nel gioco, passo per passo.</p>
+        <a class="back-to-top" href="#top">↑ Torna su</a>
+    </section>
+
+    <!-- Back-to-top button -->
+    <button id="to-top">↑ Top</button>
+
+    <script>
+        // Progress bar & back-to-top visibility
+        window.addEventListener('scroll', () => {
+            const pct = window.scrollY / (document.body.scrollHeight - innerHeight) * 100;
+            document.getElementById('progress-bar').style.width = pct + '%';
+            const btn = document.getElementById('to-top');
+            if (window.scrollY > 300) btn.classList.add('show'); else btn.classList.remove('show');
+        });
+        document.getElementById('to-top').onclick = () =>
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Scrollspy & reveal animation
+        const links = document.querySelectorAll('nav a');
+        const sections = Array.from(links).map(a => document.querySelector(a.getAttribute('href')));
+        window.addEventListener('scroll', () => {
+            const mid = window.scrollY + innerHeight / 2;
+            sections.forEach((sec, i) => {
+                if (mid >= sec.offsetTop && mid < sec.offsetTop + sec.offsetHeight)
+                    links[i].classList.add('active');
+                else
+                    links[i].classList.remove('active');
+                if (window.scrollY + innerHeight > sec.offsetTop + 100)
+                    sec.classList.add('visible');
+            });
+        });
+        // Initialize on load
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+
+</html>

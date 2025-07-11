@@ -87,47 +87,48 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         /* Lista di tutti gli oggetti del gioco */
         BDObject modellinoRusso = new BDObject(0, "Modellino russo",
                 "Una parte del modellino, rappresenta il ramo russo.");
-        modellinoRusso.setAlias(Set.of("modellinoRusso", "modellino1", "russo", "modellinoR", "modellino"));
+        modellinoRusso.setAlias(Set.of("modellinorusso", "modellino1", "russo", "modellinor"));
         modellinoRusso.setPickupable(true);
         modellinoRusso.setUsable(true);
         BDObject modellinoAmericano = new BDObject(1, "Modellino americano",
                 "Una parte del modellino, rappresenta il modulo centrale della stazione.");
-        modellinoAmericano.setAlias(
-                Set.of("modellinoAmericano", "modellino2", "americano", "modellinoA", "modellino"));
+        modellinoAmericano.setAlias(Set.of("modellinoamericano", "modellino2", "americano", "modellinoa"));
         modellinoAmericano.setPickupable(true);
         modellinoAmericano.setUsable(true);
         BDObject modellinoDx = new BDObject(2, "Modellino pannelli solari Dx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala destra.");
-        modellinoDx.setAlias(Set.of("modellinoDestro", "modellino3", "destro", "modellinoDx", "modellinoD"));
+        modellinoDx.setAlias(Set.of("modellinodestro", "modellino3", "destro", "modellinodx", "modellinod"));
         modellinoDx.setPickupable(true);
         modellinoDx.setUsable(true);
         BDObject modellinoSx = new BDObject(3, "Modellino pannelli solari Sx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
-        modellinoSx.setAlias(Set.of("oggetto", "modellinoSinistro", "modellino4", "sinistro", "modellinoSx",
-                "modellinoS"));
+        modellinoSx.setAlias(Set.of("modellinosinistro", "modellino4", "sinistro", "modellinosx", "modellinos"));
         modellinoSx.setPickupable(true);
         modellinoSx.setUsable(true);
         BDObject diarioSusan = new BDObject(4, "Diario Susan",
                 "Il diario di Susan... contiene i suoi ultimi istanti.");
-        diarioSusan.setAlias(Set.of("diario", "diarioSusan", "susan"));
+        diarioSusan.setAlias(Set.of("diario", "diariosusan", "susan"));
         diarioSusan.setPickupable(true);
         diarioSusan.setUsable(true);
         BDObject bigliettinoLuke = new BDObject(5, "Bigliettino Luke",
-                "Questo bigliettino si trovava nelle mani di Luke quando l'ho trovato morto... mi sarà sicuramente utile.");
-        bigliettinoLuke.setAlias(
-                Set.of("bigliettino", "biglietto", "bigliettinoLuke", "bigliettoLuke", "luke"));
+                "Questo bigliettino si trovava nelle mani di Luke quando l'ho trovato morto... "
+                + "mi sarà sicuramente utile.");
+        bigliettinoLuke.setAlias(Set.of("bigliettino", "biglietto", "bigliettinoLuke", "bigliettoLuke", "luke"));
         bigliettinoLuke.setPickupable(true);
         bigliettinoLuke.setUsable(true);
         BDObject pezzoDiVetro = new BDObject(6, "Pezzo di vetro",
                 "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.");
         pezzoDiVetro.setAlias(Set.of("pezzo", "pezzo1", "pezzo2", "pezzo3", "pezzodivetro", "pezzovetro"));
+        pezzoDiVetro.setPickupable(true);
         pezzoDiVetro.setUsable(true);
         BDObject mezzoPrisma = new BDObject(7, "Mezzo prisma", "Creato dall'unione di due pezzi di vetro.");
         mezzoPrisma.setAlias(Set.of("mezzoprisma", "metaprisma", "mezzoprismavetro", "metaprismavetro"));
+        mezzoPrisma.setPickupable(true);
         mezzoPrisma.setUsable(true);
         BDObject prisma = new BDObject(8, "Prisma di vetro",
                 "Creato dall'unione di tutti i pezzi di vetro. Riflette perfettamente la luce.");
         prisma.setAlias(Set.of("prisma", "vetro", "prismacompleto"));
+        prisma.setPickupable(true);
         BDObject computer = new BDObject(9, "Computer", "Permette di interagire col database della stazione.");
         computer.setAlias(Set.of("computer", "pc", "personalcomputer", "fisso", "portatile"));
         computer.setUsable(true);
@@ -137,14 +138,13 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         tutaSpaziale.setPickupable(true);
         tutaSpaziale.setUsable(true);
         BDObject taccuino = new BDObject(11, "Taccuino", "Utile per segnarsi ogni dettaglio dell'avventura.");
-        taccuino.setAlias(
-                Set.of("taccuino", "blocknote", "blocknotes", "blocconote", "quaderno", "quadernino"));
+        taccuino.setAlias(Set.of("taccuino", "blocknote", "blocknotes", "blocconote", "quaderno", "quadernino"));
         taccuino.setPickupable(true);
         taccuino.setUsable(true);
         // quando la prende per metterla deve usare "indossa" e dopo, quando torna,
         // verrà mostrato un output "ti sei tolto la tuta"
         BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
-        cassa.setAlias(Set.of("chest", "cassa"));
+        cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
 
         BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire il codice direzionale per aprire il modulo dall'esterno");
         tastierinoDirezioni.setAlias(Set.of("portellone", "codice"));
@@ -359,7 +359,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "fuggire sulla navicella Soyuz ormeggiata proprio sotto questo modulo.\n"
                 + "All’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:\n"
                 + "\n“La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”\n\n"
-                + "la voce di HAL mi gela la schiena… Il tempismo è inquietante. Ma potrebbe essere un'occasione per scappare.\n");
+                + "la voce di HAL mi gela la schiena… Il tempismo è inquietante. "
+                + "Ma potrebbe essere un'occasione per scappare.\n");
         unity.setGameStory("La porta è bloccata, è necessario avere un codice di "
                 + "accesso per entrare nel laboratorio DESTINY, il posto di lavoro "
                 + "di Susan… deve essere lì.\n"
@@ -384,7 +385,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         destiny.setGameStory(
                 "Appena varco la soglia, un tonfo sordo mi gela il sangue: la porta alle mie spalle "
                 + "si chiude di colpo, bloccandomi qua dentro. Sono in trappola.\n"
-                + "Non posso restare qui a consumare il mio tempo, devo trovare una via d’uscita, a qualunque costo.\n"
+                + "Non posso restare qui a consumare il mio tempo, devo trovare una via d’uscita, "
+                + "a qualunque costo.\n"
                 + "La voce sintetica dell’IA di bordo annuncia “Il rifornimento di viveri è stato completato. "
                 + "In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”");
         harmony.setGameStory("Finalmente il nodo Harmony. Ancora pochi passi e potrò "
@@ -450,8 +452,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
 
         if (p == null || p.getCommand() == null) {
             out.println("""
-                                        Quello che dici non ha senso, persino
-                                        HAL alzerebbe un sopracciglio... se ne avesse uno.""");
+                        Quello che dici non ha senso, persino 
+                        HAL alzerebbe un sopracciglio... se ne avesse uno.""");
         } else {
             setLastCommand(p.getCommand());
             notifyObservers();
@@ -467,8 +469,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
 
     @Override
     public String getWelcomeMessage() {
-        return "È il 22 giugno 2030 e ti trovi nella stazione spaziale "
-                + "internazionale, modulo "
+        return "È il 22 giugno 2030 e ti trovi nella stazione spaziale internazionale, modulo "
                 + getCurrentRoom().getName();
     }
 
@@ -492,9 +493,11 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     }
 
     /**
-     * Re-initializes room connections and observers after loading a game from a
-     * JSON save. Transient fields like neighbour references and the observer
-     * list are not restored automatically by Gson.
+     * Reinizializza le connessioni tra le stanze e la lista degli observer dopo
+     * il caricamento di una partita da un salvataggio in formato JSON. I campi
+     * transient, come i riferimenti alle stanze adiacenti (neighbours) e agli
+     * observer, non vengono serializzati né ripristinati automaticamente da
+     * Gson.
      */
     public void restoreAfterLoad() {
         initRoomConnections();

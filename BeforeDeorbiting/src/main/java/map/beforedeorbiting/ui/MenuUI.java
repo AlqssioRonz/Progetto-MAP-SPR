@@ -1,6 +1,8 @@
 package map.beforedeorbiting.ui;
 
+import com.sun.net.httpserver.HttpServer;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -10,6 +12,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +39,7 @@ import javax.swing.WindowConstants;
 
 import map.beforedeorbiting.database.DBConfig;
 import map.beforedeorbiting.util.MusicController;
+import map.beforedeorbiting.util.RestServer;
 
 /**
  * Classe che rappresenta il menu principale del gioco Before Deorbiting.
@@ -51,7 +56,8 @@ public class MenuUI extends JFrame {
 
     private final MusicController music = new MusicController();
 
-    private static boolean serverOn = false;
+    private RestServer restServer;
+    private static boolean serverStarted;
     private boolean audioOn = true;
 
     private JPanel background;
@@ -62,11 +68,7 @@ public class MenuUI extends JFrame {
     private JButton audio;
     private JFileChooser fileChooser;
 
-    public MenuUI() throws InterruptedException {
-        if (!serverOn) {
-            serverOn = true;
-            Thread.sleep(1200);
-        }
+    public MenuUI() {
         initComponents();
     }
 
@@ -121,7 +123,7 @@ public class MenuUI extends JFrame {
             help.setLocationRelativeTo(this);
             help.setVisible(true);
         });
-        credits.addActionListener(e -> System.exit(0));
+        credits.addActionListener(this::showWebsite);
         audio.addActionListener(e -> toggleAudio());
 
         // layout
@@ -239,6 +241,33 @@ public class MenuUI extends JFrame {
         return new ImageIcon(img);
     }
 
+    private void showWebsite(ActionEvent e) {
+        if (!serverStarted) {
+            try {
+                restServer = new RestServer();
+                restServer.start(); // avvia Grizzly + Jersey
+                serverStarted = true;
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        "Errore avviando il server:\n" + ex.getMessage(),
+                        "Errore",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        // apre il browser sulla tua root RESTful
+        try {
+            Desktop.getDesktop().browse(new URI("http://localhost:8080/"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Non posso aprire il browser:\n" + ex.getMessage(),
+                    "Errore",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void toggleAudio() {
         audioOn = !audioOn;
 
@@ -335,4 +364,5 @@ public class MenuUI extends JFrame {
             }
         });
     }
+
 }

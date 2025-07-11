@@ -1,20 +1,14 @@
 package map.beforedeorbiting.impl;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.type.Room;
-import map.beforedeorbiting.ui.DirectionsPuzzleUI;
 
 /**
  * Questa classe rappresenta l'observer di comandi di movimento, permette di
@@ -36,7 +30,7 @@ import map.beforedeorbiting.ui.DirectionsPuzzleUI;
 public class MovementObserver implements GameObserver, Serializable {
 
     private final Map<CommandType, Function<Room, Room>> moves = new EnumMap<>(CommandType.class);
-    
+
     public MovementObserver() {
         moves.put(CommandType.FORWARD, Room::getForward);
         moves.put(CommandType.AFT, Room::getAft);
@@ -76,11 +70,11 @@ public class MovementObserver implements GameObserver, Serializable {
                         }
                         movementMessage.append(target.getName()).append("\n")
                                 .append(target.getDescription());
-                            
-                    } else if (target != null && !target.isAccessible()) {  
-                        
+
+                    } else if (target != null && !target.isAccessible()) {
+
                         if (target.equals(game.getRoomByName("SPAZIO"))
-                                && !game.getObjectByID(10).isInUse()){
+                                && !game.getObjectByID(10).isInUse()) {
 
                             movementMessage.append("""
                                                    Fare una camminata nello spazio senza indossare 

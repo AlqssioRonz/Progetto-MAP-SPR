@@ -209,9 +209,9 @@ public class UseObserver implements GameObserver, Serializable {
             game.getObjectByID(13).setUsable(false);
             if(game.getRoomByName("LEONARDO").isAccessible()) {
                 game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
-            } else {
-                game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_avanti_aperto.png");
-            }
+            }// else {
+               // game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_avanti_aperto.png");
+            //}
         } else {
             pswMsg.append("Password Errata");
         }

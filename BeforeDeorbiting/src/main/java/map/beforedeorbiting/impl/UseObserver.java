@@ -18,6 +18,7 @@ import map.beforedeorbiting.ui.NotebookUI;
 import map.beforedeorbiting.ui.HALterminal;
 import map.beforedeorbiting.ui.InventoryUI;
 import map.beforedeorbiting.ui.InsertPasswordUI;
+import map.beforedeorbiting.ui.RobotArmPuzzleUI;
 
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore
@@ -35,6 +36,12 @@ public class UseObserver implements GameObserver, Serializable {
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
     
     private final String DESTINY_PASSWORD = "NOESCAPE";
+    
+    private final int[][] CORRECT_ROBOT_MOVEMET = {
+            {0, -1, -1},
+            {-1, 0, -1},
+            {-1, 0, -2}
+        };
 
     public UseObserver(GameDesc game) {
         uses.put(game.getObjectByID(4), this::readSusanDiary);
@@ -50,6 +57,7 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(2), this::combineModel);
         uses.put(game.getObjectByID(3), this::combineModel);
         uses.put(game.getObjectByID(13), this::insertDestinyPassword);
+        uses.put(game.getObjectByID(15), this::useRobotTerminal);
     }
 
     /*
@@ -217,6 +225,22 @@ public class UseObserver implements GameObserver, Serializable {
         }
 
         return pswMsg.toString();
+    }
+    
+    public String useRobotTerminal(GameDesc game) {
+        StringBuilder rbtmsg = new StringBuilder();
+        
+        
+        SwingUtilities.invokeLater(() -> {
+            boolean solved = RobotArmPuzzleUI.showPuzzleDialog(this.CORRECT_ROBOT_MOVEMET);
+            if (solved) {
+                rbtmsg.append("Matrice di movimento riconosciuta. Completamento dell'ormeggio della navicella.");
+            } else {
+                rbtmsg.append("Matrice non riconosciuta.");
+            }
+        });
+        
+        return rbtmsg.toString();
     }
     
 }

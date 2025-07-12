@@ -9,6 +9,7 @@ import map.beforedeorbiting.type.Command;
 import map.beforedeorbiting.type.Room;
 import map.beforedeorbiting.type.Inventory;
 import map.beforedeorbiting.parser.ParserOutput;
+import map.beforedeorbiting.type.CommandType;
 
 import java.io.Serializable;
 import java.io.PrintStream;
@@ -55,6 +56,16 @@ public abstract class GameDesc implements Serializable {
         return commands;
     }
 
+    public Command getCommand(CommandType command) {
+        List<Command> cmdList = this.getCommands();
+        for(Command cmd:cmdList) {
+            if (cmd.getType().equals(command)) {
+              return cmd;  
+            }
+        }
+        return null
+    }
+    
     /* Inizializza il gioco */
     public abstract void init();
 

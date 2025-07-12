@@ -144,7 +144,11 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire la password per entrare in Destiny.");
         tastierinoDirezioni.setAlias(Set.of("portellone", "codice", "tastierino", "tastiera"));
         tastierinoDirezioni.setUsable(true);
-
+        //enigma canadarm - braccio robotico - matrice
+        BDObject controlloRobot = new BDObject(15, "Controllo braccio robotico", "Permette di inserire le matrici di spostamendo per muovere il braccio meccanico.");
+        controlloRobot.setAlias(Set.of("tastiera", "computer", "controllo", "braccio", "robot", "terminale"));
+        controlloRobot.setUsable(true);
+        
         getListObj().add(modellinoRusso);
         getListObj().add(modellinoAmericano);
         getListObj().add(modellinoDx);

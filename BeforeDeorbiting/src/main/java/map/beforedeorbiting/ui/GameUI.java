@@ -154,7 +154,7 @@ public class GameUI extends JFrame {
      * @throws Exception Se c'è un problema durante l'inizializzazione o il
      * caricamento.
      */
-    private void mainComponents(boolean loadGame, File file) throws Exception { // <-------------------- interazione
+    private void mainComponents(boolean loadGame, File file) throws Exception { //<-------------------- interazione
         if (!loadGame) {
             game = new BeforeDeorbiting();
             engine = new Engine(game);
@@ -219,7 +219,6 @@ public class GameUI extends JFrame {
 
         musicButton = new JButton();
 
-        setTitle("Before Deorbiting");
         java.net.URL iconURL = getClass().getResource("/img/icon.png");
         if (iconURL != null) {
             ImageIcon frameIcon = new ImageIcon(iconURL);
@@ -293,7 +292,6 @@ public class GameUI extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Before Deorbiting");
-        setTitle("Before Deorbiting");
         if (iconURL != null) {
             ImageIcon frameIcon = new ImageIcon(iconURL);
             setIconImage(frameIcon.getImage());
@@ -358,7 +356,7 @@ public class GameUI extends JFrame {
         menuBar.add(skipButton);
 
         /*
-         * Creazione del tiemer di gioco:
+         * Creazione del timer di gioco:
          * - viene creato un bottone per posizionare il testo del timer
          * - viene creato il thread cronometro ed avviato
          * - autonomamente il thread aggiorna il testo ogni secondo
@@ -732,7 +730,7 @@ public class GameUI extends JFrame {
     }
 
     public void directionsMinigame() {
-        // Definisco il pattern di frecce
+        //Definisco il pattern di frecce
         java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
 
         GameDesc game = engine.getGame();
@@ -748,15 +746,19 @@ public class GameUI extends JFrame {
                     game.setCurrentRoom(game.getRoomByName("LEONARDO"));
                     this.updateRoomImage(game.getRoomByName("LEONARDO").getRoomImage());
                     game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_botola_aperta.jpeg");
-                    if(game.getRoomByName("DESTINY").isAccessible())
+                    if (game.getRoomByName("DESTINY").isAccessible()) {
                         game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
+                    }
+                    game.setTrapdoor(true);
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
                             .getCurrentRoom().getDescription());
 
-                } else if(result == 1){
-                    // sbagliato o timeout: torno alla stanza precedente
-                    game.setCurrentRoom(game.getRoomByName("QUEST"));
+                } else if (result == 1) {             
+                    printer.print(engine.getGame().getCurrentRoom().getGameStory()
+                            + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
+                            .getCurrentRoom().getDescription());
+
                 } else if (result == -1) {
                     game.setCurrentRoom(game.getRoomByName("QUEST"));
                     this.updateImageViewer(game.getCurrentRoom().getRoomImage());
@@ -766,7 +768,6 @@ public class GameUI extends JFrame {
                             + "possibile che sono ritornato al punto di partenza "
                             + "senza morire?\nHo ancora addosso la tuta, ha abbastanza ossigeno"
                             + "per tentare di nuovo di uscire.");
-                    
                 }
             });
         });
@@ -777,4 +778,5 @@ public class GameUI extends JFrame {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
+
 }

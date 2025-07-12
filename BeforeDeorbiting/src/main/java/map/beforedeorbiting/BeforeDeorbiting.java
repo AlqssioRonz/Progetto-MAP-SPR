@@ -12,6 +12,7 @@ import java.util.Set;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
+import map.beforedeorbiting.util.ISSPositionREST;
 
 /**
  * Classe "principale" del gioco. Setta tutte le impostazioni iniziali, quali:
@@ -28,6 +29,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     private final List<String> messages = new ArrayList<>();
 
     private boolean first = true;
+
+    private final ISSPositionREST issRest = new ISSPositionREST();
 
     @Override
     public void init() {
@@ -83,6 +86,30 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Command rotate = new Command(CommandType.ROTATE, "ruota");
         rotate.setAlias(new String[]{"ruota", "gira", "sposta", "cambia"});
         getCommands().add(rotate);
+        Command africa = new Command(CommandType.AFRICA, "africa");
+        africa.setAlias(new String[]{"africa"});
+        getCommands().add(africa);
+        Command europa = new Command(CommandType.EUROPA, "europa");
+        getCommands().add(europa);
+        europa.setAlias(new String[]{"europa"});
+        Command nordamerica = new Command(CommandType.NAMERICA, "namerica");
+        getCommands().add(nordamerica);
+        nordamerica.setAlias(new String[]{"nordamerica"});
+        Command sudamerica = new Command(CommandType.SAMERICA, "samerica");
+        getCommands().add(sudamerica);
+        sudamerica.setAlias(new String[]{"sudamerica"});
+        Command asia = new Command(CommandType.ASIA, "asia");
+        getCommands().add(asia);
+        asia.setAlias(new String[]{"asia"});
+        Command oceania = new Command(CommandType.OCEANIA, "oceania");
+        getCommands().add(oceania);
+        oceania.setAlias(new String[]{"oceania"});
+        Command antartide = new Command(CommandType.ANTARTIDE, "antartide");
+        getCommands().add(antartide);
+        antartide.setAlias(new String[]{"antartide"});
+        Command oceano = new Command(CommandType.OCEANO, "oceano");
+        getCommands().add(oceano);
+        oceano.setAlias(new String[]{"oceano"});
 
         /* Lista di tutti gli oggetti del gioco */
         BDObject modellinoRusso = new BDObject(0, "Modellino russo",
@@ -141,16 +168,21 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         taccuino.setAlias(Set.of("taccuino", "blocknote", "blocknotes", "blocconote", "quaderno", "quadernino"));
         taccuino.setPickupable(true);
         taccuino.setUsable(true);
+        // quando la prende per metterla deve usare "indossa" e dopo, quando torna,
+        // verrà mostrato un output "ti sei tolto la tuta"
         BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
         cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
         BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire la password per entrare in Destiny.");
         tastierinoDirezioni.setAlias(Set.of("portellone", "codice", "tastierino", "tastiera"));
         tastierinoDirezioni.setUsable(true);
+        BDObject tablet = new BDObject(14, "Tablet", "Permette di aprire la botola per l'accesso a Soyuz.");
+        tablet.setAlias(Set.of("botola", "sportello ", "portellone", "tablet"));
+        tablet.setUsable(true);
         //enigma canadarm - braccio robotico - matrice
         BDObject controlloRobot = new BDObject(15, "Controllo braccio robotico", "Permette di inserire le matrici di spostamendo per muovere il braccio meccanico.");
         controlloRobot.setAlias(Set.of("tastiera", "computer", "controllo", "braccio", "robot", "terminale"));
         controlloRobot.setUsable(true);
-        
+
         getListObj().add(modellinoRusso);
         getListObj().add(modellinoAmericano);
         getListObj().add(modellinoDx);
@@ -165,6 +197,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         getListObj().add(taccuino);
         getListObj().add(cassa);
         getListObj().add(tastierinoDirezioni);
+        getListObj().add(tablet);
+        getListObj().add(controlloRobot);
 
         /* Lista di tutte le stanze */
         Room macchina = new Room(-2, "MACCHINA", "Finale cattivo.");
@@ -181,6 +215,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         zarya.addObject(pezzoDiVetro);
         zarya.addObject(tutaSpaziale);
         zarya.addObject(bigliettinoLuke);
+        zarya.addObject(tablet);
         Room unity = new Room(2, "UNITY", "Nodo di collegamento.");
         unity.setRoomImage("src/main/resources/img/node1.jpeg");
         unity.addObject(modellinoAmericano);
@@ -213,6 +248,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Room kibo = new Room(9, "KIBO", "Laboratorio e seconda sede di HAL.");
         kibo.setRoomImage("src/main/resources/img/kibo.jpeg");
         kibo.setAccessible(false);
+        kibo.addObject(controlloRobot);
 
         getRooms().add(macchina);
         getRooms().add(umano);
@@ -384,8 +420,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "Ora sono davvero solo. Non so cosa stia succedendo, ma devo andarmene. Subito.\n"
                 + "\n“La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”\n\n"
                 + "La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior tempismo possibile.");
-        destiny.setGameStory(
-                "Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo"
+        destiny.setGameStory("Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo"
                 + "mi permette di vedere qualcosa, la stazione ora è dietro la Terra, è come se fosse in eclissi.\n"
                 + "Non posso restare qui a consumare il mio tempo, devo trovare una via d’uscita, "
                 + "a qualunque costo.\n"
@@ -426,7 +461,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(historyObserver);
         GameObserver inventoryObserver = new InventoryObserver();
         this.attach(inventoryObserver);
-        GameObserver lookAtObserver = new LookAtObserver(this);
+        GameObserver lookAtObserver = new LookAtObserver(this, issRest);
         this.attach(lookAtObserver);
         GameObserver movementObserver = new MovementObserver();
         this.attach(movementObserver);
@@ -440,6 +475,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(waitObserver);
         GameObserver rotateObserver = new RotateObserver();
         this.attach(rotateObserver);
+        GameObserver continentObserver = new ContinentObserver();
+        this.attach(continentObserver);
+        //
 
         // Setta la stanza iniziale
         setCurrentRoom(zvezda);
@@ -580,7 +618,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(historyObserver);
         GameObserver inventoryObserver = new InventoryObserver();
         this.attach(inventoryObserver);
-        GameObserver lookAtObserver = new LookAtObserver(this);
+        GameObserver lookAtObserver = new LookAtObserver(this, issRest);
         this.attach(lookAtObserver);
         GameObserver movementObserver = new MovementObserver();
         this.attach(movementObserver);
@@ -590,6 +628,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(useObserver);
         GameObserver saveObserver = new SaveObserver();
         this.attach(saveObserver);
+        GameObserver continentObserver = new ContinentObserver();
+        this.attach(continentObserver);
+        //
     }
 
 }

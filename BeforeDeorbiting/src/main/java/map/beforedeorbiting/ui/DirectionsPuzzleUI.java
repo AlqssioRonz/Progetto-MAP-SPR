@@ -155,7 +155,6 @@ public class DirectionsPuzzleUI extends JPanel {
         allButtons.forEach(b -> b.setEnabled(false));
         this.closeWindow();
         resultCallback.accept(-1);
-        
     }
 
     private void showPopup(String message) {

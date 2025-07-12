@@ -68,6 +68,9 @@ public class MovementObserver implements GameObserver, Serializable {
                         if (!game.getCurrentRoom().getName().equals("ZVEZDA")) {
                             movementMessage.append(target.getGameStory());
                         }
+                        if (game.getCurrentRoom().getName().equals("TRANQUILITY")) {
+                            target.setRoomImage("src/main/resources/img/cupola.png");
+                        }
                         movementMessage.append(target.getName()).append("\n")
                                 .append(target.getDescription());
 

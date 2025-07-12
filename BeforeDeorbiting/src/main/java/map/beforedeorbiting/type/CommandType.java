@@ -73,6 +73,38 @@ public enum CommandType {
     /**
      *
      */
+    AFRICA,
+    /**
+     *
+     */
+    EUROPA,
+    /**
+     *
+     */
+    ASIA,
+    /**
+     *
+     */
+    NAMERICA,
+    /**
+     *
+     */
+    SAMERICA,
+    /**
+     *
+     */
+    OCEANIA,
+    /**
+     *
+     */
+    ANTARTIDE,
+    /**
+     *
+     */
+    OCEANO,
+    /**
+     *
+     */
     SAVE,
     /**
      *

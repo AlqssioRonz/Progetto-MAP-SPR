@@ -95,8 +95,8 @@ public class InsertPasswordUI extends JPanel {
     return panel.isPasswordCorrect();
     }
 
-    /*
-    public static void main(String[] args) {
+
+    /*public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception ex) {
@@ -111,6 +111,5 @@ public class InsertPasswordUI extends JPanel {
             }
             
         });
-    }
-    */
+    }*/
 }

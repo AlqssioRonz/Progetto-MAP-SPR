@@ -14,9 +14,9 @@ Progetto di Metodi Avanzati di Programmazione (Salonia - Peluso - Ronzullo)
 - [X] Enigma Leonardo - databases
   - [X] Creazione del db
   - [ ] inserimento codici
-- [ ] GUI enigma buio prismi
+- [X] Enigma buio prismi
 - [ ] Enigma CanadArm2 - inserimento codici
 - [X] Salvataggio - serializzazione e file
-- [X] Sito tempi migliori - RestFul
+- [X] Sito - RestFul
 - [ ] Aggiornare le immagini in base al conenuto
 - [ ] Enigme tablet - WORKINPROGRESS - andrea

@@ -126,6 +126,12 @@ public class MenuUI extends JFrame {
             CommandsUI help = CommandsUI.getInstance();
             help.setLocationRelativeTo(this);
             help.setVisible(true);
+            if (iconURL != null) {
+                ImageIcon frameIcon = new ImageIcon(iconURL);
+                help.setIconImage(frameIcon.getImage());
+            } else {
+                System.err.println("Warning: icona non trovata in /img/icon.png");
+            }
         });
         credits.addActionListener(this::showWebsite);
         audio.addActionListener(e -> toggleAudio());

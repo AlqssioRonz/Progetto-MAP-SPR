@@ -111,8 +111,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         diarioSusan.setPickupable(true);
         diarioSusan.setUsable(true);
         BDObject bigliettinoLuke = new BDObject(5, "Bigliettino Luke",
-                "Questo bigliettino si trovava nelle mani di Luke quando l'ho trovato morto... "
-                + "mi sarà sicuramente utile.");
+                "Luke ha in mano un bigliettino. Chissà cosa ci sarà scritto.");
         bigliettinoLuke.setAlias(Set.of("bigliettino", "biglietto", "bigliettinoLuke", "bigliettoLuke", "luke"));
         bigliettinoLuke.setPickupable(true);
         bigliettinoLuke.setUsable(true);
@@ -386,12 +385,12 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "\n“La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”\n\n"
                 + "La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior tempismo possibile.");
         destiny.setGameStory(
-                "Appena varco la soglia, un tonfo sordo mi gela il sangue: la porta alle mie spalle "
-                + "si chiude di colpo, bloccandomi qua dentro. Sono in trappola.\n"
+                "Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo"
+                + "mi permette di vedere qualcosa, la stazione ora è dietro la Terra, è come se fosse in eclissi.\n"
                 + "Non posso restare qui a consumare il mio tempo, devo trovare una via d’uscita, "
                 + "a qualunque costo.\n"
                 + "La voce sintetica dell’IA di bordo annuncia “Il rifornimento di viveri è stato completato. "
-                + "In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”");
+                + "In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”\n");
         harmony.setGameStory("Finalmente il nodo Harmony. Ancora pochi passi e potrò "
                 + "rifugiarmi nella navicella SpaceX, lasciare tutto questo orrore "
                 + "alle spalle e tornare a casa…\n");
@@ -477,7 +476,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
     @Override
     public String getWelcomeMessage() {
         return "È il 22 giugno 2030 e ti trovi nella stazione spaziale internazionale, modulo "
-                + getCurrentRoom().getName();
+                + getCurrentRoom().getName()
+                + "\n";
     }
 
     @Override

@@ -64,10 +64,7 @@ public class LookAtObserver implements GameObserver, Serializable {
             } else if (parserOutput.getInvObject() != null) {
                 lookAtmsg.append(parserOutput.getInvObject().getDescription());
             } else {
-                lookAtmsg.append(game.getCurrentRoom().getLook());
-                if (!game.getCurrentRoom().getName().equalsIgnoreCase("spazio")) {
-                    lookAtmsg.append("\n").append(stateDescr.get(game.getCurrentRoom()).apply(game));
-                }
+                lookAtmsg.append(stateDescr.get(game.getCurrentRoom()).apply(game));
             }
         }
         return lookAtmsg.toString();
@@ -79,7 +76,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getCurrentRoom().getObject(0) != null) {
             msg = """
                   Tutto è in ordine tranne per uno strano 
-                  dettaglio… sembra, un pezzo di modellino 
+                  dettaglio… sembra, un pezzo di modellino1 
                   che galleggia in aria?""";
         } else {
             msg = """
@@ -94,13 +91,13 @@ public class LookAtObserver implements GameObserver, Serializable {
 
         //id = 10 spaceSuit
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(10))) {
-            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(11))) {
+            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
                 msg = """
                       Luke è seduto contro il muro, immobile. La visiera riflette 
                       la luce, ma non si muove.
                       Era il mio migliore amico. è probabilmente morto per mancanza 
                       di ossigeno, come sarà mai potuto succedere… stringe un 
-                      taccuino tra le sue mani""";
+                      bigliettino tra le sue mani""";
             } else {
                 msg = """
                       Luke è seduto contro il muro, immobile. La visiera riflette 
@@ -157,7 +154,9 @@ public class LookAtObserver implements GameObserver, Serializable {
                   fluttuanti, l’aria di qualcosa lasciato a metà. Dal pavimento, 
                   un oblò mostra la Terra.""";
         } else {
-            msg = "Questa stanza è troppo buia, non riesco a orientarmi";
+            msg = "Questa stanza è troppo buia, non riesco a orientarmi. Forse potrei"
+                    + " aspettare per far avanzare la stazione nella sua orbita, così"
+                    + " potrei uscire dall'eclissi.";
         }
         return msg;
     }

@@ -89,7 +89,7 @@ public class DirectionsPuzzleUI extends JPanel {
         add(bottom, BorderLayout.SOUTH);
 
         // Timeout
-        timeoutTimer = new Timer(100_000, e -> onTimeout());
+        timeoutTimer = new Timer(30_000, e -> onTimeout());
         timeoutTimer.setRepeats(false);
         timeoutTimer.start();
     }
@@ -151,9 +151,11 @@ public class DirectionsPuzzleUI extends JPanel {
     }
 
     private void onTimeout() {
-        showPopup("TIMEOUT!");
+        showPopup("Il tuo ossigeno è finito!");
         allButtons.forEach(b -> b.setEnabled(false));
+        this.closeWindow();
         resultCallback.accept(-1);
+        
     }
 
     private void showPopup(String message) {
@@ -161,13 +163,15 @@ public class DirectionsPuzzleUI extends JPanel {
         UIManager.put("OptionPane.background", BG_COLOR);
         UIManager.put("Panel.background", BG_COLOR);
         UIManager.put("OptionPane.messageForeground", ACCENT_COLOR);
+        UIManager.put("Button.background", ACCENT_COLOR);
+        UIManager.put("Button.foreground", BG_COLOR);
+        UIManager.put("Button.font", ACTION_FONT);
 
         JOptionPane.showMessageDialog(
             this,
             new JLabel(message, SwingConstants.CENTER) {{
                 setForeground(ACCENT_COLOR);
                 setBackground(BG_COLOR);
-                setOpaque(true);
                 setFont(ACTION_FONT);
             }},
             "Risultato",

@@ -748,18 +748,30 @@ public class GameUI extends JFrame {
                     game.setCurrentRoom(game.getRoomByName("LEONARDO"));
                     this.updateRoomImage(game.getRoomByName("LEONARDO").getRoomImage());
                     game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_botola_aperta.jpeg");
+                    if(game.getRoomByName("DESTINY").isAccessible())
+                        game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
                             .getCurrentRoom().getDescription());
 
-                } else {
+                } else if(result == 1){
                     // sbagliato o timeout: torno alla stanza precedente
                     game.setCurrentRoom(game.getRoomByName("QUEST"));
+                } else if (result == -1) {
+                    game.setCurrentRoom(game.getRoomByName("QUEST"));
+                    this.updateImageViewer(game.getCurrentRoom().getRoomImage());
+                    printer.print("\nSei stato troppo tempo nello spazio e sei "
+                            + "svenuto per mancanza di ossigeno, la tua tuta è "
+                            + "danneggiata ma ancora utilizzabile. Ma come è "
+                            + "possibile che sono ritornato al punto di partenza "
+                            + "senza morire?\nHo ancora addosso la tuta, ha abbastanza ossigeno"
+                            + "per tentare di nuovo di uscire.");
+                    
                 }
             });
         });
 
-        JDialog dialog = new JDialog((JFrame) null, "Puzzle Direzioni", true);
+        JDialog dialog = new JDialog((JFrame) null, "Apertura portellone", true);
         dialog.getContentPane().add(puzzle);
         dialog.pack();
         dialog.setLocationRelativeTo(null);

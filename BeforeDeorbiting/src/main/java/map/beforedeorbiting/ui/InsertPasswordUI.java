@@ -48,7 +48,7 @@ public class InsertPasswordUI extends JPanel {
         passwordField.setBackground(TEXTFIELD_BG);
         passwordField.setForeground(Color.WHITE);
         passwordField.setCaretColor(Color.WHITE);
-        passwordField.setBorder(new LineBorder(ACCENT_COLOR, 2, true));
+        passwordField.setBorder(new LineBorder(BUTTON_BG, 5, true));
 
         JButton enterButton = new JButton("Enter");
         enterButton.setFont(ACTION_FONT);
@@ -95,7 +95,7 @@ public class InsertPasswordUI extends JPanel {
     return panel.isPasswordCorrect();
     }
 
-
+    /*
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -112,4 +112,5 @@ public class InsertPasswordUI extends JPanel {
             
         });
     }
+    */
 }

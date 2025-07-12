@@ -69,7 +69,35 @@ public enum CommandType {
     /**
      *
      */
-    ROTATE,
+    AFRICA,
+    /**
+     *
+     */
+    EUROPA,
+    /**
+     *
+     */
+    ASIA,
+    /**
+     *
+     */
+    NAMERICA,
+    /**
+     *
+     */
+    SAMERICA,
+    /**
+     *
+     */
+    OCEANIA,
+    /**
+     *
+     */
+    ANTARTIDE,
+    /**
+     *
+     */
+    OCEANO,
     /**
      *
      */

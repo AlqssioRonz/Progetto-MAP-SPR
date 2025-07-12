@@ -9,13 +9,13 @@ import map.beforedeorbiting.type.Command;
 import map.beforedeorbiting.type.Room;
 import map.beforedeorbiting.type.Inventory;
 import map.beforedeorbiting.parser.ParserOutput;
-import map.beforedeorbiting.type.CommandType;
 
 import java.io.Serializable;
 import java.io.PrintStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.ui.GameUI;
 
 /**
@@ -29,16 +29,28 @@ public abstract class GameDesc implements Serializable {
     private final List<Command> commands = new ArrayList<>();
 
     private final List<BDObject> listObj = new ArrayList<>();
-    
+
     private String notebookText = "";
-    
+
     private Command lastCommand;
 
     private Inventory inventory = Inventory.getInstance();
 
     private Room currentRoom;
-    
+
+    private boolean flagTrapdoor=false;
+
+    private boolean trapdoor;
+
     private final Duration duration = Duration.ofSeconds(100);
+
+    public boolean isFlagTrapdoor() {
+        return flagTrapdoor;
+    }
+
+    public void setFlagTrapdoor(boolean flagTrapdoor) {
+        this.flagTrapdoor = flagTrapdoor;
+    }
 
     public Command getLastCommand() {
         return lastCommand;
@@ -55,7 +67,7 @@ public abstract class GameDesc implements Serializable {
     public List<Command> getCommands() {
         return commands;
     }
-    
+
     /* Inizializza il gioco */
     public abstract void init();
 
@@ -73,6 +85,14 @@ public abstract class GameDesc implements Serializable {
 
     public Room getCurrentRoom() {
         return currentRoom;
+    }
+
+    public Boolean getTrapdoor() {
+        return trapdoor;
+    }
+
+    public void setTrapdoor(boolean trapdoor) {
+        this.trapdoor = trapdoor;
     }
 
     public void setCurrentRoom(Room currentRoom) {
@@ -97,7 +117,6 @@ public abstract class GameDesc implements Serializable {
     }
 
     public abstract String getWelcomeMessage();
-    
 
     public BDObject getObjectByID(int id) {
         return listObj.stream()
@@ -120,6 +139,16 @@ public abstract class GameDesc implements Serializable {
                 .filter(room -> room.getName().equals(name))
                 .findFirst()
                 .orElse(null);
+    }
+
+    public Command getCommand(CommandType command) {
+        List<Command> cmdList = this.getCommands();
+        for (Command cmd : cmdList) {
+            if (cmd.getType().equals(command)) {
+                return cmd;
+            }
+        }
+        return null;
     }
 
 }

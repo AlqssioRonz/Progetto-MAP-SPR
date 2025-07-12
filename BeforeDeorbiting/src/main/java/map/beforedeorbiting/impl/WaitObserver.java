@@ -22,13 +22,9 @@ public class WaitObserver implements GameObserver {
                 .getCommand().getType() == CommandType.WAIT
                 && game.getCurrentRoom().equals(game.getRoomByName("DESTINY"))) {   
             game.getCurrentRoom().setRoomImage("src/main/resources/img/destiny_luce_oblo.png");
-            game.getRoomByName("DESTINY").setVisible(true);
-            waitmsg.append("Dopo qualche tempo la stazione avanza nella sua orbita e la luce "
-                    + "del sole riflessa sulla Terra ti permette di vedere meglio.");
-        } else if (parserOutput.getCommand()!= null && parserOutput
-                .getCommand().getType() == CommandType.WAIT
-                && !game.getCurrentRoom().equals(game.getRoomByName("DESTINY"))) {
-            waitmsg.append("Aspettando qui non arriverà il principe azzurro.");
+            game.getCurrentRoom().setVisible(true);
+            waitmsg.append("Dopo qualche tepo la stazione avanza nella sua orbita e la luce "
+                    + "riflessa del sole sulla terra ti permette di vedere meglio.");
         }
         return waitmsg.toString();      
     };

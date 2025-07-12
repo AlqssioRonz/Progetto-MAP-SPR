@@ -13,6 +13,7 @@ import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.type.Room;
+import map.beforedeorbiting.util.ISSPositionREST;
 
 /**
  * Questa classe rappresenta l'observer del comando 'OSSERVA', permette di
@@ -24,12 +25,16 @@ import map.beforedeorbiting.type.Room;
 public class LookAtObserver implements GameObserver, Serializable {
 
     private final Map<Room, Function<GameDesc, String>> stateDescr = new HashMap<>();
+    private String Continent;
+    private final ISSPositionREST issService;
 
     /**
      *
      * @param game
+     * @param issService
      */
-    public LookAtObserver(GameDesc game) {
+    public LookAtObserver(GameDesc game, ISSPositionREST issService) {
+        this.issService = issService;
         stateDescr.put(game.getRoomByName("ZVEZDA"), this::zvezdaDescr);
         stateDescr.put(game.getRoomByName("ZARYA"), this::zaryaDescr);
         stateDescr.put(game.getRoomByName("UNITY"), this::unityDescr);
@@ -64,7 +69,10 @@ public class LookAtObserver implements GameObserver, Serializable {
             } else if (parserOutput.getInvObject() != null) {
                 lookAtmsg.append(parserOutput.getInvObject().getDescription());
             } else {
-                lookAtmsg.append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                lookAtmsg.append(game.getCurrentRoom().getLook());
+                if (!game.getCurrentRoom().getName().equalsIgnoreCase("spazio")) {
+                    lookAtmsg.append("\n").append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                }
             }
         }
         return lookAtmsg.toString();
@@ -76,7 +84,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getCurrentRoom().getObject(0) != null) {
             msg = """
                   Tutto è in ordine tranne per uno strano 
-                  dettaglio… sembra, un pezzo di modellino1 
+                  dettaglio… sembra, un pezzo di modellino 
                   che galleggia in aria?""";
         } else {
             msg = """
@@ -91,13 +99,13 @@ public class LookAtObserver implements GameObserver, Serializable {
 
         //id = 10 spaceSuit
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(10))) {
-            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
+            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(11))) {
                 msg = """
                       Luke è seduto contro il muro, immobile. La visiera riflette 
                       la luce, ma non si muove.
                       Era il mio migliore amico. è probabilmente morto per mancanza 
                       di ossigeno, come sarà mai potuto succedere… stringe un 
-                      bigliettino tra le sue mani""";
+                      taccuino tra le sue mani""";
             } else {
                 msg = """
                       Luke è seduto contro il muro, immobile. La visiera riflette 
@@ -154,9 +162,7 @@ public class LookAtObserver implements GameObserver, Serializable {
                   fluttuanti, l’aria di qualcosa lasciato a metà. Dal pavimento, 
                   un oblò mostra la Terra.""";
         } else {
-            msg = "Questa stanza è troppo buia, non riesco a orientarmi. Forse potrei"
-                    + " aspettare per far avanzare la stazione nella sua orbita, così"
-                    + " potrei uscire dall'eclissi.";
+            msg = "Questa stanza è troppo buia, non riesco a orientarmi";
         }
         return msg;
     }
@@ -169,9 +175,40 @@ public class LookAtObserver implements GameObserver, Serializable {
                   In mezzo alla calma, qualcosa di minuscolo fluttua davanti 
                   all’oblò centrale: un frammento rigido, rettangolare, troppo 
                   ordinato per essere solo un detrito. Postrebbe essere un altro 
-                  pezzo del modellino3""";
+                  pezzo del modellino""";
         } else {
             msg = "";
+        }
+        
+        Continent = issService.getContinentForCoordinates();
+        if(Continent != null) {
+            switch (Continent) {
+                case "africa":
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Africa.jng");
+                    break;
+                case "europa":
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Europa.png");
+                    break;
+                case "asia":
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Asia.png");
+                    break;
+                case "nordamerica":
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/NordAmerica.png");
+                    break;
+                case "sudamerica":
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/SudAmerica.png");
+                    break;
+                case "oceania":
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Oceania.png");
+                    break;
+                case "antartide":
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Antartide.png");
+                    break;
+                default:
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Oceano.png");
+                    break;
+
+            }
         }
         return msg;
     }

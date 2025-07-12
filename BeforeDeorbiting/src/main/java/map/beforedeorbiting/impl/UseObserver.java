@@ -4,7 +4,6 @@
  */
 package map.beforedeorbiting.impl;
 
-import java.awt.Frame;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,11 +14,12 @@ import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.BDObject;
 import map.beforedeorbiting.type.CommandType;
+import map.beforedeorbiting.ui.GameUI;
 import map.beforedeorbiting.ui.NotebookUI;
 import map.beforedeorbiting.ui.HALterminal;
 import map.beforedeorbiting.ui.InventoryUI;
 import map.beforedeorbiting.ui.InsertPasswordUI;
-import map.beforedeorbiting.ui.RobotArmPuzzleUI;
+import map.beforedeorbiting.util.ISSPositionREST;
 
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore
@@ -37,12 +37,6 @@ public class UseObserver implements GameObserver, Serializable {
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
 
     private final String DESTINY_PASSWORD = "NOESCAPE";
-    
-    private final int[][] CORRECT_ROBOT_MOVEMET = {
-            {0, -1, -1},
-            {-1, 0, -1},
-            {-1, 0, -2}
-        };
 
     public UseObserver(GameDesc game) {
         uses.put(game.getObjectByID(4), this::readSusanDiary);
@@ -58,7 +52,7 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(2), this::combineModel);
         uses.put(game.getObjectByID(3), this::combineModel);
         uses.put(game.getObjectByID(13), this::insertDestinyPassword);
-        uses.put(game.getObjectByID(15), this::useRobotTerminal);
+        uses.put(game.getObjectByID(14), this::useTrapdor);
     }
 
     /*
@@ -80,7 +74,7 @@ public class UseObserver implements GameObserver, Serializable {
                 if (game.getInventory().getList().contains(parserOutput.getObject())) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                     InventoryUI.updateInventory(game);
-                } else if (parserOutput.getObject().getId() == 9 || parserOutput.getObject().getId() == 13) {
+                } else if (parserOutput.getObject().getId() == 9 || parserOutput.getObject().getId() == 13 || parserOutput.getObject().getId() == 14) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                 } else {
                     useMsg.append("Non possiedi questo oggetto al momento! Riprova, magari sarai più fortunato.");
@@ -138,14 +132,12 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String usePrism(GameDesc game) {
         StringBuilder usingPrismMsg = new StringBuilder();
-        if (game.getCurrentRoom().getName().equals("DESTINY")) {
-            if (game.getCurrentRoom().isVisible()) {
-                game.getInventory().remove(game.getObjectByID(8));
-                game.getObjectByID(8).setInUse(true);
-                usingPrismMsg.append("Hai posizionato il prisma!");
-            } else {
-                usingPrismMsg.append("Magari dovresti provare ad ASPETTARE...");
-            }
+        // servirebbe anche il controllo per capire se la luce dall'oblò arriva
+        if (game.getCurrentRoom().getName().equalsIgnoreCase("destiny")) {
+            game.getInventory().remove(game.getObjectByID(8));
+            System.out.println("Hai posizionato il prisma!");
+            // METTERE IL MINIGAME
+            usingPrismMsg.append("Hai completato l'enigma!");
         } else {
             usingPrismMsg.append("Non puoi usare qui il prisma!");
         }
@@ -219,31 +211,29 @@ public class UseObserver implements GameObserver, Serializable {
             game.getRoomByName("DESTINY").setAccessible(true);
             game.getObjectByID(13).setUsable(false);
             if (game.getRoomByName("LEONARDO").isAccessible()) {
-                game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
-            } else {
-                game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_avanti_aperto.png");
-            }
+                game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
+            }// else {
+            // game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_avanti_aperto.png");
+            //}
         } else {
             pswMsg.append("Password Errata");
         }
 
         return pswMsg.toString();
     }
-  
-    public String useRobotTerminal(GameDesc game) {
-        StringBuilder rbtmsg = new StringBuilder();
-        
-        
-        SwingUtilities.invokeLater(() -> {
-            boolean solved = RobotArmPuzzleUI.showPuzzleDialog(this.CORRECT_ROBOT_MOVEMET);
-            if (solved) {
-                rbtmsg.append("Matrice di movimento riconosciuta. Completamento dell'ormeggio della navicella.");
+
+    public String useTrapdor(GameDesc game) {
+        if (!game.isFlagTrapdoor()) {
+            if (game.getTrapdoor()) {
+                game.getObjectByID(14).setInUse(true);
+                return "La password per aprire è il continente che stiamo sorvolando";
             } else {
-                rbtmsg.append("Matrice non riconosciuta.");
+
+                return "Devo trovare Susan prima di scappare da qui";
             }
-        });
-        
-        return rbtmsg.toString();
+        } else {
+            
+            return "La navicella per la fuga è eplosa, la mia unica speranza ora è la Dragon2";
+        }
     }
-    
 }

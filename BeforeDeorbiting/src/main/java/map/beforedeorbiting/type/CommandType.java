@@ -69,6 +69,10 @@ public enum CommandType {
     /**
      *
      */
+    ROTATE,
+    /**
+     *
+     */
     AFRICA,
     /**
      *

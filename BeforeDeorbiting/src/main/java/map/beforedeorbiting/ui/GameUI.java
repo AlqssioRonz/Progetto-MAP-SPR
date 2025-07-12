@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package map.beforedeorbiting.ui;
 
 import javax.swing.JPanel;
@@ -60,9 +64,9 @@ public class GameUI extends JFrame {
     private static final Color TEXT = new Color(6, 6, 6);
 
     private final MusicController music = new MusicController();
-    
+
     private ConcurrentChronometer chronometer = new ConcurrentChronometer();
-    
+
     private Parser parser = null;
     private Engine engine;
     private GameDesc game;
@@ -141,8 +145,7 @@ public class GameUI extends JFrame {
     public void concludiPartita() {
         music.stopMusica();
     }
-    
-    
+
     /**
      * Inizializza i componenti principali dell'interfaccia.
      *
@@ -216,8 +219,20 @@ public class GameUI extends JFrame {
 
         musicButton = new JButton();
 
-        confermaChiusura.setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
+        java.net.URL iconURL = getClass().getResource("/img/icon.png");
+        if (iconURL != null) {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        } else {
+            System.err.println("Warning: icona non trovata in /img/icon.png");
+        }
         confermaChiusura.setResizable(false);
+        if (iconURL != null) {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            confermaChiusura.setIconImage(frameIcon.getImage());
+        } else {
+            System.err.println("Warning: icona non trovata in /img/icon.png");
+        }
         confermaChiusura.setSize(new Dimension(350, 150));
         confermaChiusura.setLocationRelativeTo(null);
         confermaChiusura.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -277,7 +292,12 @@ public class GameUI extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Before Deorbiting");
-        setIconImage(Toolkit.getDefaultToolkit().getImage("src\\img\\HTN_Logo.png"));
+        if (iconURL != null) {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        } else {
+            System.err.println("Warning: icona non trovata in /img/icon.png");
+        }
         setResizable(false);
 
         macroPanel.setBackground(BLUCHIARO);
@@ -316,7 +336,7 @@ public class GameUI extends JFrame {
         menuBar.setForeground(TEXT);
 
         menuBar.setPreferredSize(new Dimension(0, 50));
-        
+
         // crea skiptesto
         JButton skipButton = new JButton("Skip testo");
         skipButton.setBackground(BLUCHIARO);
@@ -332,32 +352,32 @@ public class GameUI extends JFrame {
                 }
             }
         });
-        
+
         menuBar.add(skipButton);
-        
-        /* Creazione del tiemer di gioco:
-        *   - viene creato un bottone per posizionare il testo del timer
-        *   - viene creato il thread cronometro ed avviato
-        *     - autonomamente il thread aggiorna il testo ogni secondo
-        */
-        
+
+        /*
+         * Creazione del timer di gioco:
+         * - viene creato un bottone per posizionare il testo del timer
+         * - viene creato il thread cronometro ed avviato
+         * - autonomamente il thread aggiorna il testo ogni secondo
+         */
         JButton gametimer = new JButton();
         gametimer.setBackground(BLUSCURO);
         gametimer.setFocusPainted(false);
         gametimer.setContentAreaFilled(false);
         gametimer.setBorderPainted(false);
-        gametimer.setOpaque(false); 
+        gametimer.setOpaque(false);
         gametimer.setForeground(Color.WHITE.brighter());
         gametimer.setFont(new Font("Arial", Font.BOLD, 20));
         gametimer.setMaximumSize(new Dimension(125, 30));
-        
+
         chronometer.setButton(gametimer);
         chronometer.start();
-      
+
         menuBar.add(Box.createHorizontalGlue());
         menuBar.add(gametimer);
         menuBar.add(Box.createHorizontalGlue());
-        
+
         // spinge i bottoni a destra
         menuBar.add(Box.createHorizontalGlue());
 
@@ -398,7 +418,7 @@ public class GameUI extends JFrame {
             }
         });
         menuBar.add(tornaMenu);
-        
+
         setJMenuBar(menuBar);
         // aggiunge un bordo inferiore di 7px viola alla menuBar
         menuBar.setBorder(BorderFactory.createMatteBorder(
@@ -479,7 +499,7 @@ public class GameUI extends JFrame {
         JPanel right = new JPanel(new BorderLayout());
         right.add(imageViewer, BorderLayout.CENTER);
 
-        //INVENTARIO
+        // INVENTARIO
         JPanel inventory = new InventoryUI(game);
         inventory.setBackground(Color.decode("#3A3A3A"));
         inventory.setPreferredSize(new Dimension(5, 100));
@@ -565,19 +585,19 @@ public class GameUI extends JFrame {
             };
 
             engine.getGame().nextMove(p, ps); // <-- CHIAMATA CORRETTA QUI
-            
-            if(engine.getGame().getCurrentRoom().equals(engine.getGame().getRoomByName("SPAZIO"))) {
-                this.directionsMinigame();    
+
+            if (engine.getGame().getCurrentRoom().equals(engine.getGame().getRoomByName("SPAZIO"))) {
+                this.directionsMinigame();
             }
-            
+
             if (engine.getGame().getCurrentRoom() != null) {
                 updateRoomImage(engine.getGame().getCurrentRoom().getRoomImage());
             }
 
             checkEndGame();
-            
-            }
-        }  
+
+        }
+    }
 
     /**
      * Gestisce l'evento di clic sul pulsante per tornare al menu principale.
@@ -708,17 +728,15 @@ public class GameUI extends JFrame {
             }
         }
     }
-    
+
     public void directionsMinigame() {
         //Definisco il pattern di frecce
         java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
-        
+
         GameDesc game = engine.getGame();
-        
-        
+
         this.updateRoomImage(game.getRoomByName("SPAZIO").getRoomImage());
 
-        
         DirectionsPuzzleUI puzzle = new DirectionsPuzzleUI(pattern, result -> {
             SwingUtilities.invokeLater(() -> {
                 if (result == 0) {
@@ -728,25 +746,37 @@ public class GameUI extends JFrame {
                     game.setCurrentRoom(game.getRoomByName("LEONARDO"));
                     this.updateRoomImage(game.getRoomByName("LEONARDO").getRoomImage());
                     game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_botola_aperta.jpeg");
+                    if (game.getRoomByName("DESTINY").isAccessible()) {
+                        game.getRoomByName("UNITY").setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
+                    }
                     game.setTrapdoor(true);
-                    printer.print(engine.getGame().getCurrentRoom().getGameStory() + 
-                             "\n" + engine.getGame().getCurrentRoom().getName() + "\n"+ engine.getGame()
-                                        .getCurrentRoom().getDescription());
-                    
-                } else {
-                    // sbagliato o timeout: torno alla stanza precedente
+                    printer.print(engine.getGame().getCurrentRoom().getGameStory()
+                            + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
+                            .getCurrentRoom().getDescription());
+
+                } else if (result == 1) {             
+                    printer.print(engine.getGame().getCurrentRoom().getGameStory()
+                            + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
+                            .getCurrentRoom().getDescription());
+
+                } else if (result == -1) {
                     game.setCurrentRoom(game.getRoomByName("QUEST"));
+                    this.updateImageViewer(game.getCurrentRoom().getRoomImage());
+                    printer.print("\nSei stato troppo tempo nello spazio e sei "
+                            + "svenuto per mancanza di ossigeno, la tua tuta è "
+                            + "danneggiata ma ancora utilizzabile. Ma come è "
+                            + "possibile che sono ritornato al punto di partenza "
+                            + "senza morire?\nHo ancora addosso la tuta, ha abbastanza ossigeno"
+                            + "per tentare di nuovo di uscire.");
                 }
             });
         });
-        
-        
-        JDialog dialog = new JDialog((JFrame) null, "Puzzle Direzioni", true);
+
+        JDialog dialog = new JDialog((JFrame) null, "Apertura portellone", true);
         dialog.getContentPane().add(puzzle);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 
-   
 }

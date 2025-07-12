@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package map.beforedeorbiting.ui;
 
 import java.awt.*;
@@ -5,6 +9,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
+/**
+ *
+ * @author lorenzopeluso
+ */
 public class InsertPasswordUI extends JPanel {
 
     private final Color BG_COLOR = Color.decode("#0f111c");
@@ -40,7 +48,7 @@ public class InsertPasswordUI extends JPanel {
         passwordField.setBackground(TEXTFIELD_BG);
         passwordField.setForeground(Color.WHITE);
         passwordField.setCaretColor(Color.WHITE);
-        passwordField.setBorder(new LineBorder(ACCENT_COLOR, 2, true));
+        passwordField.setBorder(new LineBorder(BUTTON_BG, 5, true));
 
         JButton enterButton = new JButton("Enter");
         enterButton.setFont(ACTION_FONT);
@@ -88,7 +96,7 @@ public class InsertPasswordUI extends JPanel {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception ex) {
@@ -103,5 +111,5 @@ public class InsertPasswordUI extends JPanel {
             }
             
         });
-    }
+    }*/
 }

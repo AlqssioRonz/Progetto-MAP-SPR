@@ -99,13 +99,13 @@ public class LookAtObserver implements GameObserver, Serializable {
 
         //id = 10 spaceSuit
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(10))) {
-            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(11))) {
+            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
                 msg = """
                       Luke è seduto contro il muro, immobile. La visiera riflette 
                       la luce, ma non si muove.
                       Era il mio migliore amico. è probabilmente morto per mancanza 
                       di ossigeno, come sarà mai potuto succedere… stringe un 
-                      taccuino tra le sue mani""";
+                      bigliettino tra le sue mani""";
             } else {
                 msg = """
                       Luke è seduto contro il muro, immobile. La visiera riflette 
@@ -148,7 +148,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(1))) {
             msg.append("Sul pavimento galleggia un piccolo oggetto scuro difficile "
                     + "non vederlo in un modulo così piccolo. Potrebbe essere un pezzo"
-                    + "del modellino2");
+                    + "del modellino");
         }
 
         return msg.toString();
@@ -218,7 +218,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(3))) {
             msg = """
                   Uno strano e piccolo oggetto fluttua davanti alla botola.
-                  Postrebbe essere un alrro pezzo del modellino4""";
+                  Postrebbe essere un alrro pezzo del modellino""";
         } else {
             msg = "";
         }

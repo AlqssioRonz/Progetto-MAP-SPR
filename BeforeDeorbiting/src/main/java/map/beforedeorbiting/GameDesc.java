@@ -54,7 +54,7 @@ public abstract class GameDesc implements Serializable {
     public List<Command> getCommands() {
         return commands;
     }
-
+    
     /* Inizializza il gioco */
     public abstract void init();
 

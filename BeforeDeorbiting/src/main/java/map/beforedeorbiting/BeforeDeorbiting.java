@@ -12,6 +12,7 @@ import java.util.Set;
 import map.beforedeorbiting.impl.*;
 import map.beforedeorbiting.type.*;
 import map.beforedeorbiting.parser.ParserOutput;
+
 /**
  * Classe "principale" del gioco. Setta tutte le impostazioni iniziali, quali:
  * stanze, oggetti, comandi, observer, storia e la stanza iniziale.
@@ -79,6 +80,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Command wait = new Command(CommandType.WAIT, "aspetta");
         wait.setAlias(new String[]{"wait", "fermo", "tempo"});
         getCommands().add(wait);
+        Command rotate = new Command(CommandType.ROTATE, "ruota");
+        rotate.setAlias(new String[]{"ruota", "gira", "sposta", "cambia"});
+        getCommands().add(rotate);
 
         /* Lista di tutti gli oggetti del gioco */
         BDObject modellinoRusso = new BDObject(0, "Modellino russo",
@@ -125,6 +129,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 "Creato dall'unione di tutti i pezzi di vetro. Riflette perfettamente la luce.");
         prisma.setAlias(Set.of("prisma", "vetro", "prismacompleto"));
         prisma.setPickupable(true);
+        prisma.setUsable(true);
         BDObject computer = new BDObject(9, "Computer", "Permette di interagire col database della stazione.");
         computer.setAlias(Set.of("computer", "pc", "personalcomputer", "fisso", "portatile"));
         computer.setUsable(true);
@@ -137,8 +142,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         taccuino.setAlias(Set.of("taccuino", "blocknote", "blocknotes", "blocconote", "quaderno", "quadernino"));
         taccuino.setPickupable(true);
         taccuino.setUsable(true);
-        // quando la prende per metterla deve usare "indossa" e dopo, quando torna,
-        // verrà mostrato un output "ti sei tolto la tuta"
         BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
         cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
         BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire la password per entrare in Destiny.");
@@ -436,6 +439,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(saveObserver);
         GameObserver waitObserver = new WaitObserver();
         this.attach(waitObserver);
+        GameObserver rotateObserver = new RotateObserver();
+        this.attach(rotateObserver);
 
         // Setta la stanza iniziale
         setCurrentRoom(zvezda);

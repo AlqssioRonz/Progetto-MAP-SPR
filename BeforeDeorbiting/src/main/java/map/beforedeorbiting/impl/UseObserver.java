@@ -4,6 +4,7 @@
  */
 package map.beforedeorbiting.impl;
 
+import java.awt.Frame;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class UseObserver implements GameObserver, Serializable {
      * oggetto, in base all'id scelto.
      */
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
-    
+
     private final String DESTINY_PASSWORD = "NOESCAPE";
     
     private final int[][] CORRECT_ROBOT_MOVEMET = {
@@ -137,12 +138,14 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String usePrism(GameDesc game) {
         StringBuilder usingPrismMsg = new StringBuilder();
-        // servirebbe anche il controllo per capire se la luce dall'oblò arriva
-        if (game.getCurrentRoom().getName().equalsIgnoreCase("destiny")) {
-            game.getInventory().remove(game.getObjectByID(8));
-            System.out.println("Hai posizionato il prisma!");
-            // METTERE IL MINIGAME
-            usingPrismMsg.append("Hai completato l'enigma!");
+        if (game.getCurrentRoom().getName().equals("DESTINY")) {
+            if (game.getCurrentRoom().isVisible()) {
+                game.getInventory().remove(game.getObjectByID(8));
+                game.getObjectByID(8).setInUse(true);
+                usingPrismMsg.append("Hai posizionato il prisma!");
+            } else {
+                usingPrismMsg.append("Magari dovresti provare ad ASPETTARE...");
+            }
         } else {
             usingPrismMsg.append("Non puoi usare qui il prisma!");
         }
@@ -176,36 +179,36 @@ public class UseObserver implements GameObserver, Serializable {
         return "Apri il taccuino!";
     }
 
-    public String combineModel(GameDesc game) {   
+    public String combineModel(GameDesc game) {
         StringBuilder modelMsg = new StringBuilder();
         String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale."
-                +"Unendo i pezzi del modellino compare una sequenza "
+                + "Unendo i pezzi del modellino compare una sequenza "
                 + "di direzioni scritta con un pennarello: ↑ ↑ ↓ ↓ ← → ← →. Che possa servire per sbloccare qualcosa?";
-        
-        if (game.getInventory().getList().contains(game.getObjectByID(0)) 
+
+        if (game.getInventory().getList().contains(game.getObjectByID(0))
                 && game.getInventory().getList().contains(game.getObjectByID(1))
                 && game.getInventory().getList().contains(game.getObjectByID(2))
                 && game.getInventory().getList().contains(game.getObjectByID(3))) {
-            
+
             game.getInventory().remove(game.getObjectByID(0));
             game.getInventory().remove(game.getObjectByID(1));
             game.getInventory().remove(game.getObjectByID(2));
             game.getInventory().remove(game.getObjectByID(3));
-            
+
             BDObject modellinoCompleto = new BDObject(0123, "Modellino della Stazione",
-                descrModellino);
-            
+                    descrModellino);
+
             game.getInventory().add(modellinoCompleto);
-            
+
             modelMsg.append("Hai ottenuto ").append(modellinoCompleto.getDescription());
-    
+
         } else {
             modelMsg.append("Non te ne puoi fare ancora nulla. Ti servono gli altri pezzi.");
         }
-        
+
         return modelMsg.toString();
     }
-    
+
     public String insertDestinyPassword(GameDesc game) {
         StringBuilder pswMsg = new StringBuilder();
 
@@ -215,18 +218,18 @@ public class UseObserver implements GameObserver, Serializable {
             pswMsg.append("Password Corretta. Apertura modulo Destiny");
             game.getRoomByName("DESTINY").setAccessible(true);
             game.getObjectByID(13).setUsable(false);
-            if(game.getRoomByName("LEONARDO").isAccessible()) {
+            if (game.getRoomByName("LEONARDO").isAccessible()) {
                 game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_tutto_aperto.png");
-            }// else {
-               // game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_avanti_aperto.png");
-            //}
+            } // else {
+            // game.getCurrentRoom().setRoomImage("src/main/resources/img/node1_avanti_aperto.png");
+            // }
         } else {
             pswMsg.append("Password Errata");
         }
 
         return pswMsg.toString();
     }
-    
+  
     public String useRobotTerminal(GameDesc game) {
         StringBuilder rbtmsg = new StringBuilder();
         

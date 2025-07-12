@@ -9,6 +9,7 @@ import map.beforedeorbiting.type.Command;
 import map.beforedeorbiting.type.Room;
 import map.beforedeorbiting.type.Inventory;
 import map.beforedeorbiting.parser.ParserOutput;
+import map.beforedeorbiting.type.CommandType;
 
 import java.io.Serializable;
 import java.io.PrintStream;

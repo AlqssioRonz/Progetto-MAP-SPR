@@ -64,19 +64,16 @@ public class PickUpObserver implements GameObserver, Serializable {
                     pickUpmsg.append("Sono contento che tu voglia raccoglierlo, ma non si trova qui! "
                             + "Magari dovresti provare in un altro modulo...");
                 } else {
-                    // 3) L'oggetto è fisicamente nella stanza: comportamento standard
-                    if (target.isPickupable()) {
-                        game.getInventory().add(target);
-                        game.getCurrentRoom().getObjects().remove(target);
-
-                        // Messaggio speciale per la tuta spaziale (id 10)
-                        if (target.getId() == 10) {
-                            pickUpmsg.append("Strappo la tuta spaziale dal corpo freddo e rigido di Luke. "
-                                    + "La bombola dell'ossigeno... è danneggiata. Ho solo due opzioni. "
-                                    + "Posso restare qui, al sicuro, e lasciare che Susan affronti da sola qualunque "
-                                    + "incubo si nasconda in questa nave o posso trattenere il fiato e tentare la traversata "
-                                    + "nello spazio. Non so se Susan sia ancora viva. Ma nella mia testa... so già cosa devo fare.");
-                            game.getCurrentRoom().setRoomImage("src/main/resources/img/zarya_chiusa_tuta_presa.jpeg");
+                    if (parserOutput.getObject().isPickupable()) {
+                        game.getInventory().add(parserOutput.getObject());
+                        game.getCurrentRoom().getObjects().remove(parserOutput.getObject());
+                        if (parserOutput.getObject().getId() == 10) {
+                            pickUpmsg.append("Strappo la tuta spaziale dal corpo freddo e rigido di Luke."
+                                    + "La bombola dell'ossigeno... è danneggiata. Ho solo due opzioni."
+                                    + "Posso restare qui, al sicuro, e lasciare che Susan affronti da sola qualunque incubo si nasconda in questa nave"
+                                    + "o posso trattenere il fiato e tentare la traversata nello spazio."
+                                    + "Non so se Susan sia ancora viva. Ma nella mia testa... so già cosa devo fare.");
+                            game.getRoomByName("ZARYA").setRoomImage("src/main/resources/img/zarya_chiusa_tuta_presa.jpeg");
                         }
 
                         pickUpmsg.append("Hai preso: ")

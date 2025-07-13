@@ -36,7 +36,6 @@ public class RobotArmPuzzleUI extends JPanel {
     private void setupUI() {
         this.setBackground(BG_COLOR);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        
 
         JLabel titleLabel = new JLabel("Configurare l'ormeggio:");
         titleLabel.setForeground(ACCENT_COLOR);

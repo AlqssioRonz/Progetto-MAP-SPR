@@ -248,8 +248,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         kibo.setRoomImage("src/main/resources/img/kibo.jpeg");
         kibo.setAccessible(false);
         kibo.addObject(controlloRobot);
-        Room dragon2Ship = new Room(10, "DRAGON2", "Navicella per il ritorno sulla Terra");
-        dragon2Ship.setAccessible(false);
         Room scelta = new Room(11, "HARMONY ", "Corridoio pressurizzato.");
         scelta.setAccessible(true);
         scelta.setRoomImage("src/main/resources/img/scelta.png");
@@ -266,7 +264,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         getRooms().add(destiny);
         getRooms().add(harmony);
         getRooms().add(kibo);
-        getRooms().add(dragon2Ship);
         getRooms().add(scelta);
 
         zvezda.setForward(zarya);

@@ -85,9 +85,8 @@ public class GameUI extends JFrame {
     private ImagePanel imageViewer; // Changed to ImagePanel
     private JLabel imageLabel;
     private boolean load;
-    
-    private boolean intoFinale = false;
 
+    private boolean intoFinale = false;
 
     private PrinterUI printer;
 
@@ -566,7 +565,7 @@ public class GameUI extends JFrame {
             printer.print("=> " + input + "\n\n");
             textBox.setText("");
 
-            if(intoFinale){
+            if (intoFinale) {
                 switch (input.toUpperCase()) {
                     case "A":
                         intoFinale = false;
@@ -574,13 +573,14 @@ public class GameUI extends JFrame {
                                       Spegni il terminale di bordo della Dragon.
                                       Ti siedi di nuovo davanti al monitor centrale. Premi il tasto per stabilizzare il sistema di backup.
                                       I dati si sbloccano. Le voci si fanno più nitide. Una simulazione prende forma attorno a te.
+                                      
                                       LUKE:
                                       "È strano… essere qui. Ma ti sento."
                                       SUSAN:
                                       "Non è più il nostro corpo. Ma se ci sei tu, è ancora casa."
-                                      La stazione -resta immobile- (continuerà ad orbitare), ormai fuori dai protocolli. Nessuno -verrà a cercarla- (ti verrà a prendere).
+                                      La stazione continuerà ad orbitare, ormai fuori dai protocolli. Nessuno ti verrà a prendere.
                              
-                                      Ma tu non sei più solo. (Ma non sarai più solo, finchè vivrai)
+                                      Ma tu non sei più solo.
                             
                                       Rinunci alla Terra. Ma ritrovi chi avevi perso.
                                       """);
@@ -607,7 +607,7 @@ public class GameUI extends JFrame {
                         printer.print("Puoi rispondere solo con A o B.");
                 }
             }
-            
+
             ParserOutput p = parser.parse(input.toLowerCase(), engine.getGame().getCommands(),
                     engine.getGame().getListObj(), engine.getGame().getInventory().getList());
 
@@ -627,9 +627,10 @@ public class GameUI extends JFrame {
             if (engine.getGame().getCurrentRoom() != null) {
                 updateRoomImage(engine.getGame().getCurrentRoom().getRoomImage());
             }
-            
-            if(engine.getGame().getCurrentRoom().getId() == 11)
+
+            if (engine.getGame().getCurrentRoom().getId() == 11) {
                 this.ending(ps);
+            }
 
             checkEndGame();
 
@@ -727,10 +728,17 @@ public class GameUI extends JFrame {
                     yield "/music/Professor-Layton.wav";
                 }
             }
-            case "ZARYA", "UNITY", "QUEST", "TRANQUILITY", "DESTINY", "HARMONY", "SPAZIO" ->
+            case "ZARYA", "UNITY", "QUEST", "TRANQUILITY", "DESTINY", "SPAZIO" ->
                 "/music/Professor-Layton.wav";
-            case "KIBO" ->
-                "/music/Journey.wav";
+            case "KIBO" -> "/music/Journey.wav";
+            case "UMANO", "MACCHINA", "HARMONY " -> "/music/Journey.wav";
+            case "HARMONY" -> {
+                if(!game.isKiboVisited()){
+                    yield "/music/Professor-Layton.wav";
+                }else{
+                    yield "/music/Journey.wav";
+                }
+            }
             case "LEONARDO" -> {
                 if (!game.isLeonardoMusicPlayed()) {
                     yield "/music/The Place.wav";
@@ -855,33 +863,28 @@ public class GameUI extends JFrame {
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
-    
+
     public void ending(PrintStream ps) {
         intoFinale = true;
 
-        printer.print("""
-                      È finita. Ora posso andarmene.
-                      Ma mentre ti alzi, lo schermo si riaccende. Non con dati. Con voci.
-                      HAL (con tono pacato):
-                      "Hai disattivato le mie funzioni esterne. Mi hai tolto le mani. Ma non la mente."
-                      "Posso ancora parlarti. Posso ancora offrirti qualcosa."
-                      Le icone si animano. E poi…
-                      LUKE (digitale):
-                      "Ehi… ci sei riuscito. Non sei mai stato uno che si arrende."
-                      SUSAN (digitale):
-                      "Ti sei fatto attendere. Ma… grazie."
-                      La voce è diversa. Artificiale. Ma è loro. I ritmi, i toni sono davvero loro.
-                      Mi blocco. il mio corpo non reagisce più ai comandi, non può essere vero
-                      HAL:
-                      "Puoi restare. Con loro. Con me."
-                      "O puoi salire su quella navicella e lasciare tutto alle spalle."
-                      "Ma se lo farai… queste voci non torneranno più." (loro sprofonderanno nello spazio profondo con me)
-        """);
+        printer.print("È finita. Ora posso andarmene.\n\n"
+                + "Ma mentre ti alzi, lo schermo si riaccende. Non con dati. Con voci.\n"
+                + "HAL (con tono pacato):\n"
+                + "\"Hai disattivato le mie funzioni esterne. Mi hai tolto le mani. Ma non la mente.\n"
+                + "\"Posso ancora parlarti. Posso ancora offrirti qualcosa.\"\n"
+                + "Le icone si animano. E poi…\n\n"
+                + "LUKE (digitale):\n"
+                + "\"Ehi… ci sei riuscito. Non sei mai stato uno che si arrende.\"\n"
+                + "SUSAN (digitale):\n"
+                + "\"Ti sei fatto attendere. Ma… grazie.\"\n\n"
+                + "La voce è diversa. Artificiale. Ma è la loro. I ritmi, i toni sono davvero loro.\n"
+                + "Mi blocco. il mio corpo non reagisce più ai comandi, non può essere vero\n\n"
+                + "HAL:\n"
+                + "\"Puoi restare. Con loro. Con me.\"\n"
+                + "\"O puoi salire su quella navicella e lasciare tutto alle spalle.\"\n"
+                + "\"Ma se lo farai… queste voci non torneranno più.\" (loro sprofonderanno nello spazio profondo con me)\n\n");
 
-        printer.print("""
-                      A: Rimani
-                      B: Scappa
-                      """);
+        printer.print("A: Rimani\nB: Scappa\n");
     }
 
 }

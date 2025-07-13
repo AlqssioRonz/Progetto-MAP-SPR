@@ -187,7 +187,8 @@ public class UseObserver implements GameObserver, Serializable {
         StringBuilder modelMsg = new StringBuilder();
         String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale.\n"
                 + "Unendo i pezzi del modellino compare una sequenza "
-                + "di direzioni scritta con un pennarello: ↑ ↑ ↓ ↓ ← → ← →.\nChe possa servire per sbloccare qualcosa?";
+                + "di direzioni scritta con un pennarello: ↑ ↑ ↓ ↓ ← → ← →.\n"
+                + "Che possa servire per sbloccare qualcosa?";
 
         if (game.getInventory().getList().contains(game.getObjectByID(0))
                 && game.getInventory().getList().contains(game.getObjectByID(1))
@@ -244,7 +245,7 @@ public class UseObserver implements GameObserver, Serializable {
             if (solved) {
                 game.setCurrentRoom(game.getRoomById(11)); //stanza della scelta;
                 rbtmsg.append("Matrice di movimento riconosciuta. Completamento dell'ormeggio della navicella."
-                        + "\nMi reco nel modulo harmony mentre penso il da farsi");
+                        + "\nMi reco nel modulo harmony mentre penso il da farsi.");
             } else {
                 rbtmsg.append("Matrice non riconosciuta.");
             }

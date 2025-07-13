@@ -64,13 +64,17 @@ public class MovementObserver implements GameObserver, Serializable {
                 if (current != null) {
                     Room target = nextRoomGetter.apply(current);
                     if (target != null && target.isAccessible()) {
-                        if(parserOutput.getCommand().getType() == CommandType.OVERHEAD
+                        if (parserOutput.getCommand().getType() == CommandType.OVERHEAD
                                 && game.getCurrentRoom().getName().equals("LEONARDO")) {
                             game.setLeonardoMusicPlayed(true);
                         }
-                        if(parserOutput.getCommand().getType() == CommandType.AFT
+                        if (parserOutput.getCommand().getType() == CommandType.AFT
                                 && game.getCurrentRoom().getName().equals("ZARYA")) {
                             game.setFirstMusicPlayed(true);
+                        }
+                        if (parserOutput.getCommand().getType() == CommandType.PORT
+                                && game.getCurrentRoom().getName().equals("HARMONY")) {
+                            game.setKiboVisited(true);
                         }
                         game.setCurrentRoom(target);
                         if (!game.getCurrentRoom().getName().equals("ZVEZDA")) {

@@ -18,6 +18,7 @@ import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.database.DBConfig;
 
 public class HALterminal extends JFrame {
+
     private final CardLayout cardLayout;
     private final JPanel mainPanel;
     private final GameDesc game;
@@ -33,6 +34,13 @@ public class HALterminal extends JFrame {
     public HALterminal(GameDesc game) {
         this.game = game;
         setTitle("Computer centrale della Stazione");
+        java.net.URL iconURL = getClass().getResource("/img/icon.png");
+        if (iconURL != null) {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            setIconImage(frameIcon.getImage());
+        } else {
+            System.err.println("Warning: icona non trovata in /img/icon.png");
+        }
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 400);
         setLocationRelativeTo(null);
@@ -63,10 +71,15 @@ public class HALterminal extends JFrame {
             styleSciFiButton(btn);
             if (null == name) {
                 btn.addActionListener(e -> cardLayout.show(mainPanel, "CONTROL_PANEL"));
-            } else switch (name) {
-                case "Crew" -> btn.addActionListener(l -> cardLayout.show(mainPanel, "CREW_PANEL"));
-                case "Robotica" -> btn.addActionListener(l -> cardLayout.show(mainPanel, "ROBOTICS_PANEL"));
-                default -> btn.addActionListener(e -> cardLayout.show(mainPanel, "CONTROL_PANEL"));
+            } else {
+                switch (name) {
+                    case "Crew" ->
+                        btn.addActionListener(l -> cardLayout.show(mainPanel, "CREW_PANEL"));
+                    case "Robotica" ->
+                        btn.addActionListener(l -> cardLayout.show(mainPanel, "ROBOTICS_PANEL"));
+                    default ->
+                        btn.addActionListener(e -> cardLayout.show(mainPanel, "CONTROL_PANEL"));
+                }
             }
             panel.add(btn);
         }

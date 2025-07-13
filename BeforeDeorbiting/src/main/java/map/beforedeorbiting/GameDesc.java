@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import map.beforedeorbiting.type.CommandType;
-import map.beforedeorbiting.ui.GameUI;
 
 /**
  *
@@ -49,6 +48,18 @@ public abstract class GameDesc implements Serializable {
     private boolean kiboVisited = false;
 
     private boolean leonardoMusicPlayed = false;
+    
+    private boolean firstMusicPlayed = false;
+
+    public boolean isFirstMusicPlayed() {
+        return firstMusicPlayed;
+    }
+
+    public void setFirstMusicPlayed(boolean firstMusicPlayed) {
+        this.firstMusicPlayed = firstMusicPlayed;
+    }
+    
+    
 
     public boolean isLeonardoMusicPlayed() {
         return leonardoMusicPlayed;

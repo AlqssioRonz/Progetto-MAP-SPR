@@ -3,8 +3,6 @@ package map.beforedeorbiting.util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
-import map.beforedeorbiting.BeforeDeorbiting;
-import map.beforedeorbiting.GameDesc;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

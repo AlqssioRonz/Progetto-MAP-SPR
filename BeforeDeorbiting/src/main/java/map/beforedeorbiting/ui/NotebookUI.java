@@ -32,7 +32,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -45,8 +44,8 @@ import map.beforedeorbiting.GameDesc;
 public class NotebookUI {
 
     private static final String FILE_PATH = "notebook.txt";
-    private static final Color bluscuro = Color.decode("#0f111c");
-    private static final Color bluchiaro = Color.decode("#00e1d4");
+    private static final Color BLUSCURO = Color.decode("#0f111c");
+    private static final Color BLUCHIARO = Color.decode("#00e1d4");
 
     public static void show(GameDesc game) {
 
@@ -56,25 +55,25 @@ public class NotebookUI {
             frame.setSize(600, 400);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            frame.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 8));
+            frame.getRootPane().setBorder(BorderFactory.createLineBorder(BLUCHIARO, 8));
             ((JComponent) frame.getContentPane()).setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
             JPanel mainPanel = new JPanel(new BorderLayout());
-            mainPanel.setBackground(bluscuro);
+            mainPanel.setBackground(BLUSCURO);
             mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
             // Barra in alto con titolo e pulsante X
             JPanel topBar = new JPanel(new BorderLayout());
-            topBar.setBackground(bluscuro);
+            topBar.setBackground(BLUSCURO);
 
             JLabel titolo = new JLabel("Taccuino di bordo", SwingConstants.CENTER);
             titolo.setFont(new Font("Consolas", Font.BOLD, 20));
-            titolo.setForeground(bluchiaro);
+            titolo.setForeground(BLUCHIARO);
             titolo.setBorder(BorderFactory.createEmptyBorder(10, 0, 5, 0));
 
             JButton closeButton = new JButton("X");
-            closeButton.setForeground(bluchiaro);
-            closeButton.setBackground(bluscuro);
+            closeButton.setForeground(BLUCHIARO);
+            closeButton.setBackground(BLUSCURO);
             closeButton.setBorder(null);
             closeButton.setFocusPainted(false);
             closeButton.setFont(new Font("Consolas", Font.BOLD, 18));
@@ -99,8 +98,8 @@ public class NotebookUI {
             textArea.setBorder(null);
 
             JScrollPane scrollPane = new JScrollPane(textArea);
-            scrollPane.setBorder(BorderFactory.createLineBorder(bluchiaro, 5));
-            scrollPane.setBackground(bluscuro);
+            scrollPane.setBorder(BorderFactory.createLineBorder(BLUCHIARO, 5));
+            scrollPane.setBackground(BLUSCURO);
 
             mainPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -124,7 +123,7 @@ public class NotebookUI {
             });
 
             JButton salvaButton = new JButton("SALVA");
-            salvaButton.setBackground(bluchiaro);
+            salvaButton.setBackground(BLUCHIARO);
             salvaButton.setFont(new Font("Consolas", Font.BOLD, 18));
             salvaButton.setFocusPainted(false);
             salvaButton.setBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40));
@@ -134,7 +133,7 @@ public class NotebookUI {
             });
 
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            buttonPanel.setBackground(bluscuro);
+            buttonPanel.setBackground(BLUSCURO);
             buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
             buttonPanel.add(salvaButton);
 
@@ -223,13 +222,13 @@ public class NotebookUI {
         dialog.setUndecorated(true);
         dialog.setSize(400, 150);
         dialog.setLocationRelativeTo(parentFrame);
-        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 5));
-        dialog.getContentPane().setBackground(bluscuro);
+        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(BLUCHIARO, 5));
+        dialog.getContentPane().setBackground(BLUSCURO);
         dialog.setLayout(new BorderLayout());
 
         // Titolo
         JLabel titolo = new JLabel("Taccuino chiuso", SwingConstants.CENTER);
-        titolo.setForeground(bluchiaro);
+        titolo.setForeground(BLUCHIARO);
         titolo.setFont(new Font("Consolas", Font.BOLD, 20));
         titolo.setBorder(new EmptyBorder(10, 0, 0, 0));
 
@@ -240,15 +239,15 @@ public class NotebookUI {
 
         // Pulsante OK
         JButton okButton = new JButton("OK");
-        okButton.setBackground(bluchiaro);
-        okButton.setForeground(bluscuro);
+        okButton.setBackground(BLUCHIARO);
+        okButton.setForeground(BLUSCURO);
         okButton.setFont(new Font("Consolas", Font.BOLD, 14));
         okButton.setFocusPainted(false);
         okButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         okButton.addActionListener(e -> dialog.dispose());
 
         JPanel bottomPanel = new JPanel();
-        bottomPanel.setBackground(bluscuro);
+        bottomPanel.setBackground(BLUSCURO);
         bottomPanel.add(okButton);
 
         dialog.add(titolo, BorderLayout.NORTH);
@@ -263,8 +262,8 @@ public class NotebookUI {
         dialog.setUndecorated(true);
         dialog.setSize(300, 120);
         dialog.setLocationRelativeTo(parentFrame);
-        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 5));
-        dialog.getContentPane().setBackground(bluscuro);
+        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(BLUCHIARO, 5));
+        dialog.getContentPane().setBackground(BLUSCURO);
         dialog.setLayout(new BorderLayout());
 
         JLabel messaggio = new JLabel("<html><center> Taccuino salvato con successo! <html><center>", SwingConstants.CENTER);
@@ -274,7 +273,7 @@ public class NotebookUI {
         dialog.add(messaggio, BorderLayout.CENTER);
 
         JButton okButton = new JButton("OK");
-        okButton.setBackground(bluchiaro);
+        okButton.setBackground(BLUCHIARO);
         okButton.setForeground(new Color(15, 15, 30));
         okButton.setFont(new Font("Consolas", Font.BOLD, 15));
         okButton.setFocusPainted(false);
@@ -282,7 +281,7 @@ public class NotebookUI {
         okButton.addActionListener(e -> dialog.dispose());
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(bluscuro);
+        buttonPanel.setBackground(BLUSCURO);
         buttonPanel.add(okButton);
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -296,8 +295,8 @@ public class NotebookUI {
         dialog.setUndecorated(true);
         dialog.setSize(420, 160);
         dialog.setLocationRelativeTo(frame);
-        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(bluchiaro, 3));
-        dialog.getContentPane().setBackground(bluscuro);
+        dialog.getRootPane().setBorder(BorderFactory.createLineBorder(BLUCHIARO, 3));
+        dialog.getContentPane().setBackground(BLUSCURO);
         dialog.setLayout(new BorderLayout());
 
         JLabel messaggio = new JLabel("<html><center> Hai modificato il taccuino. Vuoi salvare prima di uscire?<html><center>", SwingConstants.CENTER);
@@ -311,7 +310,7 @@ public class NotebookUI {
         JButton annullaButton = new JButton("Annulla");
 
         for (JButton btn : new JButton[]{siButton, noButton, annullaButton}) {
-            btn.setBackground(bluchiaro);
+            btn.setBackground(BLUCHIARO);
             btn.setForeground(new Color(15, 15, 30));
             btn.setFont(new Font("Consolas", Font.BOLD, 15));
             btn.setFocusPainted(false);
@@ -334,7 +333,7 @@ public class NotebookUI {
         });
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
-        buttonPanel.setBackground(bluscuro);
+        buttonPanel.setBackground(BLUSCURO);
         buttonPanel.add(siButton);
         buttonPanel.add(noButton);
         buttonPanel.add(annullaButton);

@@ -12,6 +12,8 @@ import java.util.function.Function;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.GameDesc;
+import map.beforedeorbiting.type.BDObject;
+import map.beforedeorbiting.type.BDObjectChest;
 import map.beforedeorbiting.type.Room;
 import map.beforedeorbiting.util.ISSPositionREST;
 
@@ -70,8 +72,12 @@ public class LookAtObserver implements GameObserver, Serializable {
                 lookAtmsg.append(parserOutput.getInvObject().getDescription());
             } else {
                 lookAtmsg.append(game.getCurrentRoom().getLook());
-                if (!game.getCurrentRoom().getName().equalsIgnoreCase("spazio")) {
-                    lookAtmsg.append("\n").append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                if (!game.getCurrentRoom().getName().equals("SPAZIO")) {
+                    if (game.getCurrentRoom().getName().equals("DESTINY")) {
+                        lookAtmsg.append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                    } else {
+                        lookAtmsg.append("\n").append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                    }
                 }
             }
         }
@@ -83,8 +89,8 @@ public class LookAtObserver implements GameObserver, Serializable {
 
         if (game.getCurrentRoom().getObject(0) != null) {
             msg = """
-                  Tutto è in ordine tranne per uno strano 
-                  dettaglio… sembra, un pezzo di modellino 
+                  Tutto è in ordine, tranne per uno strano 
+                  dettaglio… sembra, un pezzo di modellino (modellinorusso) 
                   che galleggia in aria?""";
         } else {
             msg = """
@@ -95,37 +101,41 @@ public class LookAtObserver implements GameObserver, Serializable {
     }
 
     public String zaryaDescr(GameDesc game) {
-        String msg;
+        StringBuilder msg = new StringBuilder();
 
         //id = 10 spaceSuit
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(10))) {
             if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
-                msg = """
+                msg.append("""
                       Luke è seduto contro il muro, immobile. La visiera riflette 
                       la luce, ma non si muove.
-                      Era il mio migliore amico. è probabilmente morto per mancanza 
+                      Era il mio migliore amico, è probabilmente morto per mancanza 
                       di ossigeno, come sarà mai potuto succedere… stringe un 
-                      bigliettino tra le sue mani""";
+                      bigliettino tra le sue mani.
+                           """);
             } else {
-                msg = """
+                msg.append("""
                       Luke è seduto contro il muro, immobile. La visiera riflette 
                       la luce, ma non si muove.
                       Era il mio migliore amico. è probabilmente morto per mancanza 
-                      di ossigeno, come sarà mai potuto succedere… """;
+                      di ossigeno, come sarà mai potuto succedere… """);
             }
         } else {
-            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(11))) {
-                msg = """
+            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
+                msg.append("""
                       Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta 
-                      mi rivoltava lo stomaco. Il suo taccuino galleggia in aria.""";
+                      mi rivoltava lo stomaco. Il suo bigliettino galleggia in aria.""");
             } else {
-                msg = """
+                msg.append("""
                       Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta 
-                      mi rivoltava lo stomaco""";
+                      mi rivoltava lo stomaco.""");
             }
         }
+        if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(6))) {
+            msg.append("Nella stanza vedo anche un piccolo pezzo di vetro... a cosa potrà mai servire?");
+        }
 
-        return msg;
+        return msg.toString();
     }
 
     public String unityDescr(GameDesc game) {
@@ -136,35 +146,55 @@ public class LookAtObserver implements GameObserver, Serializable {
         } else {
             msg.append("""
                        La porta davanti, quella che porta al laboratorio Destiny è 
-                       chiusa con tastierino numerico: serve un codice per aprirla.""");
+                       chiusa con tastierino numerico: serve un codice per aprirla.
+                       
+                       """);
         }
         if (game.getRoomByName("LEONARDO").isAccessible()) {
             msg.append("""
                        La botola sotto i miei piedi che conduce nel modulo Leonardo 
-                       è aperta, ma non vorrei rivedere il cadavere di Susan. """);
+                       è aperta, ma non vorrei rivedere il cadavere di Susan. 
+                       """);
         } else {
-            msg.append("La botola sotto i miei piedi che conduce nel modulo Leonardo è chiuso.");
+            msg.append("La botola sotto i miei piedi che conduce nel modulo Leonardo è chiusa.\n");
+        }
+        BDObjectChest chest = null;
+        for (BDObject o : game.getCurrentRoom().getObjects()) {
+            if (o instanceof BDObjectChest) {
+                chest = (BDObjectChest) o;
+                break;
+            }
         }
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(1))) {
-            msg.append("Sul pavimento galleggia un piccolo oggetto scuro difficile "
-                    + "non vederlo in un modulo così piccolo. Potrebbe essere un pezzo"
-                    + "del modellino");
+            msg.append("Sul pavimento galleggia un pezzo del modellino (modellinoamericano).");
         }
 
         return msg.toString();
     }
 
     public String destinyDescr(GameDesc game) {
-        String msg;
-        if (game.getCurrentRoom().isVisible()) {
-            msg = """
-                  Un laboratorio sporco e silenzioso. Monitor spenti, attrezzi 
-                  fluttuanti, l’aria di qualcosa lasciato a metà. Dal pavimento, 
-                  un oblò mostra la Terra.""";
+        StringBuilder msg = new StringBuilder();
+        if (!game.getRoomByName("HARMONY").isAccessible()) {
+            if (game.getCurrentRoom().isVisible()) {
+                msg.append("Adesso riesco a vedere qualcosa... ma non abbastanza per orientarmi.\n"
+                        + "Riesco però a vedere il modulo di connessione, devo, in qualche modo, far riflettere la luce lì.\n");
+                if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(6))) {
+                    msg.append("Nella stanza vedo anche un piccolo pezzo di vetro... a cosa potrà mai servire?\n");
+                }
+            } else {
+                msg.append("""
+                           Cos’è stato… non vedo nulla se non per un flebile fascio di
+                           luce riflesso dalla luna che proviene dalla finestra di
+                           osservazione, ma non è sufficiente per orientarmi nella stanza. 
+                           In questo momento non posso fare nulla qui... dovrei ASPETTARE.
+                           """);
+            }
         } else {
-            msg = "Questa stanza è troppo buia, non riesco a orientarmi";
+            msg.append("Un laboratorio sporco e silenzioso. \n"
+                    + "Monitor spenti, attrezzi fluttuanti, l’aria di qualcosa lasciato a metà.\n"
+                    + "Dal pavimento, un oblò mostra la Terra.");
         }
-        return msg;
+        return msg.toString();
     }
 
     public String tranquilityDescr(GameDesc game) {
@@ -173,15 +203,15 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(2))) {
             msg = """
                   In mezzo alla calma, qualcosa di minuscolo fluttua davanti 
-                  all’oblò centrale: un frammento rigido, rettangolare, troppo 
-                  ordinato per essere solo un detrito. Postrebbe essere un altro 
-                  pezzo del modellino""";
+                  all’oblò centrale: un pezzo rigido, rettangolare, troppo 
+                  ordinato per essere solo un detrito.
+                  Postrebbe essere un altro pezzo del modellino (modellinodestro)""";
         } else {
             msg = "";
         }
-        
+
         Continent = issService.getContinentForCoordinates();
-        if(Continent != null) {
+        if (Continent != null) {
             switch (Continent) {
                 case "africa":
                     game.getCurrentRoom().setRoomImage("src/main/resources/img/Africa.jpg");
@@ -207,7 +237,6 @@ public class LookAtObserver implements GameObserver, Serializable {
                 case "oceano":
                     game.getCurrentRoom().setRoomImage("src/main/resources/img/Oceano.png");
                     break;
-
             }
         }
         return msg;
@@ -218,7 +247,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(3))) {
             msg = """
                   Uno strano e piccolo oggetto fluttua davanti alla botola.
-                  Postrebbe essere un alrro pezzo del modellino""";
+                  Postrebbe essere un alrro pezzo del modellino (modellinosinistro)""";
         } else {
             msg = "";
         }
@@ -231,7 +260,7 @@ public class LookAtObserver implements GameObserver, Serializable {
 
     public String leonardoDescr(GameDesc game) {
         String msg;
-        
+
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(4))) {
             msg = """
                  Il modulo Leonardo, rivestito da contenitori imbottiti e
@@ -248,7 +277,7 @@ public class LookAtObserver implements GameObserver, Serializable {
                   direttamente a Unity. Il corpo di Susan
                   fluttua a mezz’aria, immobile.""";
         }
-        
+
         return msg;
     }
 }

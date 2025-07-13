@@ -520,21 +520,24 @@ public class GameUI extends JFrame {
                     da mesi che non metto piede sulla Terra,
                     ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
                     Non vedo l'ora di gustarmi un vero caffè.
+                          
                     Tra poco la stazione verrà deorbitata: una volta distrutta,
                     i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò,
                     inutile negarlo.
                     Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.
-                    Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni:
-                    Luke e Susan.
+                          
+                    Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni: Luke e Susan.
                     Luke è un vecchio amico d'infanzia.
                     Un po' pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia.
                     Susan, invece, è americana, l'ho conosciuta all'università.
                     Brillante, silenziosa, e ottima compagna di viaggio.
                     Nessuno dei due è venuto a reclamare il suo turno per dormire,
                     probabilmente stanno ancora festeggiando da ieri.
+                          
                     Esco dal sacco a pelo e lo arrotolo con cura.
                     La giornata può cominciare.
-                    Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione. \n""");
+                    Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione.
+                          """);
         }
 
         printer.print(engine.getGame().getWelcomeMessage());
@@ -560,7 +563,7 @@ public class GameUI extends JFrame {
     private void elaborateInput(ActionEvent evt) {
         String input = textBox.getText();
         if (!input.isBlank()) {
-            printer.print("?> " + input + "\n\n");
+            printer.print("=> " + input + "\n\n");
             textBox.setText("");
 
             if(intoFinale){
@@ -717,8 +720,13 @@ public class GameUI extends JFrame {
 
         String room = game.getCurrentRoom().getName().toUpperCase();
         String nextTrack = switch (room) {
-            case "ZVEZDA" ->
-                "/music/Fallen Down.wav";
+            case "ZVEZDA" -> {
+                if (!game.isFirstMusicPlayed()) {
+                    yield "/music/Fallen Down.wav";
+                } else {
+                    yield "/music/Professor-Layton.wav";
+                }
+            }
             case "ZARYA", "UNITY", "QUEST", "TRANQUILITY", "DESTINY", "HARMONY", "SPAZIO" ->
                 "/music/Professor-Layton.wav";
             case "KIBO" ->

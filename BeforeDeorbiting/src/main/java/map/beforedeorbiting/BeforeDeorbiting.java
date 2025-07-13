@@ -81,7 +81,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         exit.setAlias(new String[]{"exit"});
         getCommands().add(exit);
         Command wait = new Command(CommandType.WAIT, "aspetta");
-        wait.setAlias(new String[]{"wait", "fermo", "tempo"});
+        wait.setAlias(new String[]{"wait", "fermo", "tempo", "attendi"});
         getCommands().add(wait);
         Command rotate = new Command(CommandType.ROTATE, "ruota");
         rotate.setAlias(new String[]{"ruota", "gira", "sposta", "cambia"});
@@ -139,21 +139,20 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         diarioSusan.setUsable(true);
         BDObject bigliettinoLuke = new BDObject(5, "Bigliettino Luke",
                 "Luke ha in mano un bigliettino. Chissà cosa ci sarà scritto.");
-        bigliettinoLuke.setAlias(Set.of("bigliettino", "biglietto", "bigliettinoLuke", "bigliettoLuke", "luke"));
+        bigliettinoLuke.setAlias(Set.of("bigliettino", "biglietto", "bigliettinoluke", "bigliettoluke"));
         bigliettinoLuke.setPickupable(true);
         bigliettinoLuke.setUsable(true);
         BDObject pezzoDiVetro = new BDObject(6, "Pezzo di vetro",
                 "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.");
-        pezzoDiVetro.setAlias(Set.of("pezzo", "pezzo1", "pezzo2", "pezzo3", "pezzodivetro", "pezzovetro"));
+        pezzoDiVetro.setAlias(Set.of("pezzo", "pezzo1", "pezzo2", "pezzo3", "pezzodivetro", "pezzovetro", "vetro"));
         pezzoDiVetro.setPickupable(true);
         pezzoDiVetro.setUsable(true);
-        BDObject mezzoPrisma = new BDObject(7, "Mezzo prisma", "Creato dall'unione di due pezzi di vetro.");
-        mezzoPrisma.setAlias(Set.of("mezzoprisma", "metaprisma", "mezzoprismavetro", "metaprismavetro"));
+        BDObject mezzoPrisma = new BDObject(7, "Metà prisma", "Creato dall'unione di due pezzi di vetro.");
+        mezzoPrisma.setAlias(Set.of("metaprisma", "meta"));
         mezzoPrisma.setPickupable(true);
         mezzoPrisma.setUsable(true);
-        BDObject prisma = new BDObject(8, "Prisma di vetro",
-                "Creato dall'unione di tutti i pezzi di vetro. Riflette perfettamente la luce.");
-        prisma.setAlias(Set.of("prisma", "vetro", "prismacompleto"));
+        BDObject prisma = new BDObject(8, "Prisma di vetro", "Creato dall'unione di tutti i pezzi di vetro. Riflette perfettamente la luce.");
+        prisma.setAlias(Set.of("prisma", "prismacompleto", "prismavetro"));
         prisma.setPickupable(true);
         prisma.setUsable(true);
         BDObject computer = new BDObject(9, "Computer", "Permette di interagire col database della stazione.");
@@ -170,7 +169,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         taccuino.setUsable(true);
         // quando la prende per metterla deve usare "indossa" e dopo, quando torna,
         // verrà mostrato un output "ti sei tolto la tuta"
-        BDObjectChest cassa = new BDObjectChest(12, "Cassa", "Permette di contenere vari oggetti.");
+        BDObjectChest cassa = new BDObjectChest(12, "Cassa", "");
         cassa.setAlias(Set.of("chest", "cassa", "ripostiglio"));
         BDObject tastierinoDirezioni = new BDObject(13, "Tastierino", "Permette di inserire la password per entrare in Destiny.");
         tastierinoDirezioni.setAlias(Set.of("portellone", "codice", "tastierino", "tastiera"));
@@ -300,36 +299,44 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                                 a una botola chiusa che porta alla navicella Soyuz.""");
 
         unity.setLook("""
-                                Il nodo di collegamento Unity. A destra, un passaggio
-                                stretto conduce verso il modulo EVA e lo spazio esterno.""");
+                      Il nodo di collegamento Unity. A destra, un passaggio
+                      stretto conduce verso il modulo QUEST e lo spazio esterno.
+                      Nella stanza c'è una cassa, forse sarebbe utile controllare il suo contenuto.
+                      """);
 
-        destiny.setLook("""
-                                Cos’è stato… non vedo nulla se non per un flebile fascio di
-                                luce riflesso dalla luna che proviene dalla finestra di
-                                osservazione, ma non è sufficiente per orientarmi nella stanza""");
+        destiny.setLook("");
 
         tranquility.setLook("""
                                 La Terra riempie ogni finestra, immensa e silenziosa,
-                                sospesa sotto di te. sembra così piccola vista dallo spazio.""");
+                                sospesa sotto di te.
+                                Sembra così piccola vista dallo spazio.
+                            """);
 
         quest.setLook("""
-                                Il modulo EVA, attraverso quella botola si accede direttamente allo spazio.""");
+                                Il modulo QUEST. Attraverso quella botola si accede direttamente allo spazio.""");
 
         harmony.setLook("""
-                                Il nodo Harmony è corridoio pressurizzato, ampio e ordinato.
-                                In fondo, il portellone che conduce alla navicella di fuga.
-                                A sinistra si apre l’accesso al laboratorio Kibo. A sinistra,
-                                l’ingresso è sigillato e inaccessibile.""");
+                        Il nodo Harmony è un corridoio pressurizzato, ampio e ordinato.
+                        In fondo, il portellone che conduce alla navicella di fuga.
+                        A sinistra si apre l’accesso al laboratorio Kibo.
+                        A destra,
+                        l’ingresso è sigillato e inaccessibile.""");
 
         leonardo.setLook("""
                                 Il modulo Leonardo, rivestito da contenitori imbottiti e
                                 cavi. Sul lato sinistro, il terminale principale di HAL
-                                emette un tenue bagliore verde. La botola su si è aperta e porta
-                                direttamente a Unity. Il corpo di Susan
-                                fluttua a mezz’aria, immobile.""");
+                                emette un tenue bagliore verde.
+                                La botola su si è aperta e porta direttamente a Unity.
+                                Il corpo di Susan fluttua a mezz’aria, immobile.
+                         """);
 
         spazio.setLook("""
                                 Per sbloccare il portellone ti serve una sequenza di direzioni. Dovrei utilizzare il tastierino per inserirli.""");
+        kibo.setLook("""
+                     Il modulo Kibo è carico di strumenti come sempre.
+                     A sinistra, il pannello con diversi terminali ormai spenti: da lì hai scollegato HAL. Di fronte, il portello di comando del braccio robotico.
+                     Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito
+                     """);
 
         // Inizializzare il formato base degli osserva - Lorenzo
         /* History */
@@ -360,7 +367,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "ai moduli adiacenti. È stato costruito dalla Boeing negli Stati Uniti.");
         quest.setHistory("Quest è la principale camera di decompressione del segmento statunitense, "
                 + "lanciata il 12 luglio 2001 con la missione STS-104. Consente le attività "
-                + "extraveicolari (EVA) sia con tute statunitensi EMU che con quelle russe Orlan. "
+                + "extraveicolari (QUEST) sia con tute statunitensi EMU che con quelle russe Orlan. "
                 + "È composta da due compartimenti: uno per le tute e la preparazione, e l'altro per "
                 + "l'effettiva decompressione e uscita nello spazio.");
         tranquility.setHistory("Tranquility, o Nodo 3, è stato costruito in Europa "
@@ -395,7 +402,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         /* GameStory */
         zarya.setGameStory("Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra. "
                 + "Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico, "
-                + "privo di vita, accasciato accanto a me.\n"
+                + "privo di vita, accasciato accanto a me.\n\n"
                 + "Non avrei mai immaginato uno scenario del genere, e tanto meno "
                 + "nel mio ultimo giorno qui. Non ho mai recepito lo spazio più "
                 + "silenzioso di quanto non lo sia ora.\n"
@@ -406,14 +413,14 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "\n“La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”\n\n"
                 + "la voce di HAL mi gela la schiena… Il tempismo è inquietante. "
                 + "Ma potrebbe essere un'occasione per scappare.\n");
-        unity.setGameStory("La porta è bloccata, è necessario avere un codice di "
+        unity.setGameStory("La porta davanti a me è bloccata, è necessario avere un codice di "
                 + "accesso per entrare nel laboratorio DESTINY, il posto di lavoro "
                 + "di Susan… deve essere lì.\n"
                 + "Il codice… dovrei trovarlo nel database del computer centrale, "
-                + "nel modulo LEONARDO. Un tempo quella zona era usata solo come "
+                + "nel modulo LEONARDO.\nUn tempo quella zona era usata solo come "
                 + "deposito per i rifiuti, ma da quando HAL è stato installato a "
                 + "bordo e ha assunto il controllo delle operazioni automatiche, "
-                + "è diventata una sezione fondamentale della stazione.\n"
+                + "è diventata una sezione fondamentale della stazione.\n\n"
                 + "HAL richiede una rete di terminali locali per essere monitorato "
                 + "e gestito, e il modulo LEONARDO ne ospita uno dei principali. "
                 + "Se voglio accedere al sistema e avere una possibilità di trovare "
@@ -427,10 +434,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "Ora sono davvero solo. Non so cosa stia succedendo, ma devo andarmene. Subito.\n"
                 + "\n“La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”\n\n"
                 + "La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior tempismo possibile.");
-        destiny.setGameStory("Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo"
-                + "mi permette di vedere qualcosa, la stazione ora è dietro la Terra, è come se fosse in eclissi.\n"
-                + "Non posso restare qui a consumare il mio tempo, devo trovare una via d’uscita, "
-                + "a qualunque costo.\n"
+        destiny.setGameStory("Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo "
+                + "mi permette di vedere qualcosa, la stazione ora è dietro la Terra, è come se fosse in eclissi.\n\n"
                 + "La voce sintetica dell’IA di bordo annuncia “Il rifornimento di viveri è stato completato. "
                 + "In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”\n");
         harmony.setGameStory("Finalmente il nodo Harmony. Ancora pochi passi e potrò "
@@ -452,11 +457,11 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                 + "Un riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione. "
                 + "Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme. "
                 + "Solo un calo silenzioso assordante.\n"
-                + " La stazione resta viva, ma HAL… non può più toccarla.\n");
+                + "La stazione resta viva, ma HAL… non può più toccarla.\n");
         spazio.setGameStory("Dopo la depressurizzazione esci nello spazio per una camminata spaziale nella tuta di Luke. "
-                + "La tuta non è in grandi condizioni ma può bastare. Usi i propulsori per raggiungere"
-                + " il punto di accesso esterno del modulo leonardo ma vedi un tastierino con delle direzioni. "
-                + "Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno"
+                + "La tuta non è in grandi condizioni ma può bastare.\nUsi i propulsori per raggiungere"
+                + " il punto di accesso esterno del modulo leonardo ma vedi un tastierino con delle direzioni.\n"
+                + "Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno "
                 + "finisca!\n");
 
         /* Lista di tutti gli Observer */
@@ -489,6 +494,15 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         // Setta la stanza iniziale
         setCurrentRoom(zvezda);
         this.getInventory().add(taccuino);
+        if (!cassa.getList().isEmpty()) {
+            StringBuilder objectChest = new StringBuilder();
+            for (BDObject obj : cassa.getList()) {
+                objectChest.append(obj.getName()).append(" -> ").append(obj.getDescription()).append("\n");
+            }
+            cassa.setDescription("Permette di contenere vari oggetti.\nAl momento ci trovi: \n" + objectChest.toString());
+        } else {
+            cassa.setDescription("Permette di contenere vari oggetti.");
+        }
         setNotebookText("");
     }
 
@@ -643,7 +657,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(rotateObserver);
         GameObserver continentObserver = new ContinentObserver();
         this.attach(continentObserver);
-        //
     }
 
 }

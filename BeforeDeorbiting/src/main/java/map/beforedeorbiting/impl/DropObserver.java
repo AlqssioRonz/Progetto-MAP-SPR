@@ -62,9 +62,18 @@ public class DropObserver implements GameObserver, Serializable {
                 chest.add(invObj);
                 dropmsg.append("Hai messo ").append(invObj.getName()).append(" nella cassa!");
                 InventoryUI.updateInventory(game);
+                if (!chest.getList().isEmpty()) {
+                    StringBuilder objectChest = new StringBuilder();
+                    for (BDObject objChest : chest.getList()) {
+                        objectChest.append(objChest.getName()).append(" -> ").append(objChest.getDescription()).append("\n");
+                    }
+                    chest.setDescription("Permette di contenere vari oggetti.\nAl momento ci trovi: \n" + objectChest.toString());
+                } else {
+                    chest.setDescription("Permette di contenere vari oggetti.");
+                }
+
                 return dropmsg.toString();
             }
-
             // Altrimenti lo lascio semplicemente nella stanza
             game.getInventory().remove(invObj);
             game.getCurrentRoom().getObjects().add(invObj);

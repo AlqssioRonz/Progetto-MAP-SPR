@@ -68,6 +68,10 @@ public class MovementObserver implements GameObserver, Serializable {
                                 && game.getCurrentRoom().getName().equals("LEONARDO")) {
                             game.setLeonardoMusicPlayed(true);
                         }
+                        if(parserOutput.getCommand().getType() == CommandType.AFT
+                                && game.getCurrentRoom().getName().equals("ZARYA")) {
+                            game.setFirstMusicPlayed(true);
+                        }
                         game.setCurrentRoom(target);
                         if (!game.getCurrentRoom().getName().equals("ZVEZDA")) {
                             movementMessage.append(target.getGameStory());
@@ -76,7 +80,8 @@ public class MovementObserver implements GameObserver, Serializable {
                             target.setRoomImage("src/main/resources/img/cupola.png");
                         }
                         movementMessage.append(target.getName()).append("\n")
-                                .append(target.getDescription());
+                                .append(target.getDescription())
+                                .append("\n");
 
                     } else if (target != null && !target.isAccessible()) {
 

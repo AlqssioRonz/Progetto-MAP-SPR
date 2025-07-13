@@ -54,11 +54,19 @@ public class PickUpObserver implements GameObserver, Serializable {
                                     .append(target.getName())
                                     .append(" dalla cassa.");
                             InventoryUI.updateInventory(game);
+                            if (!chest.getList().isEmpty()) {
+                                StringBuilder objectChest = new StringBuilder();
+                                for (BDObject objChest : chest.getList()) {
+                                    objectChest.append(objChest.getName()).append(" -> ").append(objChest.getDescription()).append("\n");
+                                }
+                                chest.setDescription("Permette di contenere vari oggetti.\nAl momento ci trovi: \n" + objectChest.toString());
+                            } else {
+                                chest.setDescription("Permette di contenere vari oggetti.");
+                            }
                             return pickUpmsg.toString();
                         }
                     }
                 }
-
                 // 2) Se l'oggetto non è nella stanza (e non era nella cassa)
                 if (!game.getCurrentRoom().getObjects().contains(target)) {
                     pickUpmsg.append("Sono contento che tu voglia raccoglierlo, ma non si trova qui! "
@@ -68,11 +76,11 @@ public class PickUpObserver implements GameObserver, Serializable {
                         game.getInventory().add(parserOutput.getObject());
                         game.getCurrentRoom().getObjects().remove(parserOutput.getObject());
                         if (parserOutput.getObject().getId() == 10) {
-                            pickUpmsg.append("Strappo la tuta spaziale dal corpo freddo e rigido di Luke."
-                                    + "La bombola dell'ossigeno... è danneggiata. Ho solo due opzioni."
-                                    + "Posso restare qui, al sicuro, e lasciare che Susan affronti da sola qualunque incubo si nasconda in questa nave"
-                                    + "o posso trattenere il fiato e tentare la traversata nello spazio."
-                                    + "Non so se Susan sia ancora viva. Ma nella mia testa... so già cosa devo fare.");
+                            pickUpmsg.append("Strappo la tuta spaziale dal corpo freddo e rigido di Luke. "
+                                    + "La bombola dell'ossigeno... è danneggiata. Ho solo due opzioni. "
+                                    + "Posso restare qui, al sicuro, e lasciare che Susan affronti da sola qualunque incubo si nasconda in questa nave "
+                                    + "o posso trattenere il fiato e tentare la traversata nello spazio. "
+                                    + "Non so se Susan sia ancora viva. Ma nella mia testa... so già cosa devo fare.\n");
                             game.getRoomByName("ZARYA").setRoomImage("src/main/resources/img/zarya_chiusa_tuta_presa.jpeg");
                         }
 

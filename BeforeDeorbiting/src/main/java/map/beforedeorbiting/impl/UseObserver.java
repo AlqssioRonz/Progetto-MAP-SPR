@@ -7,6 +7,7 @@ package map.beforedeorbiting.impl;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import javax.swing.SwingUtilities;
 
@@ -120,7 +121,7 @@ public class UseObserver implements GameObserver, Serializable {
             game.getInventory().remove(game.getObjectByID(6));
             game.getInventory().remove(game.getObjectByID(6));
             game.getInventory().add(game.getObjectByID(7));
-            prismMsg.append("Unendo due pezzi di vetro hai creato un mezzo prisma! Lo trovi nel tuo inventario.");
+            prismMsg.append("Unendo due pezzi di vetro hai creato un mezzo prisma\n Lo trovi nel tuo inventario.");
         } else {
             if (game.getInventory().getList().contains(game.getObjectByID(7))
                     && game.getInventory().count(game.getObjectByID(6)) == 1) {
@@ -143,7 +144,9 @@ public class UseObserver implements GameObserver, Serializable {
             if (game.getCurrentRoom().isVisible()) {
                 game.getInventory().remove(game.getObjectByID(8));
                 game.getObjectByID(8).setInUse(true);
-                usingPrismMsg.append("Hai posizionato il prisma!");
+                usingPrismMsg.append("Hai posizionato il prisma sulla finestra di vetro ai tuoi piedi, "
+                        + "ma l'angolazione non permette di far arrivare la luce al modulo di connessione. \n"
+                        + "Dovresti provare a ruotarlo.");
             } else {
                 usingPrismMsg.append("Magari dovresti provare ad ASPETTARE...");
             }
@@ -182,9 +185,9 @@ public class UseObserver implements GameObserver, Serializable {
 
     public String combineModel(GameDesc game) {
         StringBuilder modelMsg = new StringBuilder();
-        String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale."
+        String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale.\n"
                 + "Unendo i pezzi del modellino compare una sequenza "
-                + "di direzioni scritta con un pennarello: ↑ ↑ ↓ ↓ ← → ← →. Che possa servire per sbloccare qualcosa?";
+                + "di direzioni scritta con un pennarello: ↑ ↑ ↓ ↓ ← → ← →.\nChe possa servire per sbloccare qualcosa?";
 
         if (game.getInventory().getList().contains(game.getObjectByID(0))
                 && game.getInventory().getList().contains(game.getObjectByID(1))
@@ -198,6 +201,7 @@ public class UseObserver implements GameObserver, Serializable {
 
             BDObject modellinoCompleto = new BDObject(0123, "Modellino della Stazione",
                     descrModellino);
+            modellinoCompleto.setAlias(Set.of("modellinostazione","modellinocompleto"));
 
             game.getInventory().add(modellinoCompleto);
 
@@ -257,14 +261,14 @@ public class UseObserver implements GameObserver, Serializable {
         if (!game.isFlagTrapdoor()) {
             if (game.getTrapdoor()) {
                 game.getObjectByID(14).setInUse(true);
-                return "La password per aprire è il continente che stiamo sorvolando";
+                return "La password per aprire la botola è il nome del continente su cui stiamo sorvolando.";
             } else {
 
-                return "Devo trovare Susan prima di scappare da qui";
+                return "Devo trovare Susan prima di scappare da qui.";
             }
         } else {
 
-            return "La navicella per la fuga è eplosa, la mia unica speranza ora è la Dragon2";
+            return "La navicella per la fuga è eplosa, la mia unica speranza ora è la Dragon2.";
         }
     }
 }

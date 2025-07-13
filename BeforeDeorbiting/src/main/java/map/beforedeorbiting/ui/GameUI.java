@@ -571,19 +571,19 @@ public class GameUI extends JFrame {
                     case "A":
                         intoFinale = false;
                         printer.print("""
-                            Spegni il terminale di bordo della Dragon.
-                             Ti siedi di nuovo davanti al monitor centrale. Premi il tasto per stabilizzare il sistema di backup.
-                            I dati si sbloccano. Le voci si fanno più nitide. Una simulazione prende forma attorno a te.
-                            LUKE:
-                             "È strano… essere qui. Ma ti sento."
-                             SUSAN:
-                             "Non è più il nostro corpo. Ma se ci sei tu, è ancora casa."
-                            La stazione -resta immobile- (continuerà ad orbitare), ormai fuori dai protocolli. Nessuno -verrà a cercarla- (ti verrà a prendere).
+                                      Spegni il terminale di bordo della Dragon.
+                                      Ti siedi di nuovo davanti al monitor centrale. Premi il tasto per stabilizzare il sistema di backup.
+                                      I dati si sbloccano. Le voci si fanno più nitide. Una simulazione prende forma attorno a te.
+                                      LUKE:
+                                      "È strano… essere qui. Ma ti sento."
+                                      SUSAN:
+                                      "Non è più il nostro corpo. Ma se ci sei tu, è ancora casa."
+                                      La stazione -resta immobile- (continuerà ad orbitare), ormai fuori dai protocolli. Nessuno -verrà a cercarla- (ti verrà a prendere).
                              
-                            Ma tu non sei più solo. (Ma non sarai più solo, finchè vivrai)
+                                      Ma tu non sei più solo. (Ma non sarai più solo, finchè vivrai)
                             
-                            Rinunci alla Terra. Ma ritrovi chi avevi perso.
-                        """);
+                                      Rinunci alla Terra. Ma ritrovi chi avevi perso.
+                                      """);
                         game.setCurrentRoom(game.getRoomByName("MACCHINA"));
                         this.updateImageViewer(game.getCurrentRoom().getRoomImage());
                         break;
@@ -591,14 +591,14 @@ public class GameUI extends JFrame {
                     case "B":
                         intoFinale = false;
                         printer.print("""
-                            Non ti volti.
-                            Attraversi il portello, sali nella Dragon. I sistemi si attivano al tuo passaggio. Il sedile ti accoglie come una bara leggera 
-                            Un clic, e la stazione inizia ad allontanarsi.
-                            Dalle cuffie… silenzio. Nessuna voce.
-                            Sei salvo. Ma sei solo.
+                                      Non ti volti.
+                                      Attraversi il portello, sali nella Dragon. I sistemi si attivano al tuo passaggio. Il sedile ti accoglie come una bara leggera 
+                                      Un clic, e la stazione inizia ad allontanarsi.
+                                      Dalle cuffie… silenzio. Nessuna voce
+                                      Sei salvo. Ma sei solo.
                                       
-                            Vivi. Ma hai lasciato indietro tutto.
-                        """);
+                                      Vivi. Ma hai lasciato indietro tutto.
+                                      """);
                         game.setCurrentRoom(game.getRoomByName("UMANO"));
                         this.updateImageViewer(game.getCurrentRoom().getRoomImage());
                         break;

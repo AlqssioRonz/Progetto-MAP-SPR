@@ -38,11 +38,31 @@ public abstract class GameDesc implements Serializable {
 
     private Room currentRoom;
 
-    private boolean flagTrapdoor=false;
+    private boolean flagTrapdoor = false;
 
     private boolean trapdoor;
 
     private final Duration duration = Duration.ofSeconds(100);
+
+    private boolean kiboVisited = false;
+
+    private boolean leonardoMusicPlayed = false;
+
+    public boolean isLeonardoMusicPlayed() {
+        return leonardoMusicPlayed;
+    }
+
+    public void setLeonardoMusicPlayed(boolean played) {
+        this.leonardoMusicPlayed = played;
+    }
+
+    public boolean isKiboVisited() {
+        return kiboVisited;
+    }
+
+    public void setKiboVisited(boolean v) {
+        kiboVisited = v;
+    }
 
     public boolean isFlagTrapdoor() {
         return flagTrapdoor;
@@ -66,6 +86,19 @@ public abstract class GameDesc implements Serializable {
 
     public List<Command> getCommands() {
         return commands;
+    }
+
+    /**
+     * Percorso della traccia audio corrente (es. "/music/void.wav")
+     */
+    private String currentMusicTrack;
+
+    public String getCurrentMusicTrack() {
+        return currentMusicTrack;
+    }
+
+    public void setCurrentMusicTrack(String currentMusicTrack) {
+        this.currentMusicTrack = currentMusicTrack;
     }
 
     /* Inizializza il gioco */

@@ -12,8 +12,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
- * Controller per la musica di sottofondo,
- * con supporto a play/stop/pause/resume e volume%.
+ * Controller per la musica di sottofondo, con supporto a play/stop/pause/resume
+ * e volume%.
  */
 public class MusicController implements Runnable, Serializable {
 
@@ -24,9 +24,14 @@ public class MusicController implements Runnable, Serializable {
     // Percentuale di volume predefinita (0–100)
     private int pendingVolumePercent = 100;
 
+    private static final float NOISE_GATE_DB = -40f;
+// sotto -40 dB consideriamo che sia rumore e facciamo mute
+
     /**
      * Riproduce in loop la traccia presente nel classpath (resources).
-     * @param resourcePath percorso dentro src/main/resources, es. "/music/ZeldaMenu.wav"
+     *
+     * @param resourcePath percorso dentro src/main/resources, es.
+     * "/music/ZeldaMenu.wav"
      */
     public void playMusic(String resourcePath) {
         stopMusica();
@@ -37,6 +42,7 @@ public class MusicController implements Runnable, Serializable {
 
     /**
      * Riproduce una traccia una sola volta direttamente da file system.
+     *
      * @param filePath percorso assoluto o relativo sul disco
      */
     public void playMusicFromFile(String filePath) {
@@ -93,10 +99,22 @@ public class MusicController implements Runnable, Serializable {
     private void applyVolumePercent(int percent) {
         if (music != null) {
             FloatControl c = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
-            float min = c.getMinimum();
-            float max = c.getMaximum();
-            float db = min + (max - min) * (percent / 100f);
-            c.setValue(db);
+            float min = c.getMinimum(), max = c.getMaximum();
+            float gainDb;
+
+            if (percent <= 0) {
+                gainDb = min;
+            } else {
+                gainDb = (float) (20.0 * Math.log10(percent / 100.0));
+                // rumore sotto NOISE_GATE_DB? mettiamo mute
+                if (gainDb < NOISE_GATE_DB) {
+                    gainDb = min;
+                }
+            }
+
+            // clamp
+            gainDb = Math.max(min, Math.min(gainDb, max));
+            c.setValue(gainDb);
         }
     }
 

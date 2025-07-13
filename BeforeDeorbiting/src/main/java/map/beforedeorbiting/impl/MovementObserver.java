@@ -64,6 +64,10 @@ public class MovementObserver implements GameObserver, Serializable {
                 if (current != null) {
                     Room target = nextRoomGetter.apply(current);
                     if (target != null && target.isAccessible()) {
+                        if(parserOutput.getCommand().getType() == CommandType.OVERHEAD
+                                && game.getCurrentRoom().getName().equals("LEONARDO")) {
+                            game.setLeonardoMusicPlayed(true);
+                        }
                         game.setCurrentRoom(target);
                         if (!game.getCurrentRoom().getName().equals("ZVEZDA")) {
                             movementMessage.append(target.getGameStory());

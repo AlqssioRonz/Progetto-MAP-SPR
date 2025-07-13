@@ -61,7 +61,10 @@ public class GameUI extends JFrame {
     private static final Font FONT = new Font("Helvetica", Font.BOLD, 16);
     private static final Color BLUSCURO = Color.decode("#0f111c");
     private static final Color BLUCHIARO = Color.decode("#00e1d4");
+    private static final Color VERDESCURO = Color.decode("#33452b");
     private static final Color TEXT = new Color(6, 6, 6);
+
+    private String currentMusicTrack = null;
 
     private final MusicController music = new MusicController();
 
@@ -150,11 +153,11 @@ public class GameUI extends JFrame {
      * Inizializza i componenti principali dell'interfaccia.
      *
      * @param loadGame Indica se caricare un salvataggio.
-     * @param file File di salvataggio da caricare, se presente.
+     * @param file     File di salvataggio da caricare, se presente.
      * @throws Exception Se c'è un problema durante l'inizializzazione o il
-     * caricamento.
+     *                   caricamento.
      */
-    private void mainComponents(boolean loadGame, File file) throws Exception { //<-------------------- interazione
+    private void mainComponents(boolean loadGame, File file) throws Exception { // <-------------------- interazione
         if (!loadGame) {
             game = new BeforeDeorbiting();
             engine = new Engine(game);
@@ -186,7 +189,7 @@ public class GameUI extends JFrame {
      * Inizializza i componenti della GUI.
      *
      * @throws InterruptedException Se c'è un problema durante
-     * l'inizializzazione.
+     *                              l'inizializzazione.
      */
     private void initComponents() throws InterruptedException {
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -384,6 +387,7 @@ public class GameUI extends JFrame {
         // configura e aggiungi il bottone Muta
         musicButton.setText("Muta");
         musicButton.setBackground(BLUCHIARO);
+        musicButton.setForeground(Color.RED);
         musicButton.setFocusPainted(false);
         musicButton.setMaximumSize(new Dimension(125, 30));
         musicButton.addMouseListener(new MouseAdapter() {
@@ -392,10 +396,10 @@ public class GameUI extends JFrame {
                 if (music.isPlaying()) {
                     music.pausaMusica();
                     musicButton.setText("Play");
-                    musicButton.setForeground(Color.GREEN);
+                    musicButton.setForeground(VERDESCURO);
                 } else {
                     music.riprendiMusica();
-                    musicButton.setText("Mute");
+                    musicButton.setText("Muta");
                     musicButton.setForeground(Color.RED);
                 }
             }
@@ -433,24 +437,6 @@ public class GameUI extends JFrame {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 music.stopMusica();
                 printer.shutdown();
-            }
-        });
-
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            @Override
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                if (music.isPlaying()) {
-                    musicButton.setText("Mute");
-                    musicButton.setForeground(Color.RED);
-                } else {
-                    musicButton.setText("Play");
-                    musicButton.setForeground(Color.GREEN);
-                }
-            }
-
-            @Override
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-                // Niente da fare qui
             }
         });
 
@@ -676,8 +662,32 @@ public class GameUI extends JFrame {
      * @param imagePath Percorso dell'immagine da mostrare.
      */
     public void updateRoomImage(String imagePath) {
-        if (imagePath != null) {
-            updateImageViewer(imagePath);
+        if (imagePath == null)
+            return;
+        updateImageViewer(imagePath);
+
+        String room = game.getCurrentRoom().getName().toUpperCase();
+        String nextTrack = switch (room) {
+            case "ZVEZDA" -> "/music/Fallen Down.wav";
+            case "ZARYA", "UNITY", "QUEST",
+                    "TRANQUILITY", "DESTINY", "HARMONY", "SPAZIO" ->
+                "/music/Professor-Layton.wav";
+            case "KIBO" -> "/music/Journey.wav";
+            case "LEONARDO" -> {
+                if (!game.isLeonardoMusicPlayed()) {
+                    yield "/music/The Place.wav";
+                } else {
+                    yield "/music/Professor-Layton.wav";
+            }
+        }
+            default -> "/music/default_game.wav";
+        };
+
+        if (!nextTrack.equals(currentMusicTrack)) {
+            music.stopMusica();
+            music.playMusic(nextTrack);
+            currentMusicTrack = nextTrack;
+            game.setCurrentMusicTrack(nextTrack);
         }
     }
 
@@ -730,7 +740,7 @@ public class GameUI extends JFrame {
     }
 
     public void directionsMinigame() {
-        //Definisco il pattern di frecce
+        // Definisco il pattern di frecce
         java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
 
         GameDesc game = engine.getGame();
@@ -752,12 +762,12 @@ public class GameUI extends JFrame {
                     game.setTrapdoor(true);
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
-                            .getCurrentRoom().getDescription());
+                                    .getCurrentRoom().getDescription());
 
-                } else if (result == 1) {             
+                } else if (result == 1) {
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
-                            .getCurrentRoom().getDescription());
+                                    .getCurrentRoom().getDescription());
 
                 } else if (result == -1) {
                     game.setCurrentRoom(game.getRoomByName("QUEST"));

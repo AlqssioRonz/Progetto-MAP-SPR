@@ -45,6 +45,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         stateDescr.put(game.getRoomByName("QUEST"), this::questDescr);
         stateDescr.put(game.getRoomByName("HARMONY"), this::harmonyDescr);
         stateDescr.put(game.getRoomByName("LEONARDO"), this::leonardoDescr);
+        stateDescr.put(game.getRoomByName("KIBO"), this::kiboDescr);
     }
 
     /**
@@ -124,11 +125,13 @@ public class LookAtObserver implements GameObserver, Serializable {
             if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
                 msg.append("""
                       Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta 
-                      mi rivoltava lo stomaco. Il suo bigliettino galleggia in aria.""");
+                      mi rivoltava lo stomaco. Il suo bigliettino galleggia in aria.
+                           """);
             } else {
                 msg.append("""
                       Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta 
-                      mi rivoltava lo stomaco.""");
+                      mi rivoltava lo stomaco.
+                           """);
             }
         }
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(6))) {
@@ -263,7 +266,7 @@ public class LookAtObserver implements GameObserver, Serializable {
 
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(4))) {
             msg = """
-                 Il modulo Leonardo, rivestito da contenitori imbottiti e
+                  Il modulo Leonardo, rivestito da contenitori imbottiti e
                  cavi. Sul lato sinistro, il terminale principale di HAL
                  emette un tenue bagliore verde. La botola su si è aperta e porta
                  direttamente a Unity. Il corpo di Susan
@@ -280,4 +283,9 @@ public class LookAtObserver implements GameObserver, Serializable {
 
         return msg;
     }
+    
+    public String kiboDescr(GameDesc game){
+        return "";
+    }
+    
 }

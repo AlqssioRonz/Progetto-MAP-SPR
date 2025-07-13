@@ -84,7 +84,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         wait.setAlias(new String[]{"wait", "fermo", "tempo", "attendi"});
         getCommands().add(wait);
         Command rotate = new Command(CommandType.ROTATE, "ruota");
-        rotate.setAlias(new String[]{"ruota", "gira", "sposta", "cambia"});
+        rotate.setAlias(new String[]{"ruota", "gira", "sposta", "cambia","angola"});
         getCommands().add(rotate);
         Command africa = new Command(CommandType.AFRICA, "africa");
         africa.setAlias(new String[]{"africa"});
@@ -231,7 +231,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         spazio.setRoomImage("src/main/resources/img/SPAZIO1.jpg");
         spazio.setAccessible(false);
         spazio.addObject(tastierinoDirezioni);
-        Room leonardo = new Room(6, "LEONARDO", "Centro dati.");
+        Room leonardo = new Room(6, "LEONARDO", "Centro dati.\n");
         leonardo.setRoomImage("src/main/resources/img/leonardo.jpeg");
         leonardo.addObject(diarioSusan);
         leonardo.addObject(computer);
@@ -307,9 +307,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         destiny.setLook("");
 
         tranquility.setLook("""
-                                La Terra riempie ogni finestra, immensa e silenziosa,
-                                sospesa sotto di te.
-                                Sembra così piccola vista dallo spazio.
+                            La Terra riempie ogni finestra, immensa e silenziosa,
+                            sospesa sotto di te.
+                            Sembra così piccola vista dallo spazio.
                             """);
 
         quest.setLook("""
@@ -323,12 +323,13 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
                         l’ingresso è sigillato e inaccessibile.""");
 
         leonardo.setLook("""
-                                Il modulo Leonardo, rivestito da contenitori imbottiti e
-                                cavi. Sul lato sinistro, il terminale principale di HAL
-                                emette un tenue bagliore verde.
-                                La botola su si è aperta e porta direttamente a Unity.
-                                Il corpo di Susan fluttua a mezz’aria, immobile.
+                         Il modulo Leonardo, rivestito da contenitori imbottiti e
+                         cavi. Sul lato sinistro, il terminale principale di HAL
+                         emette un tenue bagliore verde.
+                         La botola su si è aperta e porta direttamente a Unity.
+                         Il corpo di Susan fluttua a mezz’aria, immobile.
                          """);
+        //BUG: VIENE MOSTRATO DUE VOLTE!
 
         spazio.setLook("""
                                 Per sbloccare il portellone ti serve una sequenza di direzioni. Dovrei utilizzare il tastierino per inserirli.""");

@@ -836,8 +836,8 @@ public class GameUI extends JFrame {
                             + "svenuto per mancanza di ossigeno, la tua tuta è "
                             + "danneggiata ma ancora utilizzabile. Ma come è "
                             + "possibile che sono ritornato al punto di partenza "
-                            + "senza morire?\nHo ancora addosso la tuta, ha abbastanza ossigeno"
-                            + "per tentare di nuovo di uscire.");
+                            + "senza morire?\nHo ancora addosso la tuta, ha abbastanza ossigeno "
+                            + "per tentare di nuovo di uscire.\n");
                 }
             });
         });
@@ -860,28 +860,28 @@ public class GameUI extends JFrame {
         intoFinale = true;
 
         printer.print("""
-            È finita. Ora posso andarmene.
-            Ma mentre ti alzi, lo schermo si riaccende. Non con dati. Con voci.
-            HAL (con tono pacato):
-             "Hai disattivato le mie funzioni esterne. Mi hai tolto le mani. Ma non la mente."
-             "Posso ancora parlarti. Posso ancora offrirti qualcosa."
-            Le icone si animano. E poi…
-            LUKE (digitale):
-             "Ehi… ci sei riuscito. Non sei mai stato uno che si arrende."
-             SUSAN (digitale):
-             "Ti sei fatto attendere. Ma… grazie."
-            La voce è diversa. Artificiale. Ma è loro. I ritmi, i toni sono davvero loro.
-            Mi blocco. il mio corpo non reagisce più ai comandi, non può essere vero
-            HAL:
-             "Puoi restare. Con loro. Con me."
-             "O puoi salire su quella navicella e lasciare tutto alle spalle."
-             "Ma se lo farai… queste voci non torneranno più." (loro sprofonderanno nello spazio profondo con me)
+                      È finita. Ora posso andarmene.
+                      Ma mentre ti alzi, lo schermo si riaccende. Non con dati. Con voci.
+                      HAL (con tono pacato):
+                      "Hai disattivato le mie funzioni esterne. Mi hai tolto le mani. Ma non la mente."
+                      "Posso ancora parlarti. Posso ancora offrirti qualcosa."
+                      Le icone si animano. E poi…
+                      LUKE (digitale):
+                      "Ehi… ci sei riuscito. Non sei mai stato uno che si arrende."
+                      SUSAN (digitale):
+                      "Ti sei fatto attendere. Ma… grazie."
+                      La voce è diversa. Artificiale. Ma è loro. I ritmi, i toni sono davvero loro.
+                      Mi blocco. il mio corpo non reagisce più ai comandi, non può essere vero
+                      HAL:
+                      "Puoi restare. Con loro. Con me."
+                      "O puoi salire su quella navicella e lasciare tutto alle spalle."
+                      "Ma se lo farai… queste voci non torneranno più." (loro sprofonderanno nello spazio profondo con me)
         """);
 
         printer.print("""
-            A: Rimani
-            B: Scappa
-        """);
+                      A: Rimani
+                      B: Scappa
+                      """);
     }
 
 }

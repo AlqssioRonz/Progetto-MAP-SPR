@@ -126,7 +126,7 @@ public class GameUI extends JFrame {
 
         // Swing setup
         UIManager.put("ScrollBar.width", 0);
-        SwingUtilities.updateComponentTreeUI(this);
+
         try {
             initComponents();
         } catch (InterruptedException ex) {
@@ -153,9 +153,9 @@ public class GameUI extends JFrame {
      * Inizializza i componenti principali dell'interfaccia.
      *
      * @param loadGame Indica se caricare un salvataggio.
-     * @param file     File di salvataggio da caricare, se presente.
+     * @param file File di salvataggio da caricare, se presente.
      * @throws Exception Se c'è un problema durante l'inizializzazione o il
-     *                   caricamento.
+     * caricamento.
      */
     private void mainComponents(boolean loadGame, File file) throws Exception { // <-------------------- interazione
         if (!loadGame) {
@@ -189,7 +189,7 @@ public class GameUI extends JFrame {
      * Inizializza i componenti della GUI.
      *
      * @throws InterruptedException Se c'è un problema durante
-     *                              l'inizializzazione.
+     * l'inizializzazione.
      */
     private void initComponents() throws InterruptedException {
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -662,25 +662,28 @@ public class GameUI extends JFrame {
      * @param imagePath Percorso dell'immagine da mostrare.
      */
     public void updateRoomImage(String imagePath) {
-        if (imagePath == null)
+        if (imagePath == null) {
             return;
+        }
         updateImageViewer(imagePath);
 
         String room = game.getCurrentRoom().getName().toUpperCase();
         String nextTrack = switch (room) {
-            case "ZVEZDA" -> "/music/Fallen Down.wav";
-            case "ZARYA", "UNITY", "QUEST",
-                    "TRANQUILITY", "DESTINY", "HARMONY", "SPAZIO" ->
+            case "ZVEZDA" ->
+                "/music/Fallen Down.wav";
+            case "ZARYA", "UNITY", "QUEST", "TRANQUILITY", "DESTINY", "HARMONY", "SPAZIO" ->
                 "/music/Professor-Layton.wav";
-            case "KIBO" -> "/music/Journey.wav";
+            case "KIBO" ->
+                "/music/Journey.wav";
             case "LEONARDO" -> {
                 if (!game.isLeonardoMusicPlayed()) {
                     yield "/music/The Place.wav";
                 } else {
                     yield "/music/Professor-Layton.wav";
+                }
             }
-        }
-            default -> "/music/default_game.wav";
+            default ->
+                "/music/default_game.wav";
         };
 
         if (!nextTrack.equals(currentMusicTrack)) {
@@ -762,12 +765,12 @@ public class GameUI extends JFrame {
                     game.setTrapdoor(true);
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
-                                    .getCurrentRoom().getDescription());
+                            .getCurrentRoom().getDescription());
 
                 } else if (result == 1) {
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
-                                    .getCurrentRoom().getDescription());
+                            .getCurrentRoom().getDescription());
 
                 } else if (result == -1) {
                     game.setCurrentRoom(game.getRoomByName("QUEST"));
@@ -783,6 +786,13 @@ public class GameUI extends JFrame {
         });
 
         JDialog dialog = new JDialog((JFrame) null, "Apertura portellone", true);
+        java.net.URL iconURL = getClass().getResource("/img/icon.png");
+        if (iconURL != null) {
+            ImageIcon frameIcon = new ImageIcon(iconURL);
+            dialog.setIconImage(frameIcon.getImage());
+        } else {
+            System.err.println("Warning: icona non trovata in /img/icon.png");
+        }
         dialog.getContentPane().add(puzzle);
         dialog.pack();
         dialog.setLocationRelativeTo(null);

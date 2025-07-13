@@ -12,7 +12,6 @@ import map.beforedeorbiting.parser.ParserOutput;
 
 import java.io.Serializable;
 import java.io.PrintStream;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import map.beforedeorbiting.type.CommandType;
@@ -40,15 +39,13 @@ public abstract class GameDesc implements Serializable {
     private boolean flagTrapdoor = false;
 
     private boolean trapdoor;
-    
-    private boolean aiActive = true;
 
-    private final Duration duration = Duration.ofSeconds(100);
+    private boolean aiActive = true;
 
     private boolean kiboVisited = false;
 
     private boolean leonardoMusicPlayed = false;
-    
+
     private boolean firstMusicPlayed = false;
 
     public boolean isFirstMusicPlayed() {
@@ -58,8 +55,6 @@ public abstract class GameDesc implements Serializable {
     public void setFirstMusicPlayed(boolean firstMusicPlayed) {
         this.firstMusicPlayed = firstMusicPlayed;
     }
-    
-    
 
     public boolean isLeonardoMusicPlayed() {
         return leonardoMusicPlayed;
@@ -186,7 +181,7 @@ public abstract class GameDesc implements Serializable {
                 .findFirst()
                 .orElse(null);
     }
-    
+
     public Room getRoomById(int id) {
 
         return rooms.stream()
@@ -204,11 +199,11 @@ public abstract class GameDesc implements Serializable {
         }
         return null;
     }
-    
+
     public void setAiActive(boolean aiActive) {
         this.aiActive = aiActive;
     }
-    
+
     public boolean isAiActive() {
         return this.aiActive;
     }

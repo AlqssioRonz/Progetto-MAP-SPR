@@ -182,22 +182,4 @@ public class DirectionsPuzzleUI extends JPanel {
             window.dispose();
         }
     }
-
-    /*public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        SwingUtilities.invokeLater(() -> {
-            List<String> pattern = Arrays.asList("▲", "▼", "▲", "►", "▲", "◄");
-            DirectionsPuzzleUI panel = new DirectionsPuzzleUI(pattern, code -> {});
-            JFrame frame = new JFrame("Tastierino direzionale: apertura di emegenza");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.getContentPane().add(panel);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-        });
-    }*/
 }

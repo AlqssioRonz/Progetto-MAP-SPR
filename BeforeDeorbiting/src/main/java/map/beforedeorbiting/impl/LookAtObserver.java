@@ -12,8 +12,6 @@ import java.util.function.Function;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.GameDesc;
-import map.beforedeorbiting.type.BDObject;
-import map.beforedeorbiting.type.BDObjectChest;
 import map.beforedeorbiting.type.Room;
 import map.beforedeorbiting.util.ISSPositionREST;
 
@@ -160,13 +158,6 @@ public class LookAtObserver implements GameObserver, Serializable {
                        """);
         } else {
             msg.append("La botola sotto i miei piedi che conduce nel modulo Leonardo è chiusa.\n");
-        }
-        BDObjectChest chest = null;
-        for (BDObject o : game.getCurrentRoom().getObjects()) {
-            if (o instanceof BDObjectChest) {
-                chest = (BDObjectChest) o;
-                break;
-            }
         }
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(1))) {
             msg.append("Sul pavimento galleggia un pezzo del modellino (modellinoamericano).");

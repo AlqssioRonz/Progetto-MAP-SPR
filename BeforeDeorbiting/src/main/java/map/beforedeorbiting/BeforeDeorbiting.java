@@ -5,7 +5,6 @@
 package map.beforedeorbiting;
 
 import java.io.PrintStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,7 +19,7 @@ import map.beforedeorbiting.util.ISSPositionREST;
  *
  * @author ronzu
  */
-public class BeforeDeorbiting extends GameDesc implements GameObservable, Serializable {
+public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
     private final List<GameObserver> observer = new ArrayList<>();
 

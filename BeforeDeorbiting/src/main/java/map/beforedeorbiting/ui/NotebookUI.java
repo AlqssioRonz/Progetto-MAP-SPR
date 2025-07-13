@@ -144,7 +144,6 @@ public class NotebookUI {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     if (modificato[0]) {
-                        Object[] opzioni = {"Sì", "No", "Annulla"};
                         int scelta = mostraMessaggioChiusuraSalvataggio(frame);
 
                         if (scelta == JOptionPane.YES_OPTION) {

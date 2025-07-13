@@ -94,13 +94,6 @@ public class LoadBarUI extends JPanel {
         ImageIcon img = new ImageIcon("src/main/resources/img/ISS.png");
         xPosition = 0; // Partenza visibile
 
-        // Calcolo posizione iniziale su arco
-        int arcWidth = 800;
-        int arcHeight = 200;
-        int startX = 100;
-        int centerX = startX + arcWidth / 2;
-        int centerY = 550;
-
         // Pannello per disegnare il pennello
         imgPanel = new JPanel() {
             @Override

@@ -22,13 +22,13 @@ public class ISSPositionREST {
 
     private Map<String, double[]> createContinentBbox() {
         Map<String, double[]> m = new LinkedHashMap<>();
-        m.put("africa", new double[]{-35.0, 37.0, -18.0, 51.0});
-        m.put("europa", new double[]{34.5, 71.2, -25.0, 45.0});
-        m.put("asia", new double[]{1.0, 81.0, 26.0, 180.0});
-        m.put("nordamerica", new double[]{5.0, 83.0, -168.0, -52.0});
-        m.put("sudamerica", new double[]{-56.0, 13.0, -81.0, -34.0});
-        m.put("oceania", new double[]{-50.0, 10.0, 110.0, 180.0});
-        m.put("antartide", new double[]{-90.0, -60.0, -180.0, 180.0});
+        m.put("africa", new double[] { -35.0, 37.0, -18.0, 51.0 });
+        m.put("europa", new double[] { 34.5, 71.2, -25.0, 45.0 });
+        m.put("asia", new double[] { 1.0, 81.0, 26.0, 180.0 });
+        m.put("nordamerica", new double[] { 5.0, 83.0, -168.0, -52.0 });
+        m.put("sudamerica", new double[] { -56.0, 13.0, -81.0, -34.0 });
+        m.put("oceania", new double[] { -50.0, 10.0, 110.0, 180.0 });
+        m.put("antartide", new double[] { -90.0, -60.0, -180.0, 180.0 });
         return m;
     }
 
@@ -39,6 +39,12 @@ public class ISSPositionREST {
      */
     public String[] getISSCoordinates() {
         try {
+            /*
+             * Sappiamo bene che l'URL è deprecato, ma è quello che ci serve
+             * per il progetto. In ambito professionale, si dovrebbe scegliere
+             * una via alternativa o un'API più recente.
+             * Tuttavia, per il progetto, l'API è ancora funzionante.
+             */
             URL url = new URL(API_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -54,10 +60,10 @@ public class ISSPositionREST {
                 JsonObject pos = root.getAsJsonObject("iss_position");
                 String lat = pos.get("latitude").getAsString();
                 String lon = pos.get("longitude").getAsString();
-                return new String[]{lat, lon};
+                return new String[] { lat, lon };
             }
         } catch (Exception e) {
-            return new String[]{"[Errore]", "[Errore]"};
+            return new String[] { "[Errore]", "[Errore]" };
         }
     }
 
@@ -65,7 +71,7 @@ public class ISSPositionREST {
      * Determina il continente in cui si trova l'ISS.
      *
      * @return nome del continente o "Oceano" se non rientra in alcuna bounding
-     * box
+     *         box
      */
     public String getContinentForCoordinates() {
         String[] coords = getISSCoordinates();

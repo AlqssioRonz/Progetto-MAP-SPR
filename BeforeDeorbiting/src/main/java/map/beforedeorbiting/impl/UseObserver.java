@@ -159,8 +159,8 @@ public class UseObserver implements GameObserver, Serializable {
     public String useComputer(GameDesc game) {
         StringBuilder usingComputer = new StringBuilder();
         SwingUtilities.invokeLater(() -> {
-            HALterminal terminal = new HALterminal();
-            terminal.setVisible(true);
+            HALterminal terminal = new HALterminal(game);
+            terminal.setVisible(true);            
         });
         usingComputer.append("Hai acceso il computer.");
         return usingComputer.toString();
@@ -237,14 +237,20 @@ public class UseObserver implements GameObserver, Serializable {
     public String useRobotTerminal(GameDesc game) {
         StringBuilder rbtmsg = new StringBuilder();
 
-        SwingUtilities.invokeLater(() -> {
+        if(!game.isAiActive()) {
             boolean solved = RobotArmPuzzleUI.showPuzzleDialog(this.CORRECT_ROBOT_MOVEMET);
+
             if (solved) {
                 rbtmsg.append("Matrice di movimento riconosciuta. Completamento dell'ormeggio della navicella.");
             } else {
                 rbtmsg.append("Matrice non riconosciuta.");
             }
-        });
+            
+        } else {
+            rbtmsg.append("L'AI di bordo HAL, ha ancora accesso ai sistemi robotici "
+                    + "della stazione. Dovrei prima disattivare il suo controllo "
+                    + "prima che mi impedisca di ormeggiare la navicella");
+        }
         return rbtmsg.toString();
     }
 

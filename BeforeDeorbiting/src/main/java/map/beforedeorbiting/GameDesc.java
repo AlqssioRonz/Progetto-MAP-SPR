@@ -41,6 +41,8 @@ public abstract class GameDesc implements Serializable {
     private boolean flagTrapdoor=false;
 
     private boolean trapdoor;
+    
+    private boolean aiActive = true;
 
     private final Duration duration = Duration.ofSeconds(100);
 
@@ -149,6 +151,14 @@ public abstract class GameDesc implements Serializable {
             }
         }
         return null;
+    }
+    
+    public void setAiActive(boolean aiActive) {
+        this.aiActive = aiActive;
+    }
+    
+    public boolean isAiActive() {
+        return this.aiActive;
     }
 
 }

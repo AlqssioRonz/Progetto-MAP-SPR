@@ -93,6 +93,7 @@ public class Engine {
             } else {
                 game.nextMove(p, System.out);
 
+                
                 if (game.getCurrentRoom().getId() == -1) {
                     System.out.println("La Terra ti accoglie. E i ricordi... "
                             + "resteranno tra le stelle.");

@@ -13,13 +13,14 @@ import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.table.JTableHeader;
+import map.beforedeorbiting.GameDesc;
 
 import map.beforedeorbiting.database.DBConfig;
 
 public class HALterminal extends JFrame {
     private final CardLayout cardLayout;
     private final JPanel mainPanel;
-    private boolean aiActive = true;
+    private final GameDesc game;
 
     private JTextArea roboticsStatusArea;
 
@@ -29,7 +30,8 @@ public class HALterminal extends JFrame {
     private static final Color BUTTON_FG = Color.decode("#00e1d4");
     private static final Font BUTTON_FONT = new Font("Consolas", Font.BOLD, 25);
 
-    public HALterminal() {
+    public HALterminal(GameDesc game) {
+        this.game = game;
         setTitle("Computer centrale della Stazione");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 400);
@@ -47,6 +49,7 @@ public class HALterminal extends JFrame {
 
         add(mainPanel);
         cardLayout.show(mainPanel, "MODULE_PANEL");
+
     }
 
     private JPanel createModulePanel() {
@@ -95,9 +98,9 @@ public class HALterminal extends JFrame {
         JToggleButton aiToggle = new JToggleButton("Disattiva Controllo AI");
         styleSciFiButton(aiToggle);
         aiToggle.addActionListener(e -> {
-            aiActive = !aiActive;
-            aiToggle.setText(aiActive ? "Disattiva Controllo AI" : "Attiva Controllo AI");
-            statusArea.setText(getStatusText(aiActive));
+            game.setAiActive(!game.isAiActive());
+            aiToggle.setText(game.isAiActive() ? "Disattiva Controllo AI" : "Attiva Controllo AI");
+            statusArea.setText(getStatusText(game.isAiActive()));
         });
 
         JButton backBtn = new JButton("Indietro");
@@ -135,9 +138,9 @@ public class HALterminal extends JFrame {
         JToggleButton aiToggle = new JToggleButton("Disattiva Controllo AI");
         styleSciFiButton(aiToggle);
         aiToggle.addActionListener(e -> {
-            aiActive = !aiActive;
-            aiToggle.setText(aiActive ? "Disattiva Controllo AI" : "Attiva Controllo AI");
-            roboticsStatusArea.setText(getStatusText(aiActive));
+            game.setAiActive(!game.isAiActive());
+            aiToggle.setText(game.isAiActive() ? "Disattiva Controllo AI" : "Attiva Controllo AI");
+            roboticsStatusArea.setText(getStatusText(game.isAiActive()));
         });
 
         JButton maneuversBtn = new JButton("Manovre CanadArm2");
@@ -172,7 +175,6 @@ public class HALterminal extends JFrame {
 
         Object[][] data;
         try (Connection conn = DBConfig.getConnection()) {
-            DBConfig.populateDatabase();
             AstronautsDAO dao = new AstronautsDAO(conn);
             java.util.List<Astronaut> list = dao.getAll();
 
@@ -308,8 +310,4 @@ public class HALterminal extends JFrame {
             terminal.setVisible(true);
         });
     }*/
-
-    public boolean isActive() {
-        return aiActive;
-    }
 }

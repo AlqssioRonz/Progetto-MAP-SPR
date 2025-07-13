@@ -184,7 +184,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         if(Continent != null) {
             switch (Continent) {
                 case "africa":
-                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Africa.jng");
+                    game.getCurrentRoom().setRoomImage("src/main/resources/img/Africa.jpg");
                     break;
                 case "europa":
                     game.getCurrentRoom().setRoomImage("src/main/resources/img/Europa.png");
@@ -204,7 +204,7 @@ public class LookAtObserver implements GameObserver, Serializable {
                 case "antartide":
                     game.getCurrentRoom().setRoomImage("src/main/resources/img/Antartide.png");
                     break;
-                default:
+                case "oceano":
                     game.getCurrentRoom().setRoomImage("src/main/resources/img/Oceano.png");
                     break;
 

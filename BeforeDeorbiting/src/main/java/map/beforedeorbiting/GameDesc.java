@@ -142,6 +142,14 @@ public abstract class GameDesc implements Serializable {
                 .findFirst()
                 .orElse(null);
     }
+    
+    public Room getRoomById(int id) {
+
+        return rooms.stream()
+                .filter(room -> room.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
 
     public Command getCommand(CommandType command) {
         List<Command> cmdList = this.getCommands();

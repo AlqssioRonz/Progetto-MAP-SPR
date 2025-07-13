@@ -249,6 +249,11 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         kibo.setRoomImage("src/main/resources/img/kibo.jpeg");
         kibo.setAccessible(false);
         kibo.addObject(controlloRobot);
+        Room dragon2Ship = new Room(10, "DRAGON2", "Navicella per il ritorno sulla Terra");
+        dragon2Ship.setAccessible(false);
+        Room scelta = new Room(11, "HARMONY", "Corridoio pressurizzato.");
+        scelta.setAccessible(true);
+        //scelta.setRoomImage(roomImage); immagine di harmony con portellone aperto
 
         getRooms().add(macchina);
         getRooms().add(umano);
@@ -262,6 +267,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         getRooms().add(destiny);
         getRooms().add(harmony);
         getRooms().add(kibo);
+        getRooms().add(dragon2Ship);
+        getRooms().add(scelta);
 
         zvezda.setForward(zarya);
         zarya.setForward(unity);
@@ -555,7 +562,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         }
     }
 
-    /* Rebuilds the links between rooms. */
+    /* Per il salvataggio: ricrea i collegamenti tra stanze*/
     private void initRoomConnections() {
         Room macchina = getRoomByName("MACCHINA");
         Room umano = getRoomByName("UMANO");
@@ -607,7 +614,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         }
     }
 
-    /* Reattach all game observers. */
+    /* Per il salvataggio: ripristina gli observers */
     private void initObservers() {
         observer.clear();
         GameObserver dropObserver = new DropObserver();

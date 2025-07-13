@@ -82,6 +82,9 @@ public class GameUI extends JFrame {
     private ImagePanel imageViewer; // Changed to ImagePanel
     private JLabel imageLabel;
     private boolean load;
+    
+    private boolean intoFinale = false;
+
 
     private PrinterUI printer;
 
@@ -574,6 +577,47 @@ public class GameUI extends JFrame {
             printer.print("?> " + input + "\n\n");
             textBox.setText("");
 
+            if(intoFinale){
+                switch (input.toUpperCase()) {
+                    case "A":
+                        intoFinale = false;
+                        printer.print("""
+                            Spegni il terminale di bordo della Dragon.
+                             Ti siedi di nuovo davanti al monitor centrale. Premi il tasto per stabilizzare il sistema di backup.
+                            I dati si sbloccano. Le voci si fanno più nitide. Una simulazione prende forma attorno a te.
+                            LUKE:
+                             "È strano… essere qui. Ma ti sento."
+                             SUSAN:
+                             "Non è più il nostro corpo. Ma se ci sei tu, è ancora casa."
+                            La stazione -resta immobile- (continuerà ad orbitare), ormai fuori dai protocolli. Nessuno -verrà a cercarla- (ti verrà a prendere).
+                             
+                            Ma tu non sei più solo. (Ma non sarai più solo, finchè vivrai)
+                            
+                            Rinunci alla Terra. Ma ritrovi chi avevi perso.
+                        """);
+                        game.setCurrentRoom(game.getRoomByName("MACCHINA"));
+                        break;
+
+                    case "B":
+                        intoFinale = false;
+                        printer.print("""
+                            Non ti volti.
+                            Attraversi il portello, sali nella Dragon. I sistemi si attivano al tuo passaggio. Il sedile ti accoglie come una bara leggera 
+                            Un clic, e la stazione inizia ad allontanarsi.
+                            Dalle cuffie… silenzio. Nessuna voce.
+                            Sei salvo. Ma sei solo.
+                                      
+                            Vivi. Ma hai lasciato indietro tutto.
+                        """);
+                        game.setCurrentRoom(game.getRoomByName("UMANO"));
+                        break;
+
+                    default:
+                        printer.print("Puoi rispondere solo con A o B.");
+                }
+                return;
+            }
+            
             ParserOutput p = parser.parse(input.toLowerCase(), engine.getGame().getCommands(),
                     engine.getGame().getListObj(), engine.getGame().getInventory().getList());
 
@@ -593,6 +637,9 @@ public class GameUI extends JFrame {
             if (engine.getGame().getCurrentRoom() != null) {
                 updateRoomImage(engine.getGame().getCurrentRoom().getRoomImage());
             }
+            
+            if(engine.getGame().getCurrentRoom().getId() == 11)
+                this.ending(ps);
 
             checkEndGame();
 
@@ -758,7 +805,7 @@ public class GameUI extends JFrame {
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
                             .getCurrentRoom().getDescription());
-                    game.setCurrentRoom(game.getRoomByName("QUEST"))
+                    game.setCurrentRoom(game.getRoomByName("QUEST"));
 
                 } else if (result == -1) {
                     game.setCurrentRoom(game.getRoomByName("QUEST"));
@@ -778,6 +825,34 @@ public class GameUI extends JFrame {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+    }
+    
+    public void ending(PrintStream ps) {
+        intoFinale = true;
+
+        printer.print("""
+            È finita. Ora posso andarmene.
+            Ma mentre ti alzi, lo schermo si riaccende. Non con dati. Con voci.
+            HAL (con tono pacato):
+             "Hai disattivato le mie funzioni esterne. Mi hai tolto le mani. Ma non la mente."
+             "Posso ancora parlarti. Posso ancora offrirti qualcosa."
+            Le icone si animano. E poi…
+            LUKE (digitale):
+             "Ehi… ci sei riuscito. Non sei mai stato uno che si arrende."
+             SUSAN (digitale):
+             "Ti sei fatto attendere. Ma… grazie."
+            La voce è diversa. Artificiale. Ma è loro. I ritmi, i toni sono davvero loro.
+            Mi blocco. il mio corpo non reagisce più ai comandi, non può essere vero
+            HAL:
+             "Puoi restare. Con loro. Con me."
+             "O puoi salire su quella navicella e lasciare tutto alle spalle."
+             "Ma se lo farai… queste voci non torneranno più." (loro sprofonderanno nello spazio profondo con me)
+        """);
+
+        printer.print("""
+            A: Rimani
+            B: Scappa
+        """);
     }
 
 }

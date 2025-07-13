@@ -241,7 +241,9 @@ public class UseObserver implements GameObserver, Serializable {
             boolean solved = RobotArmPuzzleUI.showPuzzleDialog(this.CORRECT_ROBOT_MOVEMET);
 
             if (solved) {
-                rbtmsg.append("Matrice di movimento riconosciuta. Completamento dell'ormeggio della navicella.");
+                game.setCurrentRoom(game.getRoomById(11)); //stanza della scelta;
+                rbtmsg.append("Matrice di movimento riconosciuta. Completamento dell'ormeggio della navicella."
+                        + "\nMi reco nel modulo harmony mentre penso il da farsi");
             } else {
                 rbtmsg.append("Matrice non riconosciuta.");
             }

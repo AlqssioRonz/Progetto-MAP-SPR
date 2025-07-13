@@ -596,6 +596,7 @@ public class GameUI extends JFrame {
                             Rinunci alla Terra. Ma ritrovi chi avevi perso.
                         """);
                         game.setCurrentRoom(game.getRoomByName("MACCHINA"));
+                        this.updateImageViewer(game.getCurrentRoom().getRoomImage());
                         break;
 
                     case "B":
@@ -610,12 +611,12 @@ public class GameUI extends JFrame {
                             Vivi. Ma hai lasciato indietro tutto.
                         """);
                         game.setCurrentRoom(game.getRoomByName("UMANO"));
+                        this.updateImageViewer(game.getCurrentRoom().getRoomImage());
                         break;
 
                     default:
                         printer.print("Puoi rispondere solo con A o B.");
                 }
-                return;
             }
             
             ParserOutput p = parser.parse(input.toLowerCase(), engine.getGame().getCommands(),

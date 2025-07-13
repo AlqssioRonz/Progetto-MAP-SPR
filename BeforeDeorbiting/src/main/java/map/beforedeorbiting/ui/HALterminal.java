@@ -175,7 +175,6 @@ public class HALterminal extends JFrame {
 
         Object[][] data;
         try (Connection conn = DBConfig.getConnection()) {
-            DBConfig.populateDatabase();
             AstronautsDAO dao = new AstronautsDAO(conn);
             java.util.List<Astronaut> list = dao.getAll();
 

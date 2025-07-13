@@ -203,10 +203,10 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         /* Lista di tutte le stanze */
         Room macchina = new Room(-2, "MACCHINA", "Finale cattivo.");
         macchina.setAccessible(false);
-        macchina.setRoomImage("src/main/resources/img/ISS.png");
+        macchina.setRoomImage("src/main/resources/img/macchina.png");
         Room umano = new Room(-1, "UMANO", "Finale buono.");
         umano.setAccessible(false);
-        umano.setRoomImage("src/main/resources/img/ISS.png");
+        umano.setRoomImage("src/main/resources/img/umano.png");
         Room zvezda = new Room(0, "ZVEZDA", "Dormitorio.");
         zvezda.setRoomImage("src/main/resources/img/zvezda.jpeg");
         zvezda.addObject(modellinoRusso);
@@ -251,9 +251,9 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         kibo.addObject(controlloRobot);
         Room dragon2Ship = new Room(10, "DRAGON2", "Navicella per il ritorno sulla Terra");
         dragon2Ship.setAccessible(false);
-        Room scelta = new Room(11, "HARMONY", "Corridoio pressurizzato.");
+        Room scelta = new Room(11, "HARMONY ", "Corridoio pressurizzato.");
         scelta.setAccessible(true);
-        //scelta.setRoomImage(roomImage); immagine di harmony con portellone aperto
+        scelta.setRoomImage("src/main/resources/img/scelta.png");
 
         getRooms().add(macchina);
         getRooms().add(umano);
@@ -576,6 +576,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         Room destiny = getRoomByName("DESTINY");
         Room harmony = getRoomByName("HARMONY");
         Room kibo = getRoomByName("KIBO");
+        Room scelta = getRoomByName("HARMONY ");
+        
 
         if (zvezda != null) {
             zvezda.setForward(zarya);
@@ -635,6 +637,10 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable, Serial
         this.attach(useObserver);
         GameObserver saveObserver = new SaveObserver();
         this.attach(saveObserver);
+        GameObserver waitObserver = new WaitObserver();
+        this.attach(waitObserver);
+        GameObserver rotateObserver = new RotateObserver();
+        this.attach(rotateObserver);
         GameObserver continentObserver = new ContinentObserver();
         this.attach(continentObserver);
         //

@@ -4,7 +4,6 @@
  */
 package map.beforedeorbiting.impl;
 
-import java.awt.Frame;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,13 +14,11 @@ import map.beforedeorbiting.GameDesc;
 import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.type.BDObject;
 import map.beforedeorbiting.type.CommandType;
-import map.beforedeorbiting.ui.GameUI;
 import map.beforedeorbiting.ui.NotebookUI;
 import map.beforedeorbiting.ui.HALterminal;
 import map.beforedeorbiting.ui.InventoryUI;
 import map.beforedeorbiting.ui.InsertPasswordUI;
 import map.beforedeorbiting.ui.RobotArmPuzzleUI;
-import map.beforedeorbiting.util.ISSPositionREST;
 
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore

@@ -4,9 +4,17 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/images/icon.ico" type="image/x-icon">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/icon.ico" type="image/x-icon">
+    <link rel="icon" href="images/icon.ico" type="image/x-icon">
     <title>Before Deorbiting</title>
     <style>
+        /* CUSTOM FONT */
+        @font-face {
+            font-family: 'BDFont';
+            src: url('fonts/Mokoto Demo.ttf') format('truetype');
+        }
+
         /* PROGRESS BAR */
         #progress-bar {
             position: fixed;
@@ -31,22 +39,32 @@
             padding: 10px 0;
         }
 
+        /* NAV LINKS WITH CUSTOM FONT + ANIMATED UNDERLINE */
         nav a {
             color: #fff;
             text-decoration: none;
             font-size: 1.2em;
             position: relative;
-            padding-bottom: 4px;
+            padding-bottom: 6px;
+            font-family: 'BDFont', sans-serif;
         }
 
-        nav a.active::after {
+        nav a::after {
             content: '';
             position: absolute;
             bottom: 0;
-            left: 0;
+            left: 50%;
+            width: 0;
             height: 2px;
-            width: 100%;
             background: #fff;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        nav a:hover::after,
+        nav a.active::after {
+            left: 0;
+            width: 100%;
         }
 
         /* BACK-TO-TOP BUTTON */
@@ -71,23 +89,29 @@
         }
 
         /* BASE STYLES */
-        @font-face {
-            font-family: 'BDFont';
-            src: url('fonts/Mokoto Demo.ttf') format('truetype');
-        }
-
         html {
             scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'BDFont', sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             text-align: center;
             color: #fff;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
             background: url('images/websitebackground.png') no-repeat center center fixed;
             background-size: cover;
             padding-bottom: 50px;
+        }
+
+        /* HEADINGS IN CUSTOM FONT */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'BDFont', sans-serif;
+            letter-spacing: 2px;
         }
 
         h1 {
@@ -98,18 +122,12 @@
 
         h2 {
             font-size: 40px;
-            letter-spacing: 2px;
             cursor: pointer;
         }
 
-        h2 a {
-            color: inherit;
-            text-decoration: none;
-        }
-
+        /* SECTION SUBHEADERS */
         section h2 {
             font-size: 32px;
-            letter-spacing: 2px;
         }
 
         section h3,
@@ -142,19 +160,18 @@
         }
 
         section p {
-            font-family: Arial, Helvetica, sans-serif;
             font-size: 18px;
             line-height: 1.6;
             color: #eee;
             text-align: left;
         }
 
+        /* FEATURES LIST */
         .features {
             list-style: disc outside;
             margin: 20px 0;
             padding: 0 0 0 40px;
             color: #eee;
-            font-family: Arial, Helvetica, sans-serif;
             font-size: 18px;
             line-height: 1.6;
             text-align: left;
@@ -206,11 +223,50 @@
         }
 
         .hero h1 {
-            margin: 0;
             font-size: 64px;
             letter-spacing: 10px;
-            color: #fff;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        }
+
+        /* SOLUTIONS LIST */
+        #soluzioni .soluzioni-list {
+            list-style: none;
+            counter-reset: soluzioni-counter;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        #soluzioni .soluzioni-list li {
+            position: relative;
+            counter-increment: soluzioni-counter;
+            padding: 15px 15px 15px 60px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            transition: background 0.3s, transform 0.3s;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #soluzioni .soluzioni-list li::before {
+            content: counter(soluzioni-counter);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #fff;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        #soluzioni .soluzioni-list li:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
         }
     </style>
 </head>
@@ -224,17 +280,17 @@
     <nav>
         <a href="#spiegazione">Spiegazione</a>
         <a href="#trama">Trama</a>
+        <a href="#progettazione">Progettazione</a>
         <a href="#manuale">Manuale</a>
         <a href="#soluzioni">Soluzioni</a>
     </nav>
 
-    <!-- Hero Section con immagine -->
+    <!-- Hero Section -->
     <div class="hero">
         <img src="images/icon.png" alt="Illustrazione di Before Deorbiting">
         <h1>Before Deorbiting</h1>
     </div>
 
-    <!-- Sezioni Complete con Testo Originale -->
     <section id="spiegazione">
         <h2>Spiegazione del progetto</h2>
         <p>Before Deorbiting è un progetto sviluppato come lavoro finale dal Team SPR per il corso di Metodi Avanzati di
@@ -244,7 +300,6 @@
             testuali. Diffuso soprattutto agli albori dell’informatica, questo genere punta tutto sulla narrazione e
             sull’immaginazione, offrendo un’esperienza interattiva senza elementi grafici.</p>
         <h3>Caratteristiche principali</h3>
-        <p>Le caratteristiche principali sono:</p>
         <ul class="features">
             <li><strong>Interfaccia testuale:</strong> comandi scritti come “avanti”, “prendi biglietto” o “osserva”.
             </li>
@@ -258,16 +313,118 @@
     <section id="trama">
         <h2>Trama del gioco</h2>
         <p>22 giugno 2030. Sei a bordo della Stazione Spaziale Internazionale, al termine di una lunga missione. È il
-            tuo ultimo giorno nello spazio: presto la stazione verrà deorbitata e distrutta.
-            <br><br>
+            tuo ultimo giorno nello spazio: presto la stazione verrà deorbitata e distrutta.<br><br>
             Ma qualcosa interrompe la routine. Un silenzio anomalo, assenze inspiegabili, segnali che non tornano. La
-            stazione, che fino a ieri era casa, ora sembra diversa. Più fredda. Più ostile.
-            <br><br>
+            stazione, che fino a ieri era casa, ora sembra diversa. Più fredda. Più ostile.<br><br>
             Dovrai esplorare, raccogliere indizi, interagire con strumenti e terminali, e affrontare l’ignoto. Qualcosa
-            sta accadendo. E il tempo a disposizione sta finendo.
-            <br><br>
-            Riuscirai a capire cosa sta succedendo… prima del deorbitaggio?
-        </p>
+            sta accadendo. E il tempo a disposizione sta finendo.<br><br>
+            Riuscirai a capire cosa sta succedendo… prima del deorbitaggio?</p>
+        <a class="back-to-top" href="#top">↑ Torna su</a>
+    </section>
+
+    <section id="progettazione">
+        <h2>Progettazione del gioco</h2>
+        <p>La progettazione del gioco è stata guidata da una suddivisione logica in responsabilità funzionali. Le classi
+            sono state individuate secondo il principio di separazione delle competenze, distinguendo i livelli di
+            astrazione (logica di gioco, interfaccia utente, persistenza, parsing, comportamento osservabile). Ogni
+            classe ha una funzione specifica, ed è stata organizzata in un package tematico per facilitare la
+            modularità, la manutenibilità e l’estensione del codice.</p>
+
+        <h3>Classi principali del core logico</h3>
+        <ul class="features">
+            <li><strong>Engine:</strong> gestisce il ciclo di gioco e l’interazione testuale.</li>
+            <li><strong>GameDesc:</strong> classe astratta base per ogni gioco, con logica e struttura comuni (stanze,
+                oggetti, comandi).</li>
+            <li><strong>BeforeDeorbiting:</strong> implementa GameDesc e inizializza l’intero mondo di gioco (stanze,
+                oggetti, parser, observer).</li>
+        </ul>
+
+        <h3>Package parser</h3>
+        <ul class="features">
+            <li><strong>Parser:</strong> interpreta i comandi dell’utente e li converte in istruzioni comprensibili per
+                il gioco.</li>
+            <li><strong>ParserOutput:</strong> contiene il risultato dell’analisi di un comando, con azione e oggetti
+                coinvolti.</li>
+        </ul>
+
+        <h3>Package ui</h3>
+        <ul class="features">
+            <li><strong>MenuUI:</strong> mostra il menu iniziale con avvio, caricamento, comandi e crediti.</li>
+            <li><strong>GameUI:</strong> è la schermata principale, gestisce l’input/output, immagini e cronometro.</li>
+            <li><strong>InventoryUI:</strong> visualizza in tempo reale l’inventario del giocatore.</li>
+            <li><strong>CommandsUI:</strong> mostra una lista di comandi disponibili nel gioco.</li>
+            <li><strong>DirectionsPuzzleUI:</strong> interfaccia per il minigame direzionale.</li>
+            <li><strong>HALterminal:</strong> terminale grafico ispirato a HAL per interazioni speciali.</li>
+            <li><strong>LoadBarUI:</strong> mostra una barra di caricamento durante fasi di transizione.</li>
+            <li><strong>NotebookUI:</strong> visualizza il taccuino narrativo del giocatore.</li>
+            <li><strong>PrinterUI:</strong> simula la stampa a schermo di messaggi di gioco, come da una stampante di
+                bordo.</li>
+        </ul>
+
+        <h3>Package type</h3>
+        <ul class="features">
+            <li><strong>BDObject:</strong> rappresenta un oggetto interattivo nel gioco, con nome, descrizione, alias e
+                proprietà.</li>
+            <li><strong>BDObjectChest:</strong> estende BDObject come contenitore apribile per altri oggetti.</li>
+            <li><strong>Room:</strong> definisce le stanze, descrizioni, oggetti presenti e direzioni collegate.</li>
+            <li><strong>Inventory:</strong> gestisce gli oggetti raccolti dal giocatore.</li>
+            <li><strong>Command:</strong> rappresenta un comando riconoscibile dal parser, con tipo e sinonimi.</li>
+            <li><strong>CommandType:</strong> enum che definisce i tipi di comando (es. USA, VAI, OSSERVA…).</li>
+        </ul>
+
+        <h3>Package impl</h3>
+        <ul class="features">
+            <li><strong>GameObserver:</strong> interfaccia base per tutti gli observer del gioco.</li>
+            <li><strong>GameObservable:</strong> interfaccia che permette di registrare gli observer (implementata da
+                BeforeDeorbiting).</li>
+            <li><strong>PickUpObserver:</strong> gestisce il comando PRENDI, aggiungendo oggetti all’inventario.</li>
+            <li><strong>DropObserver:</strong> gestisce LASCIA, spostando oggetti da inventario a stanza.</li>
+            <li><strong>InventoryObserver:</strong> mostra il contenuto corrente dell’inventario.</li>
+            <li><strong>HelpObserver:</strong> mostra un elenco dei comandi disponibili.</li>
+            <li><strong>HistoryObserver:</strong> stampa una narrazione relativa alla stanza corrente.</li>
+            <li><strong>LookAtObserver:</strong> permette di osservare oggetti o ambienti.</li>
+            <li><strong>MovementObserver:</strong> consente il movimento tra stanze.</li>
+            <li><strong>UseObserver:</strong> gestisce il comando USA per attivare effetti sugli oggetti.</li>
+            <li><strong>SaveObserver:</strong> salva lo stato attuale della partita.</li>
+        </ul>
+
+        <h3>Package database</h3>
+        <ul class="features">
+            <li><strong>Astronaut:</strong> rappresenta un astronauta memorizzabile nel database.</li>
+            <li><strong>AstronautsDAO:</strong> gestisce la lettura e scrittura degli astronauti nel database.</li>
+            <li><strong>DBConfig:</strong> configura la connessione al database e lo popola inizialmente.</li>
+        </ul>
+
+        <h3>Package util</h3>
+        <ul class="features">
+            <li><strong>JSONSaveController:</strong> gestisce salvataggi e caricamenti su file JSON.</li>
+            <li><strong>RestServer:</strong> server REST per il gioco, basato su Jersey.</li>
+            <li><strong>HtmlResource:</strong> fornisce contenuti HTML per l’interfaccia web.</li>
+            <li><strong>LeaderboardResource:</strong> espone la classifica dei giocatori.</li>
+            <li><strong>MusicController:</strong> controlla la riproduzione musicale di sottofondo.</li>
+            <li><strong>ConcurrentChronometer:</strong> cronometro multithread per tenere traccia del tempo di gioco.
+            </li>
+        </ul>
+        <br>
+        <h3>Diagramma delle classi</h3>
+        <p>Inserire un diagramma delle classi di una porzione significativa del progetto e commentare il diagramma
+            fornendo dettagli sui principi della programmazione ad oggetti che sono stati utilizzati (ereditarietà,
+            interfacce, classi astratte, composizione, …).</p>
+        <br>
+        <h3>Dettagli implementativi</h3>
+        <p>Per ciascun argomento del corso spiegare se e come è stato utilizzato all’interno del progetto.</p>
+        <ul class="features">
+            <li><strong>Programmazione generica:</strong> gestione di collezioni parametrizzate per inventario e parser.
+            </li>
+            <li><strong>File:</strong> salvataggi/caricamenti su JSON tramite JSONSaveController.</li>
+            <li><strong>Database (JDBC):</strong> AstronautsDAO per persistenza e recupero dati astronauti.</li>
+            <li><strong>Lambda Expression:</strong> stream per filtrare e mappare collezioni di oggetti di gioco.</li>
+            <li><strong>SWING:</strong> interfaccia grafica aggiuntiva per versioni desktop con pannelli Java Swing.
+            </li>
+            <li><strong>Thread e concorrenza:</strong> ConcurrentChronometer per cronometro multithread sicuro.</li>
+            <li><strong>Socket/REST:</strong> RestServer e LeaderboardResource per comunicazione client-server e API.
+            </li>
+        </ul>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
 
@@ -298,7 +455,48 @@
 
     <section id="soluzioni">
         <h2>Soluzioni del gioco</h2>
-        <p>In questa parte sono raccolte le soluzioni alle sfide e agli enigmi presenti nel gioco, passo per passo.</p>
+        <ol class="soluzioni-list">
+            <li>Prendi modellinorusso</li>
+            <li>Avanti</li>
+            <li>Prendi tuta</li>
+            <li>Prendi bigliettino</li>
+            <li>Prendi pezzodivetro</li>
+            <li>Avanti</li>
+            <li>Prendi modellinoamericano</li>
+            <li>Prendi pezzodivetro</li>
+            <li>Sinistra</li>
+            <li>Prendi modellinodestro</li>
+            <li>Vedere il continente: se vedi solo mare allora è "oceano", altrimenti il nome del continente</li>
+            <li>Destra</li>
+            <li>Destra</li>
+            <li>Prendi modellinosinistro</li>
+            <li>Usa un modellino qualsiasi</li>
+            <li>Usa tuta</li>
+            <li>Avanti</li>
+            <li>Inserisci: ↑ ↑ ↓ ↓ ← → ← →</li>
+            <li>Usa computer</li>
+            <li>Manovre CanadArm2: segnarsi la procedura d'ormeggio</li>
+            <li>Disattiva l'AI</li>
+            <li>Cifrare "RSIWGETI" con CESARE chiave 4 → NOESCAPE</li>
+            <li>Su</li>
+            <li>Indietro</li>
+            <li>Usa tablet</li>
+            <li>Nome continente</li>
+            <li>Avanti</li>
+            <li>Usa tastierino</li>
+            <li>Inserire NOESCAPE</li>
+            <li>Avanti</li>
+            <li>Aspetta</li>
+            <li>Prendi pezzo</li>
+            <li>Usa pezzo</li>
+            <li>Usa pezzo</li>
+            <li>Usa prisma</li>
+            <li>Ruota prisma</li>
+            <li>Avanti</li>
+            <li>Usa terminale</li>
+            <li>Inserire:<br>0 -1 -1<br>-1 0 -1<br>-1 0 -2</li>
+            <li>Fare la scelta: A o B</li>
+        </ol>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
 
@@ -311,7 +509,8 @@
             const pct = window.scrollY / (document.body.scrollHeight - innerHeight) * 100;
             document.getElementById('progress-bar').style.width = pct + '%';
             const btn = document.getElementById('to-top');
-            if (window.scrollY > 300) btn.classList.add('show'); else btn.classList.remove('show');
+            if (window.scrollY > 300) btn.classList.add('show');
+            else btn.classList.remove('show');
         });
         document.getElementById('to-top').onclick = () =>
             window.scrollTo({ top: 0, behavior: 'smooth' });

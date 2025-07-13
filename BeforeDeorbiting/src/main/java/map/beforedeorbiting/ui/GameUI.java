@@ -758,6 +758,7 @@ public class GameUI extends JFrame {
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
                             .getCurrentRoom().getDescription());
+                    game.setCurrentRoom(game.getRoomByName("QUEST"))
 
                 } else if (result == -1) {
                     game.setCurrentRoom(game.getRoomByName("QUEST"));

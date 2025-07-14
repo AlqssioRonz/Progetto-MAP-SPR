@@ -181,8 +181,7 @@ public class UseObserver implements GameObserver, Serializable {
                 game.getInventory().remove(game.getObjectByID(8));
                 game.getObjectByID(8).setInUse(true);
                 usingPrismMsg.append("Hai posizionato il prisma sulla finestra di vetro ai tuoi piedi, "
-                        + "ma l'angolazione non permette di far arrivare la luce al modulo di connessione. \n"
-                        + "Dovresti provare a ruotarlo.");
+                        + "ma l'angolazione non permette di far arrivare la luce al modulo di connessione. \n");
             } else {
                 usingPrismMsg.append("Magari dovresti provare ad ASPETTARE...");
             }

@@ -70,7 +70,7 @@ public class CommandsUI extends JFrame {
 
         // Configurazione base del frame
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setSize(650, 560);
+        setSize(650, 580);
         setResizable(false);
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon("src/main/resources/img/icona_pennello.jpg").getImage());
@@ -116,6 +116,8 @@ public class CommandsUI extends JFrame {
                         SALVA: per salvare la partita
 
                         AIUTO: per visualizzare la lista dei comandi
+                
+                        STORIA: per conoscere la vera storia del moludo in cui ti trovi
                         """);
         textArea.setOpaque(false);
         textArea.setEditable(false);

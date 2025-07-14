@@ -280,6 +280,7 @@
     <nav>
         <a href="#spiegazione">Spiegazione</a>
         <a href="#trama">Trama</a>
+        <a href="#specifica">Specifica</a>
         <a href="#progettazione">Progettazione</a>
         <a href="#manuale">Manuale</a>
         <a href="#soluzioni">Soluzioni</a>
@@ -295,6 +296,11 @@
         <h2>Spiegazione del progetto</h2>
         <p>Before Deorbiting è un progetto sviluppato come lavoro finale dal Team SPR per il corso di Metodi Avanzati di
             Programmazione, tenuto dal Prof. Pierpaolo Basile presso l’Università degli Studi di Bari “Aldo Moro”.</p>
+        <ul style="text-align: left;">
+        <li><a href="https://github.com/AndreSal8021"  style="color: white;">Andrea Salonia</a></li>
+        <li><a href="https://github.com/lorenzoPeluso04" style="color: white;">Lorenzo Peluso</a></li>
+        <li><a href="https://github.com/AlqssioRonz" style="color: white;">Alessio Ronzullo</a></li>
+        </ul>
         <h3>Che cos'è un'avventura testuale?</h3>
         <p>Un’avventura testuale è un videogioco in cui il giocatore interagisce con l’ambiente scrivendo comandi
             testuali. Diffuso soprattutto agli albori dell’informatica, questo genere punta tutto sulla narrazione e
@@ -321,6 +327,66 @@
             Riuscirai a capire cosa sta succedendo… prima del deorbitaggio?</p>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
+
+    <section id="specifica">
+  <h2>Specifiche del tipo List</h2>
+  <h3>  Speficica Sintattica</h3>
+
+  <h3 style="text-align: left;">Tipi</h3>
+  <ul class="features">
+    <li><strong>List</strong></li>
+    <li><strong>Element</strong> (tipo generico)</li>
+    <li><strong>Integer</strong></li>
+    <li><strong>Boolean</strong></li>
+  </ul>
+    <h4 style="text-align: left;">Operatori</h4>
+  <ul class="features">
+    <li><code>newList() → List</code><br><em>Crea una nuova lista vuota</em></li>
+    <li><code>add(List, Element, Integer) → List</code><br><em>Aggiunge un elemento nella posizione indicata</em></li>
+    <li><code>isEmpty(List) → Boolean</code><br><em>True se la lista è vuota</em></li>
+    <li><code>getSize(List) → Integer</code><br><em>Restituisce la dimensione della lista</em></li>
+    <li><code>getIndex(List, Element) → Integer</code><br><em>Restituisce la posizione dell'elemento</em></li>
+    <li><code>getElement(List, Integer) → Element</code><br><em>Restituisce l'elemento in posizione</em></li>
+    <li><code>remove(List, Integer) → List</code><br><em>Rimuove l'elemento in posizione</em></li>
+    <li><code>contains(List, Element) → Boolean</code><br><em>True se l'elemento è presente</em></li>
+  </ul>
+
+  <h3>Specifica Semantica</h3>
+  <h4 style="text-align: left;">Parametri</h4>
+  <ul class="features">
+    
+    <li><code>l, l' : List</code></li>
+    <li><code>e, e' : Element</code></li>
+    <li><code>id, id' : Integer</code></li>
+  </ul>
+  
+  <h4 style="text-align:left;">Operazioni</h4>
+  <ul class="features">
+    <li><code>isEmpty(newList) = true</code></li>
+    <li><code>isEmpty(add(l, e, id)) = false</code></li>
+    <li><code>getSize(newList()) = 0</code></li>
+    <li><code>getSize(add(l, e, id)) = if isEmpty(l) then 1 else getSize(l) + 1</code></li>
+    <li><code>getIndex(add(l, e, id), e') = if e = e' then id else getIndex(l, e')</code></li>
+    <li><code>getElement(add(l, e, id), id') = if id = id' then e else getElement(l, id')</code></li>
+    <li><code>remove(add(l, e, id), id') = if id = id' then l else add(remove(l, id'), e)</code></li>
+    <li><code>contains(newList, e') = false</code></li>
+    <li><code>contains(add(l, e, id), e') = if e = e' then true else contains(l, e')</code></li>
+  </ul>
+  <h4 style="text-align: left;">Osservazioni e Costruttori</h3>
+  <img src="images/tabella_specifiche.png" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+
+  <h3>Specifica di Restrizione</h3>
+
+  <h4 style="text-align: left;">Restrizioni</h4>
+  <ul class="features">
+    <li><code>getIndex(newList, e') = error</code></li>
+    <li><code>getElement(newList, id') = error</code></li>
+    <li><code>remove(newList, id') = error</code></li>
+  </ul>
+
+  <a class="back-to-top" href="#top">↑ Torna su</a>
+</section>
+
 
     <section id="progettazione">
         <h2>Progettazione del gioco</h2>
@@ -448,11 +514,15 @@
             <li><strong>USA:</strong> per usare un oggetto o concatenarne più di uno</li>
             <li><strong>OSSERVA:</strong> per osservare l'ambiente o un oggetto</li>
             <li><strong>SALVA:</strong> per salvare la partita</li>
+            <li><strong>STORIA:</strong> per mostrare delle informazioni sulla vera stazione spaziale ISS modulo per modulo</li>
             <li><strong>AIUTO:</strong> per mostrare questa lista di comandi</li>
             <li><strong>PLAY/MUTA:</strong> pulsante per attivare/disattivare la musica</li>
             <li><strong>MENU:</strong> pulsante per tornare al menu principale</li>
             <li><strong>SKIP:</strong> pulsante per mostrare tutto il testo immediatamente</li>
             <li><strong>TIMER:</strong> indica il tempo di gioco</li>
+        <h2 style="text-align: center;">Mappa di Gioco</h2>
+         <img src="images/mappaISS.jpg" alt="Mappa di Gioco"
+        style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
         </ul>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
@@ -503,7 +573,6 @@
         </ol>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
-
     <!-- Back-to-top button -->
     <button id="to-top">↑ Top</button>
 

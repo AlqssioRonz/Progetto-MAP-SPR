@@ -344,6 +344,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         unity.setLook("""
                                 Il nodo di collegamento Unity. A destra, un passaggio
                                 stretto conduce verso il modulo QUEST e lo spazio esterno.
+                                A sinistra, il collegamento verso il modulo TRANQUILITY, da lì
+                                è visibile la Terra.
                                 Nella stanza c'è una cassa, forse sarebbe utile controllare il suo contenuto.
                                 """);
 
@@ -362,8 +364,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                                 Il nodo Harmony è un corridoio pressurizzato, ampio e ordinato.
                                 In fondo, il portellone che conduce alla navicella di fuga.
                                 A sinistra si apre l’accesso al laboratorio Kibo.
-                                A destra,
-                                l’ingresso è sigillato e inaccessibile.""");
+                                A destra, l’ingresso è sigillato e inaccessibile.""");
 
         leonardo.setLook("""
                                 Il modulo Leonardo, rivestito da contenitori imbottiti e
@@ -380,7 +381,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         kibo.setLook(
                 """
                                                 Il modulo Kibo è carico di strumenti come sempre.
-                                                A sinistra, il pannello con diversi terminali ormai spenti: da lì hai scollegato HAL. Di fronte, il portello di comando del braccio robotico.
+                                                Di fronte, il portello di comando del braccio robotico. A sinistra, il terminale di controllo del braccio meccanico. 
                                                 Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito.""");
 
         // Inizializzare il formato base degli osserva - Lorenzo

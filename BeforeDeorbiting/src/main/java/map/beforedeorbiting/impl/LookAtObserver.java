@@ -132,7 +132,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         boolean hasSuit = game.getCurrentRoom().getObjects().contains(game.getObjectByID(10));
         boolean hasNote = game.getCurrentRoom().getObjects().contains(game.getObjectByID(5));
 
-        if (hasSuit) {
+        if (hasSuit && hasNote) {
             msg.append("""
                     Luke è seduto contro il muro, immobile. La visiera riflette
                     la luce, ma non si muove.
@@ -140,7 +140,7 @@ public class LookAtObserver implements GameObserver, Serializable {
                     di ossigeno, come sarà mai potuto succedere… stringe un
                     bigliettino tra le sue mani.
                          """);
-        } else {
+        } else if(!hasSuit){
             if (hasNote) {
                 msg.append("""
                         Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta
@@ -176,7 +176,7 @@ public class LookAtObserver implements GameObserver, Serializable {
         } else {
             msg.append("""
                     La porta davanti, quella che porta al laboratorio Destiny è
-                    chiusa con tastierino numerico: serve un codice per aprirla.
+                    chiusa con tastierino alfabetico: serve un codice per aprirla.
 
                     """);
         }
@@ -219,7 +219,7 @@ public class LookAtObserver implements GameObserver, Serializable {
                         Cos’è stato… non vedo nulla se non per un flebile fascio di
                         luce riflesso dalla luna che proviene dalla finestra di
                         osservazione, ma non è sufficiente per orientarmi nella stanza.
-                        In questo momento non posso fare nulla qui... dovrei ASPETTARE.
+                        In questo momento non posso fare nulla qui... dovrei aspettare.
                         """);
             }
         } else {

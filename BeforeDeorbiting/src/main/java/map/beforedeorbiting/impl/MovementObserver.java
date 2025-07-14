@@ -20,13 +20,16 @@ import map.beforedeorbiting.type.Room;
  *
  * - il costruttore di MovementObserver crea un dizionario con chiave un
  * enumeratore e valore una function - la Function viene utilizzata nella
- * progrmmazione funzionale e permette di "trattare una funzione come una
- * variabile" - la Function ha <input, output> e con l'operatore :: possiamo
+ * progrmmazione funzionale e permette di "trattare una funzione come una /**
+ * Variabile – la {@link java.util.function.Function Function} ha
+ * {@literal <input, output>} e con l’operatore {@code ::} possiamo…
  * ottenere metodi del parametro - tramite il metodo apply() possiamo eseguire
  * il metodo contenuto nella Function
  *
- * @lorenzopeluso
- */
+ * @author lorenzopeluso
+ 
+
+*/
 public class MovementObserver implements GameObserver, Serializable {
 
     private final Map<CommandType, Function<Room, Room>> moves = new EnumMap<>(CommandType.class);

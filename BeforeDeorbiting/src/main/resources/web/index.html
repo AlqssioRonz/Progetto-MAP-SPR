@@ -407,9 +407,13 @@
         </ul>
         <br>
         <h3>Diagramma delle classi</h3>
-        <p>Inserire un diagramma delle classi di una porzione significativa del progetto e commentare il diagramma
-            fornendo dettagli sui principi della programmazione ad oggetti che sono stati utilizzati (ereditarietà,
-            interfacce, classi astratte, composizione, …).</p>
+        <p>Di seguito il diagramma delle classi di una porzione significativa del codice. Abbiamo scelto il gruppo di classi che gestisce lo scheletro dell'applicazione, abbiamo incluso parser ed alcuni elementi di UI per completezza.</p>
+        <br>
+        <p>Per visualizzare il diagramma in alta risoluzione, clicca sull'immagine.</p>
+        <a href="images/DiagrammaMapDark.jpg" target="_blank">
+        <img src="images/DiagrammaMapDark.jpg" alt="Diagramma delle classi"
+       style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+        </a>
         <br>
         <h3>Dettagli implementativi</h3>
         <p>Per ciascun argomento del corso spiegare se e come è stato utilizzato all’interno del progetto.</p>
@@ -417,12 +421,12 @@
             <li><strong>Programmazione generica:</strong> gestione di collezioni parametrizzate per inventario e parser.
             </li>
             <li><strong>File:</strong> salvataggi/caricamenti su JSON tramite JSONSaveController.</li>
-            <li><strong>Database (JDBC):</strong> AstronautsDAO per persistenza e recupero dati astronauti.</li>
-            <li><strong>Lambda Expression:</strong> stream per filtrare e mappare collezioni di oggetti di gioco.</li>
+            <li><strong>Database (JDBC):</strong> AstronautsDAO per persistenza e recupero dati astronauti. Utile alla risoluzione di uno specifico puzzle.</li>
+            <li><strong>Lambda Expression:</strong> configurazione dei thread grafici di Java Swing.</li>
             <li><strong>SWING:</strong> interfaccia grafica aggiuntiva per versioni desktop con pannelli Java Swing.
             </li>
-            <li><strong>Thread e concorrenza:</strong> ConcurrentChronometer per cronometro multithread sicuro.</li>
-            <li><strong>Socket/REST:</strong> RestServer e LeaderboardResource per comunicazione client-server e API.
+            <li><strong>Thread e concorrenza:</strong> ConcurrentChronometer per cronometro di gioco. Utilizzo dei thread di aggiornamento GUI di JavaSwing.</li>
+            <li><strong>Socket/REST:</strong> RestServer e utilizzo di una API free per la soluzione di un puzzle in-game.
             </li>
         </ul>
         <a class="back-to-top" href="#top">↑ Torna su</a>

@@ -151,7 +151,7 @@ public class UseObserver implements GameObserver, Serializable {
             game.getInventory().remove(game.getObjectByID(6));
             game.getInventory().remove(game.getObjectByID(6));
             game.getInventory().add(game.getObjectByID(7));
-            prismMsg.append("Unendo due pezzi di vetro hai creato un mezzo prisma\n Lo trovi nel tuo inventario.");
+            prismMsg.append("Unendo due pezzi di vetro hai creato un mezzo prisma!\nLo trovi nel tuo inventario.");
         } else {
             if (game.getInventory().getList().contains(game.getObjectByID(7))
                     && game.getInventory().count(game.getObjectByID(6)) == 1) {

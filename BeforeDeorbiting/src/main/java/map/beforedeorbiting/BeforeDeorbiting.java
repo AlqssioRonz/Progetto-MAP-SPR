@@ -277,7 +277,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         spazio.setRoomImage("src/main/resources/img/SPAZIO1.jpg");
         spazio.setAccessible(false);
         spazio.addObject(tastierinoDirezioni);
-        Room leonardo = new Room(6, "LEONARDO", "Centro dati.\n");
+        Room leonardo = new Room(6, "LEONARDO", "Centro dati.");
         leonardo.setRoomImage("src/main/resources/img/leonardo.jpeg");
         leonardo.addObject(diarioSusan);
         leonardo.addObject(computer);
@@ -362,8 +362,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                                 Il nodo Harmony è un corridoio pressurizzato, ampio e ordinato.
                                 In fondo, il portellone che conduce alla navicella di fuga.
                                 A sinistra si apre l’accesso al laboratorio Kibo.
-                                A destra,
-                                l’ingresso è sigillato e inaccessibile.""");
+                                A destra, l’ingresso è sigillato e inaccessibile.""");
 
         leonardo.setLook("""
                                 Il modulo Leonardo, rivestito da contenitori imbottiti e
@@ -380,7 +379,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         kibo.setLook(
                 """
                                                 Il modulo Kibo è carico di strumenti come sempre.
-                                                A sinistra, il pannello con diversi terminali ormai spenti: da lì hai scollegato HAL. Di fronte, il portello di comando del braccio robotico.
+                                                A sinistra, il pannello con diversi terminali ormai spenti: da lì hai scollegato HAL.
+                                                Di fronte, il portello di comando del braccio robotico.
                                                 Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito
                                                 """);
 
@@ -476,8 +476,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         zarya.setGameStory(
                 """
                                                 Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra.
-                                                Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico,
-                                                privo di vita, accasciato accanto a me.
+                                                Immobile. Nessun respiro, nessuno sguardo.
+                                                Solo il corpo del mio amico, privo di vita, accasciato accanto a me.
 
                                                 Non avrei mai immaginato uno scenario del genere, e tanto meno
                                                 nel mio ultimo giorno qui. Non ho mai recepito lo spazio più
@@ -502,8 +502,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                                 Il codice… dovrei trovarlo nel database del computer centrale,
                                 nel modulo LEONARDO.
                                 Un tempo quella zona era usata solo come deposito per i rifiuti,
-                                ma da quando HAL è stato installato a bordo e ha assunto il controllo
-                                delle operazioni automatiche, è diventata una sezione fondamentale della stazione.
+                                ma da quando HAL è stato installato a bordo e ha assunto il controllo delle operazioni automatiche,
+                                è diventata una sezione fondamentale della stazione.
 
                                 HAL richiede una rete di terminali locali per essere monitorato
                                 e gestito, e il modulo LEONARDO ne ospita uno dei principali.
@@ -525,8 +525,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
                                 “La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”
 
-                                La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior
-                                tempismo possibile.
+                                La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior tempismo possibile.
                                 """);
 
         destiny.setGameStory(
@@ -536,7 +535,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
                                                 La voce sintetica dell’IA di bordo annuncia:
                                                 “Il rifornimento di viveri è stato completato.
-                                                In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”
+                                                In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi.”
                                                 """);
 
         harmony.setGameStory("""
@@ -547,10 +546,10 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
         kibo.setGameStory("""
                                 Il modulo Kibo è immobile, avvolto da una quiete irreale.
-                                Il terminale centrale si accende non appena ti avvicini. HAL:
-
+                                Il terminale centrale si accende non appena ti avvicini.
+                                HAL: 
                                 "Ti stavo aspettando."
-
+                          
                                 Immaginavo fosse tutta opera sua.
                                 HAL:
                                 "Susan era sospettosa. Luke aveva cominciato a farsi domande.
@@ -652,7 +651,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         if (p == null || p.getCommand() == null) {
             out.println("""
                                         Quello che dici non ha senso, persino
-                                        HAL alzerebbe un sopracciglio... se ne avesse uno.""");
+                                        HAL alzerebbe un sopracciglio... se ne avesse uno.
+                        """);
         } else {
             setLastCommand(p.getCommand());
             notifyObservers();

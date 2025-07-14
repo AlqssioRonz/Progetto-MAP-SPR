@@ -91,11 +91,12 @@ public class LookAtObserver implements GameObserver, Serializable {
             } else {
                 lookAtMsg.append(game.getCurrentRoom().getLook());
                 if (!"SPAZIO".equals(game.getCurrentRoom().getName())) {
-                    if ("DESTINY".equals(game.getCurrentRoom().getName())) {
+                    if ("DESTINY".equals(game.getCurrentRoom().getName()) || "LEONARDO".equals(game.getCurrentRoom().getName())) {
                         lookAtMsg.append(stateDescr.get(game.getCurrentRoom()).apply(game));
                     } else {
                         lookAtMsg.append("\n")
-                                .append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                                .append(stateDescr.get(game.getCurrentRoom()).apply(game))
+                                .append("\n");
                     }
                 }
             }
@@ -186,7 +187,7 @@ public class LookAtObserver implements GameObserver, Serializable {
                     è aperta, ma non vorrei rivedere il cadavere di Susan.
                     """);
         } else {
-            msg.append("La botola sotto i miei piedi che conduce nel modulo Leonardo è chiusa.\n");
+            msg.append("La botola sotto i miei piedi che conduce nel modulo Leonardo è chiusa.");
         }
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(1))) {
             msg.append("Sul pavimento galleggia un pezzo del modellino (modellinoamericano).");
@@ -314,19 +315,9 @@ public class LookAtObserver implements GameObserver, Serializable {
      */
     public String leonardoDescr(GameDesc game) {
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(4))) {
-            return """
-                    Il modulo Leonardo, rivestito da contenitori imbottiti e
-                    cavi. Sul lato sinistro, il terminale principale di HAL
-                    emette un tenue bagliore verde. La botola sopra si è aperta e porta
-                    direttamente a Unity. Il corpo di Susan
-                    fluttua a mezz’aria, immobile. C'è un diario vicino al corpo
-                    di Susan""";
+            return "C'è un diario vicino al corpo di Susan.\n";
         }
-        return """
-                Il modulo Leonardo, rivestito da contenitori imbottiti e
-                cavi. Sul lato sinistro, il terminale principale di HAL
-                emette un tenue bagliore verde. La botola sopra si è aperta e porta
-                direttamente a Unity. Il corpo di Susan fluttua a mezz’aria, immobile.""";
+        return "";
     }
 
     /**

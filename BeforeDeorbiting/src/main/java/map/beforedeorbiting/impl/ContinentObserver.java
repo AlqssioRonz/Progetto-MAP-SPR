@@ -80,7 +80,7 @@ public class ContinentObserver implements GameObserver {
                 continentMsg.append("Anche se il continente fosse giusto, ormai non serve piu a nulla");
             }
         }
-
+        continentMsg.append("\n");
         return continentMsg.toString();
     }
 }

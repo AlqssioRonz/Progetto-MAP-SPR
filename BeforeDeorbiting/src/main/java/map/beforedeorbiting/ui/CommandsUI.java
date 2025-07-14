@@ -88,17 +88,17 @@ public class CommandsUI extends JFrame {
                                            \s
         INVENTARIO: visualizza gli oggetti nell'inventario
                                            \s
-        AVANTI: per muoverti in avanti
+        FORWARD/NORD: per muoverti in avanti
                                            \s
-        INDIETRO: per muoverti indietro
+        AFT/SUD: per muoverti indietro
                                            \s
-        DESTRA: per muoverti a destra
+        STARBOARD/EST: per muoverti a destra
                                            \s
-        SINISTRA: per muoverti a sinistra
+        PORT/OVEST: per muoverti a sinistra
                                            \s
-        SOPRA: per andare sopra
+        OVERHEAD/SU: per andare sopra
                                            \s
-        SOTTO: per andare sotto
+        DECK/GIU: per andare sotto
                                            \s
         PRENDI: per prendere un oggetto
                                            \s

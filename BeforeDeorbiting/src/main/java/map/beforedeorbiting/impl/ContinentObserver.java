@@ -50,23 +50,21 @@ public class ContinentObserver implements GameObserver {
             String ISSContinent = issService.getContinentForCoordinates();
 
             if (!game.isFlagTrapdoor()) {
-                // deve essere nella stanza ZARYA e avere l’oggetto id 14 in uso
                 if (game.getCurrentRoom().equals(game.getRoomByName("ZARYA"))
                         && game.getObjectByID(14).isInUse()) {
-
-                    boolean match = (continent == CommandType.AFRICA && ISSContinent.equalsIgnoreCase("africa"))
+                    if ((continent == CommandType.AFRICA && ISSContinent.equalsIgnoreCase("africa"))
                             || (continent == CommandType.EUROPA && ISSContinent.equalsIgnoreCase("europa"))
                             || (continent == CommandType.NAMERICA && ISSContinent.equalsIgnoreCase("nordamerica"))
                             || (continent == CommandType.SAMERICA && ISSContinent.equalsIgnoreCase("sudamerica"))
                             || (continent == CommandType.ASIA && ISSContinent.equalsIgnoreCase("asia"))
-                            || (continent == CommandType.OCEANIA && ISSContinent.equalsIgnoreCase("oceania"))
-                            || (continent == CommandType.ANTARTIDE && ISSContinent.equalsIgnoreCase("antartide"))
-                            || (continent == CommandType.OCEANO && ISSContinent.equalsIgnoreCase("oceano"));
-
-                    if (match) {
-                        continentMsg.append(
-                                "COSA DIAVOLO È STATO QUEL RUMORE?!\n"
-                                + "Mi scappa un urlo prima di vedere la verità. "
+                            || (continent == CommandType.OCEANIA && ISSContinent.equalsIgnoreCase("oceania")
+                            || (continent == CommandType.ANTARTIDE
+                            && ISSContinent.equalsIgnoreCase("antartide"))
+                            || (continent == CommandType.OCEANO && ISSContinent.equalsIgnoreCase("oceano")))) {
+                        game.getCurrentRoom().setRoomImage("src/main/resources/img/zarya_esplosione.png");
+                        game.getCurrentRoom().setRoomImage("src/main/resources/img/zarya_esplosione.png");
+                        continentMsg.append("COSA DIAVOLO È STATO QUEL RUMORE?!\n"
+                                + "mi scappa un urlo prima di vedere la verità. "
                                 + "Mi avvicino al finestrino e vedo solo macerie, rottami che galleggiano nel vuoto.\n"
                                 + "Resta solo una possibilità: la capsula Starlink, oltre il laboratorio Destiny.\n"
                                 + "Non so cosa diavolo sta succedendo in questa stazione… ma so una cosa: io non morirò qui.");
@@ -76,11 +74,10 @@ public class ContinentObserver implements GameObserver {
                     }
                 } else {
                     continentMsg.append(
-                            "Quello che dici non ha senso, persino HAL alzerebbe un sopracciglio..."
-                            + " se ne avesse uno.");
+                            "Quello che dici non ha senso, persino HAL alzerebbe un sopracciglio... se ne avesse uno.");
                 }
             } else {
-                continentMsg.append("Anche se il continente fosse giusto, ormai non serve più a nulla");
+                continentMsg.append("Anche se il continente fosse giusto, ormai non serve piu a nulla");
             }
         }
 

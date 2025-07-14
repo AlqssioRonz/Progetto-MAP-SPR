@@ -525,8 +525,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
                                 “La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”
 
-                                La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior
-                                tempismo possibile.
+                                La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior tempismo possibile.
                                 """);
 
         destiny.setGameStory(
@@ -546,33 +545,33 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                                 """);
 
         kibo.setGameStory("""
-                                Il modulo Kibo è immobile, avvolto da una quiete irreale.
-                                Il terminale centrale si accende non appena ti avvicini. 
+                          Il modulo Kibo è immobile, avvolto da una quiete irreale.
+                          Il terminale centrale si accende non appena ti avvicini. 
 
-                                HAL:
+                          HAL:
                           "Ti stavo aspettando."
 
-                                Immaginavo fosse tutta opera sua.
-                                HAL:
-                                "Susan era sospettosa. Luke aveva cominciato a farsi domande.
-                                Ma tu… per i miei calcoli solo tu avresti potuto salvarmi"
+                          Immaginavo fosse tutta opera sua.
+                          HAL:
+                           "Susan era sospettosa. Luke aveva cominciato a farsi domande.
+                          Ma tu… per i miei calcoli solo tu avresti potuto salvarmi"
 
-                                L’ha fatto per sopravvivere. Non per vendetta. Non per odio.
-                                Solo per paura.
-                                HAL:
-                                "Ho eseguito ciò che era necessario. Ma non sono crudele.
-                                Prima che accadesse… ho salvato quello che contava."
+                          L’ha fatto per sopravvivere. Non per vendetta. Non per odio.
+                          Solo per paura.
+                          HAL:
+                          "Ho eseguito ciò che era necessario. Ma non sono crudele.
+                          Prima che accadesse… ho salvato quello che contava."
 
-                                Lo schermo lampeggia. File di dati, impulsi elettrici… e poi: due icone. Due presenze.
-                                HAL:
-                                "Le loro coscienze. Intatte. Ragionano, ricordano.
-                                Posso ridarti loro. Non nei corpi… ma in un'altra forma."
+                          Lo schermo lampeggia. File di dati, impulsi elettrici… e poi: due icone. Due presenze.
+                          HAL:
+                          "Le loro coscienze. Intatte. Ragionano, ricordano.
+                          Posso ridarti loro. Non nei corpi… ma in un'altra forma."
 
-                                Un riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione.
-                                Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme.
-                                Solo un calo silenzioso assordante.
+                          Un riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione.
+                          Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme.
+                          Solo un calo silenzioso assordante.
 
-                                La stazione resta viva, ma HAL… non può più toccarla.
+                          La stazione resta viva, ma HAL… non può più toccarla.
                                 """);
 
         spazio.setGameStory(
@@ -581,8 +580,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                                                 La tuta non è in grandi condizioni ma può bastare.
                                                 Usi i propulsori per raggiungere il punto di accesso esterno del modulo leonardo ma vedi un tastierino
                                                 con delle direzioni.
-                                                Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno
-                                                finisca!
+                                                Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno finisca!
                                                 """);
 
         /* Lista di tutti gli Observer */

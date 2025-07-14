@@ -12,26 +12,48 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
- * Controller per la musica di sottofondo, con supporto a play/stop/pause/resume
- * e volume%.
+ * Controller per la gestione della musica di sottofondo e degli effetti sonori.
+ * Supporta play in loop, play singolo, pausa, ripresa, stop e regolazione del
+ * volume.
+ * <p>
+ * Utilizza la libreria Java Sound API per caricare clip audio sia da risorse
+ * interne al classpath (src/main/resources) che da file sul filesystem.
+ * </p>
+ *
+ * @author ronzu
  */
 public class MusicController implements Runnable, Serializable {
 
+    /**
+     * Clip audio per la riproduzione della musica di sottofondo.
+     */
     private transient Clip music;
-    private String resourcePath;
-    private boolean loop = true;
-
-    // Percentuale di volume predefinita (0–100)
-    private int pendingVolumePercent = 100;
-
-    private static final float NOISE_GATE_DB = -40f;
-// sotto -40 dB consideriamo che sia rumore e facciamo mute
 
     /**
-     * Riproduce in loop la traccia presente nel classpath (resources).
+     * Percorso della risorsa audio attualmente caricata.
+     */
+    private String resourcePath;
+
+    /**
+     * Flag che indica se la traccia deve essere riprodotta in loop continuo.
+     */
+    private boolean loop = true;
+
+    /**
+     * Volume in percentuale (0–100).
+     */
+    private int pendingVolumePercent = 100;
+
+    /**
+     * Soglia sotto la quale considerare il suono come rumore e mettere mute.
+     */
+    private static final float NOISE_GATE_DB = -40f;
+
+    /**
+     * Avvia la riproduzione in loop di una traccia presente nel classpath.
      *
-     * @param resourcePath percorso dentro src/main/resources, es.
-     * "/music/ZeldaMenu.wav"
+     * @param resourcePath percorso della risorsa audio nel classpath, ad
+     * esempio "/music/ZeldaMenu.wav"
      */
     public void playMusic(String resourcePath) {
         stopMusica();
@@ -41,9 +63,10 @@ public class MusicController implements Runnable, Serializable {
     }
 
     /**
-     * Riproduce una traccia una sola volta direttamente da file system.
+     * Riproduce una traccia audio una sola volta, caricandola da file di
+     * sistema.
      *
-     * @param filePath percorso assoluto o relativo sul disco
+     * @param filePath percorso assoluto o relativo sul filesystem al file audio
      */
     public void playMusicFromFile(String filePath) {
         stopMusica();
@@ -59,6 +82,10 @@ public class MusicController implements Runnable, Serializable {
         }, "MusicPlayer").start();
     }
 
+    /**
+     * Implementazione di {@link Runnable}: cerca la risorsa (classpath o file)
+     * e la apre in un {@link Clip}.
+     */
     @Override
     public void run() {
         try {
@@ -84,11 +111,19 @@ public class MusicController implements Runnable, Serializable {
         }
     }
 
+    /**
+     * Apre lo stream audio e avvia il clip.
+     *
+     * @param ais lo {@link AudioInputStream} da aprire
+     * @param loop se {@code true} ripete in loop continuo
+     * @throws LineUnavailableException
+     * @throws IOException
+     * @throws UnsupportedAudioFileException
+     */
     private void openAndStart(AudioInputStream ais, boolean loop)
-            throws LineUnavailableException, IOException {
+            throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         music = AudioSystem.getClip();
         music.open(ais);
-        // Applica volume predefinito o impostato
         applyVolumePercent(pendingVolumePercent);
         if (loop) {
             music.loop(Clip.LOOP_CONTINUOUSLY);
@@ -96,30 +131,31 @@ public class MusicController implements Runnable, Serializable {
         music.start();
     }
 
+    /**
+     * Applica il volume in base alla percentuale impostata.
+     *
+     * @param percent volume da 0 a 100
+     */
     private void applyVolumePercent(int percent) {
         if (music != null) {
-            FloatControl c = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
-            float min = c.getMinimum(), max = c.getMaximum();
+            FloatControl ctrl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
+            float min = ctrl.getMinimum(), max = ctrl.getMaximum();
             float gainDb;
-
             if (percent <= 0) {
                 gainDb = min;
             } else {
                 gainDb = (float) (20.0 * Math.log10(percent / 100.0));
-                // rumore sotto NOISE_GATE_DB? mettiamo mute
                 if (gainDb < NOISE_GATE_DB) {
                     gainDb = min;
                 }
             }
-
-            // clamp
             gainDb = Math.max(min, Math.min(gainDb, max));
-            c.setValue(gainDb);
+            ctrl.setValue(gainDb);
         }
     }
 
     /**
-     * Ferma la riproduzione e rilascia le risorse.
+     * Ferma la riproduzione corrente e rilascia le risorse.
      */
     public void stopMusica() {
         if (music != null) {
@@ -130,7 +166,7 @@ public class MusicController implements Runnable, Serializable {
     }
 
     /**
-     * Mette in pausa la riproduzione.
+     * Mette in pausa la riproduzione corrente.
      */
     public void pausaMusica() {
         if (music != null && music.isRunning()) {
@@ -139,7 +175,7 @@ public class MusicController implements Runnable, Serializable {
     }
 
     /**
-     * Riprende la riproduzione se in pausa.
+     * Riprende la riproduzione se precedentemente in pausa.
      */
     public void riprendiMusica() {
         if (music != null) {
@@ -148,14 +184,18 @@ public class MusicController implements Runnable, Serializable {
     }
 
     /**
-     * Verifica se la traccia è in riproduzione.
+     * Controlla se un clip è attualmente in riproduzione.
+     *
+     * @return {@code true} se sta suonando, {@code false} altrimenti
      */
     public boolean isPlaying() {
         return music != null && music.isRunning();
     }
 
     /**
-     * Imposta volume come percentuale [0–100].
+     * Imposta il volume desiderato come percentuale.
+     *
+     * @param percent valore compreso tra 0 (muto) e 100 (volume massimo)
      */
     public void setVolumePercent(int percent) {
         pendingVolumePercent = Math.max(0, Math.min(percent, 100));
@@ -163,14 +203,18 @@ public class MusicController implements Runnable, Serializable {
     }
 
     /**
-     * Ottiene il volume corrente percentuale.
+     * Restituisce la percentuale di volume attualmente impostata.
+     *
+     * @return percentuale di volume (0–100)
      */
     public int getVolumePercent() {
         return pendingVolumePercent;
     }
 
     /**
-     * Riproduce una breve clip una tantum da filesystem.
+     * Riproduce un breve effetto sonoro una tantum, caricato da file.
+     *
+     * @param filePath percorso del file audio sul filesystem
      */
     public void riproduciClip(String filePath) {
         new Thread(() -> {

@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
+ * Parser che interpreta l’input testuale dell’utente, rimuove le stopwords
+ * e identifica comandi e oggetti sia nell’ambiente sia nell’inventario.
+ * Fornisce il risultato dell’analisi in un {@link ParserOutput}.
+ * 
  * @author lorenzopeluso
  */
 public class Parser {
@@ -20,27 +23,25 @@ public class Parser {
     private final Set<String> stopwords;
 
     /**
+     * Costruisce un parser con il set di stopwords da escludere.
      *
-     * @param stopwords
+     * @param stopwords insieme di parole da ignorare durante il parsing
      */
     public Parser(Set<String> stopwords) {
         this.stopwords = stopwords;
     }
 
+    /**
+     * Controlla se un token corrisponde a un comando disponibile.
+     *
+     * @param token    la parola da verificare
+     * @param commands lista dei comandi conosciuti
+     * @return l’indice del comando trovato oppure -1 se non esiste
+     */
     private int checkForCommand(String token, List<Command> commands) {
         for (int i = 0; i < commands.size(); i++) {
-            if (commands.get(i).getName().equals(token) || 
-                    commands.get(i).getAlias().contains(token)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private int checkForObject(String token, List<BDObject> obejcts) {
-        for (int i = 0; i < obejcts.size(); i++) {
-            if (obejcts.get(i).getName().equals(token) || 
-                    obejcts.get(i).getAlias().contains(token)) {
+            if (commands.get(i).getName().equals(token)
+                    || commands.get(i).getAlias().contains(token)) {
                 return i;
             }
         }
@@ -48,88 +49,97 @@ public class Parser {
     }
 
     /**
+     * Verifica se il token corrisponde a un oggetto disponibile.
      *
-     * @param input
-     * @param commands
-     * @param objects
-     * @param inventory
-     * @return
+     * @param token   il testo da controllare
+     * @param objects lista di oggetti nell’ambiente
+     * @return l’indice dell’oggetto trovato oppure -1 se non presente
      */
-    public ParserOutput parse(String input, List<Command> commands, 
-            List<BDObject> objects, List<BDObject> inventory) {
-        
+    private int checkForObject(String token, List<BDObject> objects) {
+        for (int i = 0; i < objects.size(); i++) {
+            if (objects.get(i).getName().equals(token)
+                    || objects.get(i).getAlias().contains(token)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Analizza l’input dell’utente, identifica il comando e
+     * opzionalmente un oggetto nell’ambiente o nell’inventario.
+     *
+     * @param input     la stringa digitata dall’utente
+     * @param commands  lista di comandi possibili
+     * @param objects   lista di oggetti presenti nella stanza
+     * @param inventory lista di oggetti nell’inventario
+     * @return un {@link ParserOutput} contenente il comando,
+     *         l’oggetto ambiente (o null) e l’oggetto inventario (o null),
+     *         oppure null se la stringa dopo il filtraggio è vuota
+     */
+    public ParserOutput parse(String input,
+            List<Command> commands,
+            List<BDObject> objects,
+            List<BDObject> inventory) {
+
         List<String> tokens = parseString(input, stopwords);
-        if (!tokens.isEmpty()) {
-            
-            Command command = null;
-            BDObject object = null;
-            BDObject inventoryObject = null;
-            
-            int commandIndex = -1;
-            int commandTokenIndex = -1;
-            boolean found = false;
-
-            // Cerca il comando dinamicamente tra tutti i token
-            for (int i = 0; i < tokens.size() && !found; i++) {
-                commandIndex = checkForCommand(tokens.get(i), commands);
-                if (commandIndex != -1) {
-                    commandTokenIndex = i;
-                    found = true;
-                }
-            }
-
-            if (commandIndex == -1) {
-                // Nessun comando trovato, restituisce un payload vuoto
-                return new ParserOutput(null, null);
-            }
-
-            //altrimenti memorizza il comando
-            command = commands.get(commandIndex);
-
-            //ricerca degli oggetti
-            for (int i = 0; i < tokens.size(); i++) {
-                
-                boolean sameToken = (i == commandTokenIndex);
-
-                int objectIndex = -1;
-                int inventoryIndex = -1;
-
-                if (!sameToken && object == null) {
-                    objectIndex = checkForObject(tokens.get(i), objects);
-                    if (objectIndex != -1) {
-                        object = objects.get(objectIndex);
-                    }
-                }
-
-                if (!sameToken && inventoryObject == null) {
-                    inventoryIndex = checkForObject(tokens.get(i), inventory);
-                    if (inventoryIndex != -1) {
-                        inventoryObject = inventory.get(inventoryIndex);
-                    }
-                }
-            }
-            return new ParserOutput(command, object, inventoryObject);
-            //se ha trovato un comando, opzionalmente un oggetto, vengono restituiti nel payload
-        }else{ 
+        if (tokens.isEmpty()) {
             return null;
         }
-    };
-    
+
+        Command command = null;
+        BDObject object = null;
+        BDObject inventoryObject = null;
+        int commandIndex = -1, commandTokenIndex = -1;
+        boolean found = false;
+
+        // Cerca il comando tra i token
+        for (int i = 0; i < tokens.size() && !found; i++) {
+            commandIndex = checkForCommand(tokens.get(i), commands);
+            if (commandIndex != -1) {
+                commandTokenIndex = i;
+                found = true;
+            }
+        }
+
+        if (commandIndex == -1) {
+            // Nessun comando valido trovato
+            return new ParserOutput(null, null);
+        }
+
+        command = commands.get(commandIndex);
+
+        // Ricerca di oggetti ambiente e inventario
+        for (int i = 0; i < tokens.size(); i++) {
+            if (i != commandTokenIndex && object == null) {
+                int idx = checkForObject(tokens.get(i), objects);
+                if (idx != -1)
+                    object = objects.get(idx);
+            }
+            if (i != commandTokenIndex && inventoryObject == null) {
+                int idx = checkForObject(tokens.get(i), inventory);
+                if (idx != -1)
+                    inventoryObject = inventory.get(idx);
+            }
+        }
+
+        return new ParserOutput(command, object, inventoryObject);
+    }
+
     /**
+     * Divide una stringa in token separati da spazi e filtra le stopword.
      *
-     * @param string
-     * @param stopwords
-     * @return
+     * @param string    la stringa di input
+     * @param stopwords l’insieme di parole da escludere
+     * @return lista di token utili all’analisi
      */
     public static List<String> parseString(String string, Set<String> stopwords) {
         List<String> tokens = new ArrayList<>();
-        String[] split = string.toLowerCase().split("\\s+");
-        for (String t : split) {
+        for (String t : string.toLowerCase().split("\\s+")) {
             if (!stopwords.contains(t)) {
                 tokens.add(t);
             }
         }
         return tokens;
     }
-
 }

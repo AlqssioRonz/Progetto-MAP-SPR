@@ -38,6 +38,9 @@ import javax.swing.border.EmptyBorder;
 import map.beforedeorbiting.GameDesc;
 
 /**
+ * Utility per visualizzare e gestire il taccuino di bordo: crea una finestra
+ * non decorata, permette di leggere/modificare il file
+ * <code>notebook.txt</code> e salva le modifiche su disco.
  *
  * @author ronzu
  */
@@ -47,6 +50,14 @@ public class NotebookUI {
     private static final Color BLUSCURO = Color.decode("#0f111c");
     private static final Color BLUCHIARO = Color.decode("#00e1d4");
 
+    /**
+     * Mostra la finestra del taccuino di bordo. Inizializza l’UI, carica il
+     * contenuto da file, e gestisce salvataggio e chiusura con conferme
+     * all’utente.
+     *
+     * @param game il gioco da cui ricavare eventuali informazioni (non usato al
+     * momento ma lasciato per estendibilità)
+     */
     public static void show(GameDesc game) {
 
         SwingUtilities.invokeLater(() -> {
@@ -186,7 +197,12 @@ public class NotebookUI {
         });
     }
 
-    // Metodo per leggere il contenuto del file e inserirlo nel JTextArea
+    /**
+     * Legge il contenuto del file e lo inserisce nell’area di testo.
+     *
+     * @param file il file da cui leggere (creato se non esiste)
+     * @param textArea l’area di testo da riempire con il contenuto
+     */
     private static void caricaContenuto(File file, JTextArea textArea) {
         try {
             if (!file.exists()) {
@@ -203,7 +219,14 @@ public class NotebookUI {
         }
     }
 
-    // Metodo per salvare il contenuto del JTextArea nel file
+    /**
+     * Salva su file il contenuto dell’area di testo. Mostra un messaggio di
+     * conferma in caso di successo.
+     *
+     * @param file destinazione del salvataggio
+     * @param textArea area di testo contenente il testo da scrivere
+     * @param parentFrame finestra da cui dipende il dialog di conferma
+     */
     private static void salvaContenuto(File file, JTextArea textArea, JFrame parentFrame) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -216,6 +239,12 @@ public class NotebookUI {
         }
     }
 
+    /**
+     * Mostra un semplice messaggio di avviso quando il taccuino viene chiuso
+     * (senza salvataggio).
+     *
+     * @param parentFrame la finestra madre per centrare il dialog
+     */
     private static void mostraMessaggioChiusura(JFrame parentFrame) {
         JDialog dialog = new JDialog(parentFrame, "Messaggio", true);
         dialog.setUndecorated(true);
@@ -232,7 +261,9 @@ public class NotebookUI {
         titolo.setBorder(new EmptyBorder(10, 0, 0, 0));
 
         // Messaggio
-        JLabel messaggio = new JLabel("<html><center>Hai chiuso il taccuino.<br>Puoi consultarlo di nuovo in qualsiasi momento.</center></html>", SwingConstants.CENTER);
+        JLabel messaggio = new JLabel(
+                "<html><center>Hai chiuso il taccuino.<br>Puoi consultarlo di nuovo in qualsiasi momento.</center></html>",
+                SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.PLAIN, 18));
 
@@ -256,6 +287,12 @@ public class NotebookUI {
         dialog.setVisible(true);
     }
 
+    /**
+     * Visualizza un dialog di conferma “Taccuino salvato con successo!” dopo
+     * un’operazione di salvataggio riuscita.
+     *
+     * @param parentFrame finestra padre per centrare il dialog
+     */
     private static void mostraMesaggioSalvataggio(JFrame parentFrame) {
         JDialog dialog = new JDialog(parentFrame, "Salvato", true);
         dialog.setUndecorated(true);
@@ -265,7 +302,8 @@ public class NotebookUI {
         dialog.getContentPane().setBackground(BLUSCURO);
         dialog.setLayout(new BorderLayout());
 
-        JLabel messaggio = new JLabel("<html><center> Taccuino salvato con successo! <html><center>", SwingConstants.CENTER);
+        JLabel messaggio = new JLabel("<html><center> Taccuino salvato con successo! <html><center>",
+                SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.BOLD, 18));
         messaggio.setBorder(new EmptyBorder(20, 10, 10, 10));
@@ -287,6 +325,15 @@ public class NotebookUI {
         dialog.setVisible(true);
     }
 
+    /**
+     * Chiede conferma all’utente se salvare il taccuino prima di chiudere la
+     * finestra.
+     *
+     * @param frame finestra principale del taccuino
+     * @return scelta dell’utente: {@link JOptionPane#YES_OPTION} = salva poi
+     * chiudi, {@link JOptionPane#NO_OPTION} = chiudi senza salvare,
+     * {@link JOptionPane#CANCEL_OPTION} = annulla chiusura
+     */
     private static int mostraMessaggioChiusuraSalvataggio(JFrame frame) {
         final int[] scelta = {-1}; // 0 = Sì, 1 = No, 2 = Annulla
 
@@ -298,7 +345,9 @@ public class NotebookUI {
         dialog.getContentPane().setBackground(BLUSCURO);
         dialog.setLayout(new BorderLayout());
 
-        JLabel messaggio = new JLabel("<html><center> Hai modificato il taccuino. Vuoi salvare prima di uscire?<html><center>", SwingConstants.CENTER);
+        JLabel messaggio = new JLabel(
+                "<html><center> Hai modificato il taccuino. Vuoi salvare prima di uscire?<html><center>",
+                SwingConstants.CENTER);
         messaggio.setForeground(Color.WHITE);
         messaggio.setFont(new Font("Consolas", Font.BOLD, 20));
         messaggio.setBorder(new EmptyBorder(20, 10, 10, 10));

@@ -54,45 +54,130 @@ import map.beforedeorbiting.util.MusicController;
 import map.beforedeorbiting.util.ConcurrentChronometer;
 
 /**
- * Classe che mostra la GUI del gioco.
+ * Finestra principale dell’interfaccia grafica di “Before Deorbiting”. Coordina
+ * creazione/avvio del gioco, I/O testuale, pannello immagine, menu (musica,
+ * timer, skip, esci), minigiochi e finale interattivo.
  */
 public class GameUI extends JFrame {
 
+    /**
+     * Font principale usato nell'interfaccia.
+     */
     private static final Font FONT = new Font("Helvetica", Font.BOLD, 16);
+
+    /**
+     * Colore di sfondo scuro per i pannelli.
+     */
     private static final Color BLUSCURO = Color.decode("#0f111c");
+
+    /**
+     * Colore di accento chiaro per i componenti attivi.
+     */
     private static final Color BLUCHIARO = Color.decode("#00e1d4");
+
+    /**
+     * Colore scuro alternativo, usato per componenti secondari.
+     */
     private static final Color VERDESCURO = Color.decode("#33452b");
+
+    /**
+     * Colore del testo.
+     */
     private static final Color TEXT = new Color(6, 6, 6);
 
+    /**
+     * Traccia musicale attualmente in riproduzione.
+     */
     private String currentMusicTrack = null;
 
+    /**
+     * Controller per la musica di sottofondo.
+     */
     private final MusicController music = new MusicController();
 
+    /**
+     * Cronometro concorrente per il timer di gioco.
+     */
     private ConcurrentChronometer chronometer = new ConcurrentChronometer();
 
+    /**
+     * Parser per elaborare comandi testuali.
+     */
     private Parser parser = null;
+
+    /**
+     * Motore di gioco che gestisce la logica.
+     */
     private Engine engine;
+
+    /**
+     * Descrizione dello stato di gioco corrente.
+     */
     private GameDesc game;
 
+    /**
+     * Finestra di conferma chiusura/uscita al menu.
+     */
     private JFrame confermaChiusura;
+
+    /**
+     * Pannello di testo per output di comandi e narrazione.
+     */
     private JTextPane textPane;
+
+    /**
+     * Scroll pane avvolgente il textPane.
+     */
     private JScrollPane scrollPane;
+
+    /**
+     * Campo di input testuale per i comandi dell'utente.
+     */
     private JTextField textBox;
+
+    /**
+     * Pulsante per attivare/disattivare la musica.
+     */
     private JButton musicButton;
+
+    /**
+     * Barra del menu con bottoni di controllo.
+     */
     private JMenuBar menuBar;
 
+    /**
+     * Pannello che contiene layout e sotto-pannelli principali.
+     */
     private JPanel macroPanel;
-    private ImagePanel imageViewer; // Changed to ImagePanel
+
+    /**
+     * Pannello custom che disegna l'immagine corrente.
+     */
+    private ImagePanel imageViewer;
+
+    /**
+     * Etichetta di supporto per mostrare icone o testo sull'immagine.
+     */
     private JLabel imageLabel;
+
+    /**
+     * Flag che indica se la partita è stata caricata da salvataggio.
+     */
     private boolean load;
 
+    /**
+     * Flag per gestire l'interazione del finale A/B.
+     */
     private boolean intoFinale = false;
 
+    /**
+     * Gestore di stampa per output formattato e animato.
+     */
     private PrinterUI printer;
 
     /**
-     * Costruttore della classe GameUI.
-     *
+     * Costruisce la GUI per una nuova partita “vergine”. Crea un nuovo
+     * BeforeDeorbiting + Engine e ne avvia l’inizializzazione.
      */
     public GameUI() {
         // 1) crea lo stato di gioco “vergine”
@@ -104,10 +189,10 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Costruttore per partita caricata da JSON
+     * Costruisce la GUI caricando lo stato di gioco da file JSON.
      *
-     * @param savePath il Path del file .json da cui caricare lo stato
-     * @throws java.io.IOException
+     * @param savePath il percorso del file di salvataggio
+     * @throws IOException se il file non è valido o non esiste
      */
     public GameUI(Path savePath) throws IOException {
         this.load = true;
@@ -120,7 +205,9 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Punto unico di inizializzazione della GUI a partire da un Engine.
+     * Inizializza la GUI a partire da un Engine.
+     *
+     * @param engine il motore di gioco da utilizzare
      */
     private void initWithEngine(Engine engine) {
         this.engine = engine;
@@ -139,32 +226,31 @@ public class GameUI extends JFrame {
         } catch (Exception ex) {
             Logger.getLogger(GameUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // Avvia il timer
-        // updateTimerLabel();
     }
 
     /**
-     * Conclude la partita e mostra la finestra di fine gioco.
+     * Ferma la musica e svolge le operazioni di cleanup al termine della
+     * partita.
      */
     public void concludiPartita() {
         music.stopMusica();
     }
 
     /**
-     * Inizializza i componenti principali dell'interfaccia.
+     * Imposta e avvia il gioco: - crea o ricarica BeforeDeorbiting+Engine -
+     * inizializza il Parser - chiama nextMove(null) per il welcome - mostra
+     * l’immagine iniziale della stanza
      *
-     * @param loadGame Indica se caricare un salvataggio.
-     * @param file File di salvataggio da caricare, se presente.
-     * @throws Exception Se c'è un problema durante l'inizializzazione o il
-     * caricamento.
+     * @param loadGame true se caricare da salvataggio
+     * @param file file di salvataggio (non usato)
+     * @throws Exception in caso di errori I/O o parser
      */
     private void mainComponents(boolean loadGame, File file) throws Exception { // <-------------------- interazione
         if (!loadGame) {
             game = new BeforeDeorbiting();
             engine = new Engine(game);
         } else {
-            // keep the already provided engine and game
+            // Mantieni l'engine e il gioco già forniti
             game = engine.getGame();
         }
 
@@ -188,16 +274,16 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Inizializza i componenti della GUI.
+     * Costruisce e dispone tutti i componenti Swing: dialog di conferma,
+     * textPane, scrollPane, textBox, menu bar, pannello centrale con output e
+     * immagine/inventario.
      *
-     * @throws InterruptedException Se c'è un problema durante
-     * l'inizializzazione.
+     * @throws InterruptedException se fallisce l’inizializzazione concorrente
      */
     private void initComponents() throws InterruptedException {
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent evt) {
-                // parentFrame.setVisible(true);
                 dispose();
             }
         });
@@ -206,11 +292,10 @@ public class GameUI extends JFrame {
         JPanel panel = new JPanel();
         JPanel buttonPanelExit = new JPanel();
         macroPanel = new JPanel();
-        imageViewer = new ImagePanel(); // Changed to ImagePanel
+        imageViewer = new ImagePanel();
 
         JLabel jTextArea2 = new JLabel();
         textBox = new JTextField();
-        // textBox.setPreferredSize(new Dimension(800, 30));
         textBox.addActionListener(this::elaborateInput);
         scrollPane = new JScrollPane();
         textPane = new JTextPane();
@@ -330,9 +415,8 @@ public class GameUI extends JFrame {
         textPane.setFont(FONT);
         textPane.setBorder(BorderFactory.createLineBorder(BLUSCURO, 4));
         scrollPane.setViewportView(textPane);
-        imageViewer = new ImagePanel(); // Changed to ImagePanel
+        imageViewer = new ImagePanel();
         textPane.setFont(new Font("Helvetica", Font.PLAIN, 18));
-        imageViewer.setImage("src//img//HTN_Load.png");
         imageViewer.setPreferredSize(new Dimension(480, 270));
 
         // --- configura menuBar ---
@@ -519,12 +603,12 @@ public class GameUI extends JFrame {
                     da mesi che non metto piede sulla Terra,
                     ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
                     Non vedo l'ora di gustarmi un vero caffè.
-                          
+
                     Tra poco la stazione verrà deorbitata: una volta distrutta,
                     i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò,
                     inutile negarlo.
                     Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.
-                          
+
                     Mi mancherà questo posto, certo, ma soprattutto mi mancheranno i miei due compagni: Luke e Susan.
                     Luke è un vecchio amico d'infanzia.
                     Un po' pignolo, a volte insopportabile, ma mi ha sempre seguito in ogni follia.
@@ -532,7 +616,7 @@ public class GameUI extends JFrame {
                     Brillante, silenziosa, e ottima compagna di viaggio.
                     Nessuno dei due è venuto a reclamare il suo turno per dormire,
                     probabilmente stanno ancora festeggiando da ieri.
-                          
+
                     Esco dal sacco a pelo e lo arrotolo con cura.
                     La giornata può cominciare.
                     Mi spingo lentamente verso il modulo Zarya, il magazzino della stazione.
@@ -543,10 +627,10 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Continua il gioco ripristinando lo stato precedente alla chiusura del
-     * menu di conferma uscita.
+     * Riapre la finestra di gioco dopo che è stato nascosto il dialog di
+     * uscita.
      *
-     * @param evt Evento di chiusura del componente.
+     * @param evt evento di componente (dialog nascosto)
      */
     private void continueGame(java.awt.event.ComponentEvent evt) {
         setEnabled(true);
@@ -555,9 +639,11 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Elabora l'input dell'utente.
+     * Elabora l’input dell’utente da textBox: - stampa il comando - gestisce il
+     * finale interattivo A/B - invoca il Parser e nextMove() - eventuale
+     * minigioco o ending - aggiorna immagine e verifica fine partita
      *
-     * @param evt Evento di azione.
+     * @param evt evento di invio testo (Enter)
      */
     private void elaborateInput(ActionEvent evt) {
         String input = textBox.getText();
@@ -569,36 +655,38 @@ public class GameUI extends JFrame {
                 switch (input.toUpperCase()) {
                     case "A":
                         intoFinale = false;
-                        printer.print("""
-                                      Spegni il terminale di bordo della Dragon.
-                                      Ti siedi di nuovo davanti al monitor centrale. Premi il tasto per stabilizzare il sistema di backup.
-                                      I dati si sbloccano. Le voci si fanno più nitide. Una simulazione prende forma attorno a te.
-                                      
-                                      LUKE:
-                                      "È strano… essere qui. Ma ti sento."
-                                      SUSAN:
-                                      "Non è più il nostro corpo. Ma se ci sei tu, è ancora casa."
-                                      La stazione continuerà ad orbitare, ormai fuori dai protocolli. Nessuno ti verrà a prendere.
-                             
-                                      Ma tu non sei più solo.
-                            
-                                      Rinunci alla Terra. Ma ritrovi chi avevi perso.
-                                      """);
+                        printer.print(
+                                """
+                                        Spegni il terminale di bordo della Dragon.
+                                        Ti siedi di nuovo davanti al monitor centrale. Premi il tasto per stabilizzare il sistema di backup.
+                                        I dati si sbloccano. Le voci si fanno più nitide. Una simulazione prende forma attorno a te.
+
+                                        LUKE:
+                                        "È strano… essere qui. Ma ti sento."
+                                        SUSAN:
+                                        "Non è più il nostro corpo. Ma se ci sei tu, è ancora casa."
+                                        La stazione continuerà ad orbitare, ormai fuori dai protocolli. Nessuno ti verrà a prendere.
+
+                                        Ma tu non sei più solo.
+
+                                        Rinunci alla Terra. Ma ritrovi chi avevi perso.
+                                        """);
                         game.setCurrentRoom(game.getRoomByName("MACCHINA"));
                         this.updateImageViewer(game.getCurrentRoom().getRoomImage());
                         break;
 
                     case "B":
                         intoFinale = false;
-                        printer.print("""
-                                      Non ti volti.
-                                      Attraversi il portello, sali nella Dragon. I sistemi si attivano al tuo passaggio. Il sedile ti accoglie come una bara leggera 
-                                      Un clic, e la stazione inizia ad allontanarsi.
-                                      Dalle cuffie… silenzio. Nessuna voce
-                                      Sei salvo. Ma sei solo.
-                                      
-                                      Vivi. Ma hai lasciato indietro tutto.
-                                      """);
+                        printer.print(
+                                """
+                                        Non ti volti.
+                                        Attraversi il portello, sali nella Dragon. I sistemi si attivano al tuo passaggio. Il sedile ti accoglie come una bara leggera
+                                        Un clic, e la stazione inizia ad allontanarsi.
+                                        Dalle cuffie… silenzio. Nessuna voce
+                                        Sei salvo. Ma sei solo.
+
+                                        Vivi. Ma hai lasciato indietro tutto.
+                                        """);
                         game.setCurrentRoom(game.getRoomByName("UMANO"));
                         this.updateImageViewer(game.getCurrentRoom().getRoomImage());
                         break;
@@ -632,16 +720,14 @@ public class GameUI extends JFrame {
                 this.ending(ps);
             }
 
-            checkEndGame();
-
         }
     }
 
     /**
-     * Gestisce l'evento di clic sul pulsante per tornare al menu principale.
+     * Ritorna al menu principale quando l’utente conferma l’uscita.
      *
-     * @param evt Evento di clic del mouse.
-     * @throws InterruptedException Se c'è un problema durante l'elaborazione.
+     * @param evt evento di click sul “Sì”
+     * @throws InterruptedException se la navigazione fallisce
      */
     private void jButton1goToMenu(java.awt.event.MouseEvent evt) throws InterruptedException {
         MenuUI start = new MenuUI();
@@ -651,9 +737,9 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Gestisce l'evento di clic sul pulsante per non chiudere il gioco.
+     * Annulla la chiusura e ripristina la finestra di gioco.
      *
-     * @param evt Evento di clic del mouse.
+     * @param evt evento di click sul “No”
      */
     private void jButton2dontClose(java.awt.event.MouseEvent evt) {
         setEnabled(true);
@@ -661,9 +747,10 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Gestisce l'evento di clic sul pulsante di uscita.
+     * Mostra la conferma di uscita, o torna subito al menu se salvato.
      *
-     * @param evt Evento di clic del mouse.
+     * @param evt evento di click sul “Torna al menù”
+     * @throws InterruptedException se la navigazione fallisce
      */
     private void tornaMenuMouseClicked(java.awt.event.MouseEvent evt) throws InterruptedException {
         if (game.getLastCommand() != null && game.getLastCommand().getType() == CommandType.SAVE) {
@@ -676,6 +763,13 @@ public class GameUI extends JFrame {
         }
     }
 
+    /**
+     * Disabilita temporaneamente la stampa per skippare il testo corrente.
+     *
+     * @param ev0 evento di click sul “Skip testo”
+     * @param printer istanza di PrinterUI da controllare
+     * @throws InterruptedException se sleep viene interrotto
+     */
     private void skipButtonMouseClicked(java.awt.event.MouseEvent ev0, PrinterUI printer) throws InterruptedException {
         int speed = printer.getSpeed();
         printer.setSpeed(0);
@@ -684,34 +778,18 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Restituisce il gestore della musica.
+     * Restituisce il controller per la musica di sottofondo.
      *
-     * @return Il gestore della musica.
-     *
+     * @return istanza di MusicController
      */
     public MusicController getMusica() {
         return music;
     }
 
     /**
-     * Controlla se il gioco è terminato.
-     */
-    private void checkEndGame() {
-        boolean isGameOver = false;
-
-        if (engine.getGame().getCurrentRoom() == null) {
-            isGameOver = true;
-        }
-
-        if (isGameOver) {
-            // concludiPartita();
-        }
-    }
-
-    /**
-     * Aggiorna l'immagine della stanza corrente usando il percorso fornito.
+     * Aggiorna l’immagine della stanza corrente e regola la traccia musicale.
      *
-     * @param imagePath Percorso dell'immagine da mostrare.
+     * @param imagePath percorso del file immagine
      */
     public void updateRoomImage(String imagePath) {
         if (imagePath == null) {
@@ -730,12 +808,14 @@ public class GameUI extends JFrame {
             }
             case "ZARYA", "UNITY", "QUEST", "TRANQUILITY", "DESTINY", "SPAZIO" ->
                 "/music/Professor-Layton.wav";
-            case "KIBO" -> "/music/Journey.wav";
-            case "UMANO", "MACCHINA", "HARMONY " -> "/music/Journey.wav";
+            case "KIBO" ->
+                "/music/Journey.wav";
+            case "UMANO", "MACCHINA", "HARMONY " ->
+                "/music/Journey.wav";
             case "HARMONY" -> {
-                if(!game.isKiboVisited()){
+                if (!game.isKiboVisited()) {
                     yield "/music/Professor-Layton.wav";
-                }else{
+                } else {
                     yield "/music/Journey.wav";
                 }
             }
@@ -769,7 +849,8 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Classe interna per gestire lo stream di output verso JTextPane.
+     * OutputStream custom per inviare caratteri a un JTextPane in modo
+     * thread-safe.
      */
     private class JTextPaneOutputStream extends OutputStream {
 
@@ -786,7 +867,7 @@ public class GameUI extends JFrame {
     }
 
     /**
-     * Classe interna per gestire il pannello delle immagini.
+     * Pannello custom che disegna e scala un’immagine di sfondo.
      */
     private class ImagePanel extends JPanel {
 
@@ -806,6 +887,10 @@ public class GameUI extends JFrame {
         }
     }
 
+    /**
+     * Avvia il minigioco di sequenza di frecce in un dialog modale. Al termine
+     * applica il risultato allo stato di gioco.
+     */
     public void directionsMinigame() {
         // Definisco il pattern di frecce
         java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
@@ -864,6 +949,12 @@ public class GameUI extends JFrame {
         dialog.setVisible(true);
     }
 
+    /**
+     * Gestisce il finale interattivo: stampa dialoghi di HAL/LUKE/SUSAN e
+     * attende scelta A/B.
+     *
+     * @param ps stream su cui stampare il testo di fine
+     */
     public void ending(PrintStream ps) {
         intoFinale = true;
 

@@ -5,27 +5,33 @@
 package map.beforedeorbiting.impl;
 
 /**
+ * Interfaccia per un oggetto osservabile nel gioco. Consente di registrare e
+ * rimuovere {@link GameObserver} e di notificare tutti gli osservatori
+ * registrati quando si verifica un evento di gioco rilevante.
  *
  * @author lorenzopeluso
  */
 public interface GameObservable {
-    
-   /**
-     *
-     * @param o
-     */
-    public void attach(GameObserver o);
-    
+
     /**
+     * Registra un nuovo osservatore interessato agli eventi del gioco.
      *
-     * @param o
+     * @param o l'osservatore da aggiungere (non null)
      */
-    public void detach(GameObserver o);
-    
+    void attach(GameObserver o);
+
     /**
+     * Rimuove un osservatore precedentemente registrato.
      *
+     * @param o l'osservatore da rimuovere (non null)
      */
-    public void notifyObservers(); 
-    
-    
+    void detach(GameObserver o);
+
+    /**
+     * Notifica tutti gli osservatori registrati riguardo a un evento del gioco.
+     * Viene invocato tipicamente quando lo stato di gioco cambia, affinché ogni
+     * {@link GameObserver} possa reagire di conseguenza.
+     */
+    void notifyObservers();
+
 }

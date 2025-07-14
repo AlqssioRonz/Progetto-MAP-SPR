@@ -24,26 +24,38 @@ import map.beforedeorbiting.ui.RobotArmPuzzleUI;
 /**
  * Questa classe rappresenta l'observer del comando 'USE', permette al giocatore
  * di utilizzare gli oggetti in gioco e di visualizzare un messaggio di
- * risposta. Per farlo, implmenta l'interfaccia GameObserver.
+ * risposta. Per farlo, implementa l'interfaccia GameObserver.
  *
  * @author ronzu
  */
 public class UseObserver implements GameObserver, Serializable {
 
-    /*
-     * Crea una HashMap che ci permette di utilizzare un determinato
-     * oggetto, in base all'id scelto.
+    /**
+     * Mappa che associa ogni {@link BDObject} utilizzabile alla sua funzione di
+     * utilizzo.
      */
     private final Map<BDObject, Function<GameDesc, String>> uses = new HashMap<>();
 
+    /**
+     * Password necessaria per sbloccare il modulo DESTINY.
+     */
     private final String DESTINY_PASSWORD = "NOESCAPE";
 
+    /**
+     * Sequenza di movimenti richiesta per risolvere il puzzle del braccio
+     * robotico.
+     */
     private final int[][] CORRECT_ROBOT_MOVEMET = {
         {0, -1, -1},
         {-1, 0, -1},
         {-1, 0, -2}
     };
 
+    /**
+     * Costruisce un UseObserver e registra le azioni per ciascun oggetto.
+     *
+     * @param game lo stato di gioco corrente
+     */
     public UseObserver(GameDesc game) {
         uses.put(game.getObjectByID(0), this::combineModel);
         uses.put(game.getObjectByID(1), this::combineModel);
@@ -62,16 +74,14 @@ public class UseObserver implements GameObserver, Serializable {
         uses.put(game.getObjectByID(15), this::useRobotTerminal);
     }
 
-    /*
-     * Aggiorna lo stato del gioco in base all'output del parser e restituisce
-     * un messaggio di risposta.
-     * 
-     * @param game l'oggetto GameDesc che rappresenta lo stato corrente del gioco
-     * 
-     * @param parserOutput l'output del parser utile per conoscere l'input
-     * dell'utente
-     * 
-     * @return il messaggio di risposta in base all'azione di 'usa'.
+    /**
+     * Gestisce l'evento di utilizzo di un oggetto. Verifica che il comando sia
+     * di tipo USE e che l'oggetto sia utilizzabile, quindi applica l'azione
+     * corrispondente.
+     *
+     * @param game lo stato di gioco corrente
+     * @param parserOutput l'output del parser che contiene comando e oggetto
+     * @return messaggio di risposta all'azione di utilizzo
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {
@@ -81,7 +91,9 @@ public class UseObserver implements GameObserver, Serializable {
                 if (game.getInventory().getList().contains(parserOutput.getObject())) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                     InventoryUI.updateInventory(game);
-                } else if (game.getCurrentRoom().getObjects().contains(parserOutput.getObject()) && (parserOutput.getObject().getId() == 9 || parserOutput.getObject().getId() == 13 || parserOutput.getObject().getId() == 14 || parserOutput.getObject().getId() == 15)) {
+                } else if (game.getCurrentRoom().getObjects().contains(parserOutput.getObject())
+                        && (parserOutput.getObject().getId() == 9 || parserOutput.getObject().getId() == 13
+                        || parserOutput.getObject().getId() == 14 || parserOutput.getObject().getId() == 15)) {
                     useMsg.append(uses.get(parserOutput.getObject()).apply(game));
                 } else {
                     useMsg.append("Non possiedi questo oggetto al momento! Riprova, magari sarai più fortunato.");
@@ -93,6 +105,12 @@ public class UseObserver implements GameObserver, Serializable {
         return useMsg.toString();
     }
 
+    /**
+     * Legge e restituisce il contenuto del diario di Susan.
+     *
+     * @param game lo stato di gioco (non utilizzato)
+     * @return testo del diario di Susan
+     */
     public String readSusanDiary(GameDesc game) {
         StringBuilder readDiary = new StringBuilder();
         readDiary.append("Le pagine sono poche, ordinate, scritte con una grafia decisa. \n"
@@ -107,6 +125,12 @@ public class UseObserver implements GameObserver, Serializable {
         return readDiary.toString();
     }
 
+    /**
+     * Legge e restituisce la nota criptica di Luke.
+     *
+     * @param game lo stato di gioco (non utilizzato)
+     * @return testo del bigliettino di Luke
+     */
     public String readLukeNote(GameDesc game) {
         StringBuilder readNote = new StringBuilder();
         readNote.append("Nel bigliettino di Luke c'è una nota affrettata: \n");
@@ -115,6 +139,12 @@ public class UseObserver implements GameObserver, Serializable {
         return readNote.toString();
     }
 
+    /**
+     * Combina pezzi di vetro per creare un mezzo prisma o un prisma completo.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio relativo al risultato della combinazione
+     */
     public String createPrism(GameDesc game) {
         StringBuilder prismMsg = new StringBuilder();
         if (game.getInventory().count(game.getObjectByID(6)) >= 2) {
@@ -137,6 +167,12 @@ public class UseObserver implements GameObserver, Serializable {
         return prismMsg.toString();
     }
 
+    /**
+     * Utilizza il prisma per riflettere la luce nel modulo DESTINY.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio relativo all'uso del prisma
+     */
     public String usePrism(GameDesc game) {
         StringBuilder usingPrismMsg = new StringBuilder();
         // servirebbe anche il controllo per capire se la luce dall'oblò arriva
@@ -156,16 +192,28 @@ public class UseObserver implements GameObserver, Serializable {
         return usingPrismMsg.toString();
     }
 
+    /**
+     * Apre il terminale HAL in un'interfaccia grafica separata.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio di conferma dell'accensione del computer
+     */
     public String useComputer(GameDesc game) {
         StringBuilder usingComputer = new StringBuilder();
         SwingUtilities.invokeLater(() -> {
             HALterminal terminal = new HALterminal(game);
-            terminal.setVisible(true);            
+            terminal.setVisible(true);
         });
         usingComputer.append("Hai acceso il computer.");
         return usingComputer.toString();
     }
 
+    /**
+     * Indossa la tuta spaziale di Luke e abilita l'accesso allo spazio.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio dopo l'indossamento della tuta
+     */
     public String wearSpaceSuit(GameDesc game) {
         StringBuilder wearSuit = new StringBuilder();
         wearSuit.append("Hai indossato la tuta di Luke! \n"
@@ -178,11 +226,24 @@ public class UseObserver implements GameObserver, Serializable {
         return wearSuit.toString();
     }
 
+    /**
+     * Apre l'interfaccia del taccuino di bordo.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio di conferma dell'apertura del taccuino
+     */
     public String useNotebook(GameDesc game) {
         NotebookUI.show(game);
         return "Apri il taccuino!";
     }
 
+    /**
+     * Combina i pezzi del modellino per ottenere il modellino completo della
+     * ISS.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio relativo al risultato della combinazione
+     */
     public String combineModel(GameDesc game) {
         StringBuilder modelMsg = new StringBuilder();
         String descrModellino = "Un Modellino, rappresenta la stazione spaziale internazionale.\n"
@@ -202,7 +263,7 @@ public class UseObserver implements GameObserver, Serializable {
 
             BDObject modellinoCompleto = new BDObject(0123, "Modellino della Stazione",
                     descrModellino);
-            modellinoCompleto.setAlias(Set.of("modellinostazione","modellinocompleto"));
+            modellinoCompleto.setAlias(Set.of("modellinostazione", "modellinocompleto"));
 
             game.getInventory().add(modellinoCompleto);
 
@@ -215,6 +276,13 @@ public class UseObserver implements GameObserver, Serializable {
         return modelMsg.toString();
     }
 
+    /**
+     * Mostra il dialogo per inserire la password di Destiny e sblocca il modulo
+     * se corretta.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio relativo al successo o fallimento dell'inserimento
+     */
     public String insertDestinyPassword(GameDesc game) {
         StringBuilder pswMsg = new StringBuilder();
 
@@ -236,20 +304,26 @@ public class UseObserver implements GameObserver, Serializable {
         return pswMsg.toString();
     }
 
+    /**
+     * Gestisce il puzzle del terminale robotico per l'ormeggio della navicella.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio relativo al risultato del puzzle robotico
+     */
     public String useRobotTerminal(GameDesc game) {
         StringBuilder rbtmsg = new StringBuilder();
 
-        if(!game.isAiActive()) {
+        if (!game.isAiActive()) {
             boolean solved = RobotArmPuzzleUI.showPuzzleDialog(this.CORRECT_ROBOT_MOVEMET);
 
             if (solved) {
-                game.setCurrentRoom(game.getRoomById(11)); //stanza della scelta;
+                game.setCurrentRoom(game.getRoomById(11)); // stanza della scelta;
                 rbtmsg.append("Matrice di movimento riconosciuta. Completamento dell'ormeggio della navicella."
                         + "\nMi reco nel modulo harmony mentre penso il da farsi.");
             } else {
                 rbtmsg.append("Matrice non riconosciuta.");
             }
-            
+
         } else {
             rbtmsg.append("L'AI di bordo HAL, ha ancora accesso ai sistemi robotici "
                     + "della stazione. Dovrei prima disattivare il suo controllo "
@@ -258,17 +332,22 @@ public class UseObserver implements GameObserver, Serializable {
         return rbtmsg.toString();
     }
 
+    /**
+     * Fornisce la password per la botola verso la Soyuz, basata sul continente
+     * sorvolato.
+     *
+     * @param game lo stato di gioco corrente
+     * @return messaggio relativo all'uso del tablet per aprire la botola
+     */
     public String useTrapdor(GameDesc game) {
         if (!game.isFlagTrapdoor()) {
             if (game.getTrapdoor()) {
                 game.getObjectByID(14).setInUse(true);
                 return "La password per aprire la botola è il nome del continente su cui stiamo sorvolando.";
             } else {
-
                 return "Devo trovare Susan prima di scappare da qui.";
             }
         } else {
-
             return "La navicella per la fuga è eplosa, la mia unica speranza ora è la Dragon2.";
         }
     }

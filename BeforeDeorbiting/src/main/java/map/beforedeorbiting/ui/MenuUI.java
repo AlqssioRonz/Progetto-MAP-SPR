@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package map.beforedeorbiting.ui;
 
 import java.awt.Color;
@@ -41,34 +45,93 @@ import map.beforedeorbiting.util.RestServer;
 /**
  * Classe che rappresenta il menu principale del gioco Before Deorbiting.
  * Contiene pulsanti per avviare, caricare e visualizzare comandi/crediti, più
- * un toggle per l'audio.
+ * un toggle per l'audio e un server REST per la classifica online.
  *
  * @author ronzu
  */
 public class MenuUI extends JFrame {
 
+    /**
+     * Colore di sfondo principale del menu.
+     */
     private static final Color BACKGROUND = new Color(13, 12, 33);
+
+    /**
+     * Colore del bordo dei bottoni e dei pannelli.
+     */
     private static final Color BORDER = new Color(10, 9, 26);
+
+    /**
+     * Colore del testo dei bottoni.
+     */
     private static final Color TEXT = new Color(182, 180, 209);
 
+    /**
+     * Controller per la musica di sottofondo.
+     */
     private final MusicController music = new MusicController();
 
+    /**
+     * Server REST per gestire la classifica online.
+     */
     private RestServer restServer;
+
+    /**
+     * Flag che indica se il server REST è già stato avviato.
+     */
     private static boolean serverStarted;
+
+    /**
+     * Stato dell'audio (true = attivo, false = disattivato).
+     */
     private boolean audioOn = true;
 
+    /**
+     * Pannello principale con sfondo personalizzato.
+     */
     private JPanel background;
+
+    /**
+     * Bottone per iniziare una nuova partita.
+     */
     private JButton start;
+
+    /**
+     * Bottone per caricare una partita salvata.
+     */
     private JButton load;
+
+    /**
+     * Bottone per visualizzare i comandi di gioco.
+     */
     private JButton commands;
+
+    /**
+     * Bottone per visualizzare crediti e classifica.
+     */
     private JButton credits;
+
+    /**
+     * Bottone per attivare/disattivare l'audio.
+     */
     private JButton audio;
+
+    /**
+     * File chooser per selezionare il salvataggio da caricare.
+     */
     private JFileChooser fileChooser;
 
+    /**
+     * Costruttore che inizializza l'interfaccia del menu principale.
+     */
     public MenuUI() {
         initComponents();
     }
 
+    /**
+     * Inizializza e configura tutti i componenti grafici del menu: pannello di
+     * sfondo, bottoni, file chooser e relative azioni.
+     */
     private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Before Deorbiting");
@@ -84,7 +147,7 @@ public class MenuUI extends JFrame {
         setPreferredSize(new Dimension(1100, 700));
         setResizable(false);
 
-        // --- pannello con sfondo ---
+        // Pannello con sfondo custom
         ImageIcon icon = new ImageIcon(getClass().getResource("/img/intro.png"));
         Image bgImg = icon.getImage().getScaledInstance(1100, 700, Image.SCALE_SMOOTH);
         background = new JPanel() {
@@ -95,13 +158,13 @@ public class MenuUI extends JFrame {
             }
         };
 
-        // --- bottoni di testo (custom paintComponent per mantenere α) ---
+        // Bottoni di testo trasparenti
         start = createTextButton("Nuova Partita");
         load = createTextButton("Carica Partita");
         commands = createTextButton("Comandi di Gioco");
         credits = createTextButton("Crediti e Classifica");
 
-        // --- pulsante audio come immagine ---
+        // Pulsante audio con icona
         audio = new JButton();
         audio.setPreferredSize(new Dimension(64, 64));
         audio.setMargin(new Insets(0, 0, 0, 0));
@@ -112,13 +175,13 @@ public class MenuUI extends JFrame {
         audio.setRolloverIcon(ico);
         audio.setPressedIcon(ico);
 
-        // file chooser
+        // File chooser per caricamenti
         fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File("./saves"));
         fileChooser.setFileFilter(new FileNameExtensionFilter("File JSON", "json"));
         fileChooser.setAcceptAllFileFilterUsed(false);
 
-        // azioni
+        // Azioni dei bottoni
         start.addActionListener(this::onStart);
         load.addActionListener(this::onLoad);
         commands.addActionListener(e -> {
@@ -126,28 +189,31 @@ public class MenuUI extends JFrame {
             help.setLocationRelativeTo(this);
             help.setVisible(true);
             if (iconURL != null) {
-                ImageIcon frameIcon = new ImageIcon(iconURL);
-                help.setIconImage(frameIcon.getImage());
-            } else {
-                System.err.println("Warning: icona non trovata in /img/icon.png");
+                help.setIconImage(new ImageIcon(iconURL).getImage());
             }
         });
         credits.addActionListener(this::showWebsite);
         audio.addActionListener(e -> toggleAudio());
 
-        // layout
+        // Layout dei componenti
         setGroupLayout();
         pack();
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Listener per il pulsante "Nuova Partita". Elimina il file di taccuino,
+     * mostra la LoadBar e infine apre GameUI.
+     *
+     * @param e evento di ActionEvent dalla UI
+     */
     private void onStart(ActionEvent e) {
-        // 0) Tronco il file notebook.txt
+        // 1) Reset del taccuino
         Path notebookFile = Paths.get("notebook.txt");
         try {
             Files.writeString(
                     notebookFile,
-                    "", // contenuto vuoto
+                    "",
                     StandardCharsets.UTF_8,
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);
@@ -156,44 +222,45 @@ public class MenuUI extends JFrame {
                     .log(Level.SEVERE, "Impossibile resettare il taccuino", ex);
         }
 
-        // 1) Rimuovo tutti i componenti del menu
+        // 2) Rimuove i componenti del menu
         getContentPane().removeAll();
         repaint();
 
-        // 2) Creo e aggiungo LoadBarUI alla stessa finestra
+        // 3) Crea e mostra LoadBarUI
         LoadBarUI loadBarPanel = new LoadBarUI();
-        setResizable(false);
         setTitle("Caricamento in corso...");
         getContentPane().add(loadBarPanel);
         validate();
 
-        // 3) Listener per isFinished
+        // 4) Alla fine del caricamento, apri GameUI
         loadBarPanel.addPropertyChangeListener(evt -> {
             if ("isFinished".equals(evt.getPropertyName())
                     && Boolean.TRUE.equals(evt.getNewValue())) {
                 SwingUtilities.invokeLater(() -> {
                     music.stopMusica();
-                    GameUI gameUI = new GameUI();
-                    gameUI.setVisible(true);
+                    new GameUI().setVisible(true);
                     dispose();
                 });
             }
         });
 
-        // 4) Avvio l'animazione
         loadBarPanel.startLoadBar();
     }
 
+    /**
+     * Listener per il pulsante "Carica Partita". Apre un file chooser e, se
+     * selezionato un JSON valido, carica GameUI.
+     *
+     * @param e evento di ActionEvent dalla UI
+     */
     private void onLoad(ActionEvent e) {
         fileChooser.setDialogTitle("Seleziona salvataggio JSON");
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             Path path = fileChooser.getSelectedFile().toPath();
             try {
                 music.stopMusica();
-                // avvia GameUI caricando direttamente dal JSON
-                GameUI gioco = new GameUI(path);
-                gioco.setVisible(true);
-                this.dispose(); // chiude il menu principale
+                new GameUI(path).setVisible(true);
+                dispose();
             } catch (IOException ex) {
                 Logger.getLogger(MenuUI.class.getName())
                         .log(Level.SEVERE, "Errore nel caricamento del JSON", ex);
@@ -206,29 +273,33 @@ public class MenuUI extends JFrame {
         }
     }
 
+    /**
+     * Crea un JButton di testo con sfondo semitrasparente e bordo custom.
+     *
+     * @param text il testo da visualizzare nel bottone
+     * @return il JButton configurato
+     */
     private JButton createTextButton(String text) {
-        // Colore di fondo semitrasparente
         int alpha = (int) (255 * 0.75);
         Color bg = new Color(
                 BACKGROUND.getRed(),
                 BACKGROUND.getGreen(),
                 BACKGROUND.getBlue(),
                 alpha);
+
         JButton btn = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
-                // dipingi sempre lo sfondo con α desiderata
                 g.setColor(bg);
                 g.fillRect(0, 0, getWidth(), getHeight());
                 super.paintComponent(g);
             }
-
         };
         btn.setFocusPainted(false);
         btn.setForeground(TEXT);
         btn.setFont(new Font("Consolas", Font.BOLD, 16));
-        btn.setOpaque(false); // disabilita fill LAF
-        btn.setContentAreaFilled(false); // disabilita fill LAF
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
         btn.setBorder(BorderFactory.createLineBorder(BORDER, 5));
         Dimension sz = new Dimension(200, 64);
         btn.setPreferredSize(sz);
@@ -238,11 +309,15 @@ public class MenuUI extends JFrame {
         return btn;
     }
 
+    /**
+     * Carica l'icona per il toggle audio, basata sullo stato {@code audioOn}.
+     *
+     * @return Icona corretta, o un'icona di default se non trovata
+     */
     private Icon loadAudioIcon() {
         String path = audioOn ? "/img/audio_on.png" : "/img/audio_off.png";
         java.net.URL resource = getClass().getResource(path);
         if (resource == null) {
-            // Fallback: icona di sistema se il file non viene trovato
             return UIManager.getIcon("OptionPane.informationIcon");
         }
         ImageIcon ico = new ImageIcon(resource);
@@ -250,43 +325,48 @@ public class MenuUI extends JFrame {
         return new ImageIcon(img);
     }
 
+    /**
+     * Avvia (o riavvia) il server REST per la classifica e apre il browser
+     * sulla root locale.
+     *
+     * @param e evento di ActionEvent dalla UI
+     */
     private void showWebsite(ActionEvent e) {
         if (!serverStarted) {
             try {
                 restServer = new RestServer();
-                restServer.start(); // avvia Grizzly + Jersey
+                restServer.start();
                 serverStarted = true;
             } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this,
+                JOptionPane.showMessageDialog(
+                        this,
                         "Errore avviando il server:\n" + ex.getMessage(),
                         "Errore",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
         }
-        // apre il browser sulla tua root RESTful
         try {
             Desktop.getDesktop().browse(new URI("http://localhost:8080/"));
         } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this,
+            JOptionPane.showMessageDialog(
+                    this,
                     "Non posso aprire il browser:\n" + ex.getMessage(),
                     "Errore",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Attiva o disattiva la musica e aggiorna l'icona del pulsante audio.
+     */
     private void toggleAudio() {
         audioOn = !audioOn;
-
         if (audioOn) {
-            music.riprendiMusica(); // riprende la musica se era stata stoppata
+            music.riprendiMusica();
         } else {
-            music.pausaMusica(); // mette in pausa la musica
+            music.pausaMusica();
         }
-
-        // aggiorna l'icona del pulsante
         Icon icon = loadAudioIcon();
         audio.setIcon(icon);
         audio.setRolloverIcon(icon);
@@ -294,6 +374,9 @@ public class MenuUI extends JFrame {
         audio.repaint();
     }
 
+    /**
+     * Configura il {@link GroupLayout} per posizionare i bottoni sullo sfondo.
+     */
     private void setGroupLayout() {
         GroupLayout gl = new GroupLayout(background);
         background.setLayout(gl);
@@ -308,13 +391,9 @@ public class MenuUI extends JFrame {
                                         .addComponent(commands, 200, 200, 200)
                                         .addComponent(credits, 200, 200, 200)))
                         .addGroup(gl.createSequentialGroup()
-                                .addContainerGap(0, Short.MAX_VALUE) // “spinge” tutto a sinistra
-                                .addComponent(audio,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.PREFERRED_SIZE,
-                                        GroupLayout.PREFERRED_SIZE)
-                                .addGap(50) // 30px dal bordo destro
-                        ));
+                                .addContainerGap(0, Short.MAX_VALUE)
+                                .addComponent(audio)
+                                .addGap(50)));
 
         gl.setVerticalGroup(
                 gl.createSequentialGroup()
@@ -335,41 +414,27 @@ public class MenuUI extends JFrame {
         getContentPane().setLayout(fl);
         fl.setHorizontalGroup(
                 fl.createParallelGroup()
-                        .addComponent(background,
-                                GroupLayout.DEFAULT_SIZE,
-                                GroupLayout.DEFAULT_SIZE,
-                                Short.MAX_VALUE));
+                        .addComponent(background, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
         fl.setVerticalGroup(
                 fl.createParallelGroup()
-                        .addComponent(background,
-                                GroupLayout.DEFAULT_SIZE,
-                                GroupLayout.DEFAULT_SIZE,
-                                Short.MAX_VALUE));
-
-    }
-
-    @SuppressWarnings("unused")
-    private void startGame() throws InterruptedException {
-        System.out.println("\nGIOCO CARICATO CORRETTAMENTE\n");
+                        .addComponent(background, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
     }
 
     /**
+     * Metodo principale per avviare il menu come applicazione stand-alone.
      *
-     * @param args
+     * @param args argomenti da linea di comando (non usati)
      */
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
             DBConfig.populateDatabase();
             try {
                 UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException
-                    | UnsupportedLookAndFeelException e) {
+            } catch (ClassNotFoundException | IllegalAccessException
+                    | InstantiationException | UnsupportedLookAndFeelException e) {
                 e.printStackTrace();
             }
-
             new MenuUI().setVisible(true);
-
         });
     }
-
 }

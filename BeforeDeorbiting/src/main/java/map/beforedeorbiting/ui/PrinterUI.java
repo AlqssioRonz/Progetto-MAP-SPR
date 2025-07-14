@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package map.beforedeorbiting.ui;
 
 import java.util.concurrent.ExecutorService;
@@ -12,6 +8,9 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.StyledDocument;
 
 /**
+ * Gestisce la "stampa" di testo in un {@link JTextPane} con effetto di
+ * digitazione simulando una macchina da scrivere. Internamente utilizza un
+ * {@link ExecutorService} per non bloccare il thread UI.
  *
  * @author andre
  */
@@ -23,9 +22,11 @@ public class PrinterUI {
     private int speed = 20;
 
     /**
-     * Costruttore che inizializza il JTextPane e l'ExecutorService.
+     * Costruisce un PrinterUI associato a un dato JTextPane. Inizializza anche
+     * l'ExecutorService per gestire la stampa asincrona.
      *
-     * @param textPane il JTextPane su cui verrà stampato il testo.
+     * @param textPane il JTextPane su cui verrà stampato il testo con l'effetto
+     * di digitazione
      */
     public PrinterUI(JTextPane textPane) {
         this.textPane = textPane;
@@ -33,19 +34,34 @@ public class PrinterUI {
         this.caret = (DefaultCaret) textPane.getCaret();
     }
 
+    /**
+     * Restituisce la velocità di stampa (ritardo in millisecondi tra un
+     * carattere e l'altro).
+     *
+     * @return il ritardo corrente in millisecondi tra la stampa di due
+     * caratteri
+     */
     public int getSpeed() {
         return speed;
     }
 
+    /**
+     * Imposta la velocità di stampa.
+     *
+     * @param speed il nuovo ritardo in millisecondi tra la stampa di due
+     * caratteri
+     */
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
     /**
      * Stampa il testo nel JTextPane con un effetto di digitazione. Ogni
-     * carattere viene aggiunto con un ritardo di 33 millisecondi.
+     * carattere viene inserito con un ritardo pari a {@link #speed}. Il caret
+     * viene temporaneamente disabilitato per evitare salti indesiderati durante
+     * la digitazione, e ripristinato al termine.
      *
-     * @param text il testo da stampare.
+     * @param text la stringa da "digitare" nel JTextPane
      */
     public void print(String text) {
         executor.submit(() -> {
@@ -53,11 +69,10 @@ public class PrinterUI {
                 // Disabilita l'aggiornamento automatico del caret
                 caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
 
-                // Ottiene il documento del JTextPane
+                // Documento in cui inserire il testo
                 StyledDocument doc = textPane.getStyledDocument();
 
                 for (char c : text.toCharArray()) {
-                    // Aggiungi il testo direttamente al documento
                     SwingUtilities.invokeLater(() -> {
                         try {
                             doc.insertString(doc.getLength(), String.valueOf(c), null);
@@ -68,7 +83,7 @@ public class PrinterUI {
                     Thread.sleep(speed);
                 }
 
-                // Riabilita l'aggiornamento automatico del caret e imposta la posizione alla fine del documento
+                // Riabilita l'aggiornamento automatico del caret e posizionalo alla fine
                 SwingUtilities.invokeLater(() -> {
                     caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
                     textPane.setCaretPosition(doc.getLength());
@@ -80,7 +95,8 @@ public class PrinterUI {
     }
 
     /**
-     * Arresta immediatamente l'ExecutorService e tutti i compiti in esecuzione.
+     * Termina immediatamente l'ExecutorService, interrompendo ogni compito in
+     * corso e impedendo ulteriori stampe.
      */
     public void shutdown() {
         executor.shutdownNow();

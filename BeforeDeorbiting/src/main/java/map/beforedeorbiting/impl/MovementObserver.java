@@ -11,29 +11,44 @@ import map.beforedeorbiting.type.CommandType;
 import map.beforedeorbiting.type.Room;
 
 /**
- * Questa classe rappresenta l'observer di comandi di movimento, permette di
- * muoversi nella stanza desiderata, se esiste. Per farlo, implmenta
- * l'interfaccia GameObserver.
+ * Observer per i comandi di movimento nella mappa. Permette al giocatore di
+ * spostarsi da una stanza all'altra, utilizzando programmazione funzionale per
+ * mappare ogni {@link CommandType} a una funzione che restituisce la
+ * {@link Room} di destinazione.
+ * <p>
+ * Nel costruttore viene popolato un
+ * {@code EnumMap<CommandType, Function<Room,Room>>} in cui la chiave è il tipo
+ * di comando di movimento e il valore è il metodo di {@link Room}
+ * corrispondente (es. {@link Room#getForward}). Tramite il metodo
+ * {@code apply()} della {@link java.util.function.Function} viene poi
+ * recuperata la stanza di destinazione.
  *
- * In questa classe utilizziamo un po' di programmazione funzionale per rendere
- * migliore il metodo update, di seguito una breve spiegazione:
- *
- * - il costruttore di MovementObserver crea un dizionario con chiave un
- * enumeratore e valore una function - la Function viene utilizzata nella
- * progrmmazione funzionale e permette di "trattare una funzione come una /**
- * Variabile – la {@link java.util.function.Function Function} ha
- * {@literal <input, output>} e con l’operatore {@code ::} possiamo…
- * ottenere metodi del parametro - tramite il metodo apply() possiamo eseguire
- * il metodo contenuto nella Function
- *
- * @author lorenzopeluso
- 
-
-*/
+ * @author lorenz
+ */
 public class MovementObserver implements GameObserver, Serializable {
 
+    /**
+     * Mappa che associa ogni comando di movimento a una funzione che, data la
+     * stanza corrente, restituisce la stanza di destinazione.
+     */
     private final Map<CommandType, Function<Room, Room>> moves = new EnumMap<>(CommandType.class);
 
+    /**
+     * Costruisce un MovementObserver inizializzando la mappa dei comandi di
+     * movimento.
+     * <p>
+     * Ogni {@link CommandType} di movimento viene associato a una
+     * {@link Function} che, data la stanza corrente, restituisce la stanza di
+     * destinazione:
+     * <ul>
+     * <li>{@link CommandType#FORWARD} → {@link Room#getForward()}</li>
+     * <li>{@link CommandType#AFT} → {@link Room#getAft()}</li>
+     * <li>{@link CommandType#STARBOARD}→ {@link Room#getStarboard()}</li>
+     * <li>{@link CommandType#PORT} → {@link Room#getPort()}</li>
+     * <li>{@link CommandType#OVERHEAD} → {@link Room#getOverhead()}</li>
+     * <li>{@link CommandType#DECK} → {@link Room#getDeck()}</li>
+     * </ul>
+     */
     public MovementObserver() {
         moves.put(CommandType.FORWARD, Room::getForward);
         moves.put(CommandType.AFT, Room::getAft);
@@ -44,72 +59,73 @@ public class MovementObserver implements GameObserver, Serializable {
     }
 
     /**
-     * Aggiorna lo stato del gioco in base all'output del parser e restituisce
-     * un messaggio di risposta.
+     * Esegue lo spostamento del giocatore in base al comando ricevuto. Verifica
+     * che il comando sia uno di quelli di movimento, ottiene la stanza di
+     * destinazione e, se accessibile, aggiorna lo stato del gioco e restituisce
+     * il messaggio appropriato.
      *
-     * @param game l'oggetto GameDesc che rappresenta lo stato corrente del
-     * gioco
-     * @param parserOutput l'output del parser utile per conoscere l'input
-     * dell'utente
-     * @return il messaggio di risposta in base all'azione di movimento.
+     * @param game lo stato di gioco corrente
+     * @param parserOutput output del parser contenente il comando di movimento
+     * @return il messaggio di risultato dello spostamento, oppure un messaggio
+     * di errore o di inaccessibilità
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {
-
         StringBuilder movementMessage = new StringBuilder();
 
         if (moves.containsKey(parserOutput.getCommand().getType())) {
-
             Function<Room, Room> nextRoomGetter = moves.get(parserOutput.getCommand().getType());
+            Room current = game.getCurrentRoom();
 
-            if (nextRoomGetter.apply(game.getCurrentRoom()) != null) {
-                Room current = game.getCurrentRoom();
-                if (current != null) {
-                    Room target = nextRoomGetter.apply(current);
-                    if (target != null && target.isAccessible()) {
-                        if (parserOutput.getCommand().getType() == CommandType.OVERHEAD
-                                && game.getCurrentRoom().getName().equals("LEONARDO")) {
-                            game.setLeonardoMusicPlayed(true);
-                        }
-                        if (parserOutput.getCommand().getType() == CommandType.AFT
-                                && game.getCurrentRoom().getName().equals("ZARYA")) {
-                            game.setFirstMusicPlayed(true);
-                        }
-                        if (parserOutput.getCommand().getType() == CommandType.PORT
-                                && game.getCurrentRoom().getName().equals("HARMONY")) {
-                            game.setKiboVisited(true);
-                        }
-                        game.setCurrentRoom(target);
-                        if (!game.getCurrentRoom().getName().equals("ZVEZDA")) {
-                            movementMessage.append(target.getGameStory());
-                        }
-                        if (game.getCurrentRoom().getName().equals("TRANQUILITY")) {
-                            target.setRoomImage("src/main/resources/img/cupola.png");
-                        }
-                        movementMessage.append(target.getName()).append("\n")
-                                .append(target.getDescription())
-                                .append("\n");
+            if (current != null && nextRoomGetter.apply(current) != null) {
+                Room target = nextRoomGetter.apply(current);
 
-                    } else if (target != null && !target.isAccessible()) {
+                if (target.isAccessible()) {
+                    // Imposta eventuali flag musicali o di visita
+                    if (parserOutput.getCommand().getType() == CommandType.OVERHEAD
+                            && "LEONARDO".equals(current.getName())) {
+                        game.setLeonardoMusicPlayed(true);
+                    }
+                    if (parserOutput.getCommand().getType() == CommandType.AFT
+                            && "ZARYA".equals(current.getName())) {
+                        game.setFirstMusicPlayed(true);
+                    }
+                    if (parserOutput.getCommand().getType() == CommandType.PORT
+                            && "HARMONY".equals(current.getName())) {
+                        game.setKiboVisited(true);
+                    }
 
-                        if (target.equals(game.getRoomByName("SPAZIO"))
-                                && !game.getObjectByID(10).isInUse()) {
+                    // Esegue lo spostamento e costruisce il messaggio
+                    game.setCurrentRoom(target);
+                    if (!"ZVEZDA".equals(target.getName())) {
+                        movementMessage.append(target.getGameStory());
+                    }
+                    if ("TRANQUILITY".equals(target.getName())) {
+                        target.setRoomImage("src/main/resources/img/cupola.png");
+                    }
+                    movementMessage.append(target.getName()).append("\n")
+                            .append(target.getDescription())
+                            .append("\n");
 
-                            movementMessage.append("""
-                                                   Fare una camminata nello spazio senza indossare 
-                                                   una tuta spaziale sarebbe un suicidio.""");
-                        } else {
-                            movementMessage.append("""
-                                                   Quel modulo sembra essere inaccessibile,
-                                                   forse potrei aprirlo in quealche modo...""");
-                        }
+                } else {
+                    // Stanza esistente ma non accessibile
+                    if ("SPAZIO".equals(target.getName()) && !game.getObjectByID(10).isInUse()) {
+                        movementMessage.append(
+                                "Fare una camminata nello spazio senza indossare \n"
+                                + "una tuta spaziale sarebbe un suicidio.");
+                    } else {
+                        movementMessage.append(
+                                "Quel modulo sembra essere inaccessibile,\n"
+                                + "forse potrei aprirlo in qualche modo...");
                     }
                 }
+
             } else {
+                // Nessuna stanza in quella direzione
                 movementMessage.append("Non c'è nulla da quella parte, dove pensi di andare? Contro il muro?");
             }
         }
-        return movementMessage.toString();
 
+        return movementMessage.toString();
     }
 }

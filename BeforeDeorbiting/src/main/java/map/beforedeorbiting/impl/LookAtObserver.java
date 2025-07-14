@@ -1,6 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+/**
+ * Questa classe rappresenta l'observer del comando 'OSSERVA',
+ * permette di osservare l'ambiente circostante o l'oggetto desiderato.
+ * Implementa l'interfaccia {@link GameObserver} e utilizza un servizio REST per
+ * ottenere la posizione della ISS.
+ *
+ * @author
  */
 package map.beforedeorbiting.impl;
 
@@ -16,22 +20,34 @@ import map.beforedeorbiting.type.Room;
 import map.beforedeorbiting.util.ISSPositionREST;
 
 /**
- * Questa classe rappresenta l'observer del comando 'OSSERVA', permette di
- * osservare l'ambiente circostante/l'oggetto desiderato. Per farlo, implmenta
- * l'interfaccia GameObserver.
- *
- * @author ronzu
+ * Osservatore per il comando 'OSSERVA'. Genera descrizioni dettagliate in base
+ * alla stanza corrente e allo stato degli oggetti presenti, incluse
+ * informazioni sulla posizione attuale della ISS.
  */
 public class LookAtObserver implements GameObserver, Serializable {
 
+    /**
+     * Mappa che associa ogni stanza a una funzione che restituisce la
+     * descrizione dello stato specifico di quella stanza.
+     */
     private final Map<Room, Function<GameDesc, String>> stateDescr = new HashMap<>();
-    private String Continent;
+
+    /**
+     * Continente su cui si trova la ISS, ottenuto dal servizio REST.
+     */
+    private String continent;
+
+    /**
+     * Servizio REST per ottenere la posizione attuale della ISS.
+     */
     private final ISSPositionREST issService;
 
     /**
+     * Costruisce un nuovo {@code LookAtObserver} per il gioco. Inizializza le
+     * descrizioni specifiche per ciascuna stanza.
      *
-     * @param game
-     * @param issService
+     * @param game descrizione del gioco contenente le stanze
+     * @param issService servizio REST per ottenere la posizione della ISS
      */
     public LookAtObserver(GameDesc game, ISSPositionREST issService) {
         this.issService = issService;
@@ -47,98 +63,111 @@ public class LookAtObserver implements GameObserver, Serializable {
     }
 
     /**
-     * Aggiorna lo stato del gioco in base all'output del parser e restituisce
-     * un messaggio di risposta.
+     * Aggiorna lo stato del gioco in risposta al comando 'OSSERVA'.
      *
-     * @param game l'oggetto GameDesc che rappresenta lo stato corrente del
-     * gioco
-     * @param parserOutput l'output del parser utile per conoscere l'input
-     * dell'utente
-     * @return il messaggio di risposta in base all'azione di 'osserva'.
+     * @param game stato corrente del gioco
+     * @param parserOutput output del parser contenente il comando e l'oggetto
+     * @return stringa di risposta da mostrare al giocatore
      */
     @Override
     public String update(GameDesc game, ParserOutput parserOutput) {
-        StringBuilder lookAtmsg = new StringBuilder();
+        StringBuilder lookAtMsg = new StringBuilder();
         if (parserOutput.getCommand().getType() == CommandType.LOOK_AT) {
-            if (parserOutput.getObject() != null && game.getCurrentRoom()
-                    .getObjects().contains(parserOutput.getObject())) {
+            // Osservazione di oggetti nella stanza
+            if (parserOutput.getObject() != null
+                    && game.getCurrentRoom().getObjects().contains(parserOutput.getObject())) {
                 if (parserOutput.getInvObject() != null) {
-                    lookAtmsg.append("Provi a osservare due cose alla volta, ma il tuo cervello va in tilt."
+                    lookAtMsg.append(
+                            "Provi a osservare due cose alla volta, ma il tuo cervello va in tilt."
                             + "Meglio uno alla volta, fidati. Intanto ti mostro solo il primo oggetto...");
                 }
-                lookAtmsg.append(parserOutput.getObject().getDescription());
+                lookAtMsg.append(parserOutput.getObject().getDescription());
+
+                // Osservazione di oggetto in inventario
             } else if (parserOutput.getInvObject() != null) {
-                lookAtmsg.append(parserOutput.getInvObject().getDescription());
+                lookAtMsg.append(parserOutput.getInvObject().getDescription());
+
+                // Osservazione dell'ambiente
             } else {
-                lookAtmsg.append(game.getCurrentRoom().getLook());
-                if (!game.getCurrentRoom().getName().equals("SPAZIO")) {
-                    if (game.getCurrentRoom().getName().equals("DESTINY")) {
-                        lookAtmsg.append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                lookAtMsg.append(game.getCurrentRoom().getLook());
+                if (!"SPAZIO".equals(game.getCurrentRoom().getName())) {
+                    if ("DESTINY".equals(game.getCurrentRoom().getName())) {
+                        lookAtMsg.append(stateDescr.get(game.getCurrentRoom()).apply(game));
                     } else {
-                        lookAtmsg.append("\n").append(stateDescr.get(game.getCurrentRoom()).apply(game));
+                        lookAtMsg.append("\n")
+                                .append(stateDescr.get(game.getCurrentRoom()).apply(game));
                     }
                 }
             }
         }
-        return lookAtmsg.toString();
+        return lookAtMsg.toString();
     }
 
+    /**
+     * Descrizione dello stato del modulo ZVEZDA.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Zvezda
+     */
     public String zvezdaDescr(GameDesc game) {
-        String msg;
-
         if (game.getCurrentRoom().getObject(0) != null) {
-            msg = """
-                  Tutto è in ordine, tranne per uno strano 
-                  dettaglio… sembra, un pezzo di modellino (modellinorusso) 
-                  che galleggia in aria?""";
+            return """
+                    Tutto è in ordine, tranne per uno strano
+                    dettaglio… sembra, un pezzo di modellino (modellinorusso)
+                    che galleggia in aria?""";
         } else {
-            msg = """
-                  Tutto è in ordine.""";
+            return "Tutto è in ordine.";
         }
-
-        return msg;
     }
 
+    /**
+     * Descrizione dello stato del modulo ZARYA. Varia in base alla presenza di
+     * oggetti specifici.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Zarya
+     */
     public String zaryaDescr(GameDesc game) {
         StringBuilder msg = new StringBuilder();
+        boolean hasSuit = game.getCurrentRoom().getObjects().contains(game.getObjectByID(10));
+        boolean hasNote = game.getCurrentRoom().getObjects().contains(game.getObjectByID(5));
 
-        //id = 10 spaceSuit
-        if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(10))) {
-            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
-                msg.append("""
-                      Luke è seduto contro il muro, immobile. La visiera riflette 
-                      la luce, ma non si muove.
-                      Era il mio migliore amico, è probabilmente morto per mancanza 
-                      di ossigeno, come sarà mai potuto succedere… stringe un 
-                      bigliettino tra le sue mani.
-                           """);
-            } else {
-                msg.append("""
-                      Luke è seduto contro il muro, immobile. La visiera riflette 
-                      la luce, ma non si muove.
-                      Era il mio migliore amico. è probabilmente morto per mancanza 
-                      di ossigeno, come sarà mai potuto succedere… """);
-            }
+        if (hasSuit) {
+            msg.append("""
+                    Luke è seduto contro il muro, immobile. La visiera riflette
+                    la luce, ma non si muove.
+                    Era il mio migliore amico, è probabilmente morto per mancanza
+                    di ossigeno, come sarà mai potuto succedere… stringe un
+                    bigliettino tra le sue mani.
+                         """);
         } else {
-            if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(5))) {
+            if (hasNote) {
                 msg.append("""
-                      Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta 
-                      mi rivoltava lo stomaco. Il suo bigliettino galleggia in aria.
-                           """);
+                        Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta
+                        mi rivoltava lo stomaco. Il suo bigliettino galleggia in aria.
+                             """);
             } else {
                 msg.append("""
-                      Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta 
-                      mi rivoltava lo stomaco.
-                           """);
+                        Ho dovuto spostare il cadavere di Luke.. vederlo senza tutta
+                        mi rivoltava lo stomaco.
+                             """);
             }
         }
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(6))) {
-            msg.append("Nella stanza vedo anche un piccolo pezzo di vetro... a cosa potrà mai servire?");
+            msg.append(
+                    "Nella stanza vedo anche un piccolo pezzo di vetro... a cosa potrà mai servire?");
         }
 
         return msg.toString();
     }
 
+    /**
+     * Descrizione dello stato del modulo UNITY. Include informazioni su porte e
+     * oggetti fluttuanti.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Unity
+     */
     public String unityDescr(GameDesc game) {
         StringBuilder msg = new StringBuilder();
 
@@ -146,16 +175,16 @@ public class LookAtObserver implements GameObserver, Serializable {
             msg.append("La porta davanti a me è aperta, posso procedere verso Destiny.\n");
         } else {
             msg.append("""
-                       La porta davanti, quella che porta al laboratorio Destiny è 
-                       chiusa con tastierino numerico: serve un codice per aprirla.
-                       
-                       """);
+                    La porta davanti, quella che porta al laboratorio Destiny è
+                    chiusa con tastierino numerico: serve un codice per aprirla.
+
+                    """);
         }
         if (game.getRoomByName("LEONARDO").isAccessible()) {
             msg.append("""
-                       La botola sotto i miei piedi che conduce nel modulo Leonardo 
-                       è aperta, ma non vorrei rivedere il cadavere di Susan. 
-                       """);
+                    La botola sotto i miei piedi che conduce nel modulo Leonardo
+                    è aperta, ma non vorrei rivedere il cadavere di Susan.
+                    """);
         } else {
             msg.append("La botola sotto i miei piedi che conduce nel modulo Leonardo è chiusa.\n");
         }
@@ -166,10 +195,20 @@ public class LookAtObserver implements GameObserver, Serializable {
         return msg.toString();
     }
 
+    /**
+     * Descrizione dello stato del laboratorio DESTINY. Varia a seconda
+     * dell'accessibilità del modulo Harmony.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Destiny
+     */
     public String destinyDescr(GameDesc game) {
         StringBuilder msg = new StringBuilder();
-        if (!game.getRoomByName("HARMONY").isAccessible()) {
-            if (game.getCurrentRoom().isVisible()) {
+        boolean harmonyOpen = game.getRoomByName("HARMONY").isAccessible();
+        boolean visible = game.getCurrentRoom().isVisible();
+
+        if (!harmonyOpen) {
+            if (visible) {
                 msg.append("Adesso riesco a vedere qualcosa... ma non abbastanza per orientarmi.\n"
                         + "Riesco però a vedere il modulo di connessione, devo, in qualche modo, far riflettere la luce lì.\n");
                 if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(6))) {
@@ -177,11 +216,11 @@ public class LookAtObserver implements GameObserver, Serializable {
                 }
             } else {
                 msg.append("""
-                           Cos’è stato… non vedo nulla se non per un flebile fascio di
-                           luce riflesso dalla luna che proviene dalla finestra di
-                           osservazione, ma non è sufficiente per orientarmi nella stanza. 
-                           In questo momento non posso fare nulla qui... dovrei ASPETTARE.
-                           """);
+                        Cos’è stato… non vedo nulla se non per un flebile fascio di
+                        luce riflesso dalla luna che proviene dalla finestra di
+                        osservazione, ma non è sufficiente per orientarmi nella stanza.
+                        In questo momento non posso fare nulla qui... dovrei ASPETTARE.
+                        """);
             }
         } else {
             msg.append("Un laboratorio sporco e silenzioso. \n"
@@ -191,22 +230,27 @@ public class LookAtObserver implements GameObserver, Serializable {
         return msg.toString();
     }
 
+    /**
+     * Descrizione dello stato del modulo TRANQUILITY. Include aggiornamento
+     * dell'immagine in base al continente.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Tranquility
+     */
     public String tranquilityDescr(GameDesc game) {
-        String msg;
-        //id 2 modellinodx
+        StringBuilder msg = new StringBuilder();
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(2))) {
-            msg = """
-                  In mezzo alla calma, qualcosa di minuscolo fluttua davanti 
-                  all’oblò centrale: un pezzo rigido, rettangolare, troppo 
-                  ordinato per essere solo un detrito.
-                  Postrebbe essere un altro pezzo del modellino (modellinodestro)""";
-        } else {
-            msg = "";
+            msg.append("""
+                    In mezzo alla calma, qualcosa di minuscolo fluttua davanti
+                    all’oblò centrale: un pezzo rigido, rettangolare, troppo
+                    ordinato per essere solo un detrito.
+                    Potrebbe essere un altro pezzo del modellino (modellinodestro)""");
         }
 
-        Continent = issService.getContinentForCoordinates();
-        if (Continent != null) {
-            switch (Continent) {
+        // Ottieni il continente corrente dalla ISS
+        continent = issService.getContinentForCoordinates();
+        if (continent != null) {
+            switch (continent.toLowerCase()) {
                 case "africa":
                     game.getCurrentRoom().setRoomImage("src/main/resources/img/Africa.jpg");
                     break;
@@ -233,50 +277,65 @@ public class LookAtObserver implements GameObserver, Serializable {
                     break;
             }
         }
-        return msg;
+        return msg.toString();
     }
 
+    /**
+     * Descrizione dello stato del modulo QUEST.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Quest
+     */
     public String questDescr(GameDesc game) {
-        String msg;
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(3))) {
-            msg = """
-                  Uno strano e piccolo oggetto fluttua davanti alla botola.
-                  Postrebbe essere un alrro pezzo del modellino (modellinosinistro)""";
-        } else {
-            msg = "";
+            return """
+                    Uno strano e piccolo oggetto fluttua davanti alla botola.
+                    Potrebbe essere un altro pezzo del modellino (modellinosinistro)""";
         }
-        return msg;
+        return "";
     }
 
+    /**
+     * Descrizione dello stato del modulo HARMONY.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Harmony
+     */
     public String harmonyDescr(GameDesc game) {
         return "Sembra che non ci sia nulla di che qui";
     }
 
+    /**
+     * Descrizione dello stato del modulo LEONARDO. Include informazioni sul
+     * terminale HAL e sul diario di Susan.
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Leonardo
+     */
     public String leonardoDescr(GameDesc game) {
-        String msg;
-
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(4))) {
-            msg = """
-                  Il modulo Leonardo, rivestito da contenitori imbottiti e
-                 cavi. Sul lato sinistro, il terminale principale di HAL
-                 emette un tenue bagliore verde. La botola su si è aperta e porta
-                 direttamente a Unity. Il corpo di Susan
-                 fluttua a mezz’aria, immobile. C'è un diario che vicino al corpo 
-                 di Susan""";
-        } else {
-            msg = """ 
-                  Il modulo Leonardo, rivestito da contenitori imbottiti e
-                  cavi. Sul lato sinistro, il terminale principale di HAL
-                  emette un tenue bagliore verde. La botola su si è aperta e porta
-                  direttamente a Unity. Il corpo di Susan
-                  fluttua a mezz’aria, immobile.""";
+            return """
+                    Il modulo Leonardo, rivestito da contenitori imbottiti e
+                    cavi. Sul lato sinistro, il terminale principale di HAL
+                    emette un tenue bagliore verde. La botola sopra si è aperta e porta
+                    direttamente a Unity. Il corpo di Susan
+                    fluttua a mezz’aria, immobile. C'è un diario vicino al corpo
+                    di Susan""";
         }
-
-        return msg;
+        return """
+                Il modulo Leonardo, rivestito da contenitori imbottiti e
+                cavi. Sul lato sinistro, il terminale principale di HAL
+                emette un tenue bagliore verde. La botola sopra si è aperta e porta
+                direttamente a Unity. Il corpo di Susan fluttua a mezz’aria, immobile.""";
     }
-    
-    public String kiboDescr(GameDesc game){
+
+    /**
+     * Descrizione dello stato del modulo KIBO. (Ancora da implementare.)
+     *
+     * @param game stato corrente del gioco
+     * @return descrizione specifica di Kibo
+     */
+    public String kiboDescr(GameDesc game) {
         return "";
     }
-    
 }

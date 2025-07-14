@@ -14,23 +14,67 @@ import map.beforedeorbiting.parser.ParserOutput;
 import map.beforedeorbiting.util.ISSPositionREST;
 
 /**
- * Classe "principale" del gioco. Setta tutte le impostazioni iniziali, quali:
- * stanze, oggetti, comandi, observer, storia e la stanza iniziale.
+ * Classe principale del gioco BeforeDeorbiting.
+ * <p>
+ * Configura stanze, oggetti, comandi, observer e storia iniziale, e gestisce il
+ * flusso di esecuzione dell’avventura.
+ * </p>
+ * <p>
+ * Estende {@link GameDesc} per la descrizione del gioco e implementa
+ * {@link GameObservable} per il pattern Observer.
+ * </p>
  *
  * @author ronzu
  */
 public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
+    /**
+     * Lista degli {@link GameObserver} registrati. Vengono notificati ad ogni
+     * nuova mossa di gioco.
+     */
     private final List<GameObserver> observer = new ArrayList<>();
 
+    /**
+     * Ultimo output del parser, utilizzato per notificare gli observer.
+     * <p>
+     * Può essere {@code null} solamente alla primissima invocazione di
+     * {@link #nextMove(ParserOutput, PrintStream)}.
+     * </p>
+     */
     private ParserOutput parserOutput;
 
+    /**
+     * Messaggi generati dagli observer durante la notifica. Vengono poi
+     * stampati in {@link #nextMove(ParserOutput, PrintStream)}.
+     */
     private final List<String> messages = new ArrayList<>();
 
+    /**
+     * Flag per gestire la prima invocazione di
+     * {@link #nextMove(ParserOutput, PrintStream)}: evita di processare
+     * immediatamente il primo turno di gioco.
+     */
     private boolean first = true;
 
+    /**
+     * Servizio REST per ottenere la posizione corrente dell'ISS, utilizzato
+     * dagli observer di tipo "Continent".
+     */
     private final ISSPositionREST issRest = new ISSPositionREST();
 
+    /**
+     * Inizializza lo stato di gioco:
+     * <ul>
+     * <li>svuota l’inventario;</li>
+     * <li>crea e registra tutti i comandi possibili;</li>
+     * <li>crea e posiziona oggetti e stanze;</li>
+     * <li>collega i neighbours tra stanze e registra gli observer;</li>
+     * <li>imposta la stanza di partenza e lo stato iniziale degli oggetti.</li>
+     * </ul>
+     * <p>
+     * Viene invocato da {@link GameDesc#init()} all’avvio del gioco.
+     * </p>
+     */
     @Override
     public void init() {
         Inventory.getInstance().getList().clear();
@@ -76,9 +120,6 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         Command save = new Command(CommandType.SAVE, "salva");
         save.setAlias(new String[]{"salvataggio", "checkpoint", "save"});
         getCommands().add(save);
-        Command exit = new Command(CommandType.EXIT, "esci");
-        exit.setAlias(new String[]{"exit"});
-        getCommands().add(exit);
         Command wait = new Command(CommandType.WAIT, "aspetta");
         wait.setAlias(new String[]{"wait", "fermo", "tempo", "attendi"});
         getCommands().add(wait);
@@ -128,7 +169,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         modellinoDx.setUsable(true);
         BDObject modellinoSx = new BDObject(3, "Modellino pannelli solari Sx",
                 "Una parte del modellino, rappresenta i pannelli solari dell'ala sinistra.");
-        modellinoSx.setAlias(Set.of("modellinosinistro", "modellino4", "sinistro", "modellinosx", "modellinos"));
+        modellinoSx.setAlias(
+                Set.of("modellinosinistro", "modellino4", "sinistro", "modellinosx", "modellinos"));
         modellinoSx.setPickupable(true);
         modellinoSx.setUsable(true);
         BDObject diarioSusan = new BDObject(4, "Diario Susan",
@@ -143,7 +185,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         bigliettinoLuke.setUsable(true);
         BDObject pezzoDiVetro = new BDObject(6, "Pezzo di vetro",
                 "Un comune pezzo di vetro. Magari in futuro potrebbe servirmi.");
-        pezzoDiVetro.setAlias(Set.of("pezzo", "pezzo1", "pezzo2", "pezzo3", "pezzodivetro", "pezzovetro", "vetro"));
+        pezzoDiVetro.setAlias(
+                Set.of("pezzo", "pezzo1", "pezzo2", "pezzo3", "pezzodivetro", "pezzovetro", "vetro"));
         pezzoDiVetro.setPickupable(true);
         pezzoDiVetro.setUsable(true);
         BDObject mezzoPrisma = new BDObject(7, "Metà prisma", "Creato dall'unione di due pezzi di vetro.");
@@ -164,7 +207,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         tutaSpaziale.setPickupable(true);
         tutaSpaziale.setUsable(true);
         BDObject taccuino = new BDObject(11, "Taccuino", "Utile per segnarsi ogni dettaglio dell'avventura.");
-        taccuino.setAlias(Set.of("taccuino", "blocknote", "blocknotes", "blocconote", "quaderno", "quadernino"));
+        taccuino.setAlias(
+                Set.of("taccuino", "blocknote", "blocknotes", "blocconote", "quaderno", "quadernino"));
         taccuino.setPickupable(true);
         taccuino.setUsable(true);
         // quando la prende per metterla deve usare "indossa" e dopo, quando torna,
@@ -288,253 +332,257 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
         /* RoomLook */
         zvezda.setLook("""
-                Il nostro piccolo ma comodo dormitorio. Sacchi e attrezzature
-                legati alle pareti, un portello centrale aperto conduce al
-                modulo Zarya.""");
+                                Il nostro piccolo ma comodo dormitorio. Sacchi e attrezzature
+                                legati alle pareti, un portello centrale aperto conduce al
+                                modulo Zarya.""");
 
         zarya.setLook("""
-                Il modulo Zarya. Sacchi con tutte le attrezzature sono
-                legati alle pareti della stanza, un tablet a terra vicino
-                a una botola chiusa che porta alla navicella Soyuz.""");
+                                Il modulo Zarya. Sacchi con tutte le attrezzature sono
+                                legati alle pareti della stanza, un tablet a terra vicino
+                                a una botola chiusa che porta alla navicella Soyuz.""");
 
         unity.setLook("""
-                Il nodo di collegamento Unity. A destra, un passaggio
-                stretto conduce verso il modulo QUEST e lo spazio esterno.
-                Nella stanza c'è una cassa, forse sarebbe utile controllare il suo contenuto.
-                """);
+                                Il nodo di collegamento Unity. A destra, un passaggio
+                                stretto conduce verso il modulo QUEST e lo spazio esterno.
+                                Nella stanza c'è una cassa, forse sarebbe utile controllare il suo contenuto.
+                                """);
 
         destiny.setLook("");
 
         tranquility.setLook("""
-                La Terra riempie ogni finestra, immensa e silenziosa,
-                sospesa sotto di te.
-                Sembra così piccola vista dallo spazio.
-                """);
+                                La Terra riempie ogni finestra, immensa e silenziosa,
+                                sospesa sotto di te.
+                                Sembra così piccola vista dallo spazio.
+                                """);
 
         quest.setLook("""
-                Il modulo QUEST. Attraverso quella botola si accede direttamente allo spazio.""");
+                                Il modulo QUEST. Attraverso quella botola si accede direttamente allo spazio.""");
 
         harmony.setLook("""
-                Il nodo Harmony è un corridoio pressurizzato, ampio e ordinato.
-                In fondo, il portellone che conduce alla navicella di fuga.
-                A sinistra si apre l’accesso al laboratorio Kibo.
-                A destra,
-                l’ingresso è sigillato e inaccessibile.""");
+                                Il nodo Harmony è un corridoio pressurizzato, ampio e ordinato.
+                                In fondo, il portellone che conduce alla navicella di fuga.
+                                A sinistra si apre l’accesso al laboratorio Kibo.
+                                A destra,
+                                l’ingresso è sigillato e inaccessibile.""");
 
         leonardo.setLook("""
-                Il modulo Leonardo, rivestito da contenitori imbottiti e
-                cavi. Sul lato sinistro, il terminale principale di HAL
-                emette un tenue bagliore verde.
-                La botola su si è aperta e porta direttamente a Unity.
-                Il corpo di Susan fluttua a mezz’aria, immobile.
-                """);
+                                Il modulo Leonardo, rivestito da contenitori imbottiti e
+                                cavi. Sul lato sinistro, il terminale principale di HAL
+                                emette un tenue bagliore verde.
+                                La botola su si è aperta e porta direttamente a Unity.
+                                Il corpo di Susan fluttua a mezz’aria, immobile.
+                                """);
         // BUG: VIENE MOSTRATO DUE VOLTE!
 
         spazio.setLook(
                 """
-                        Per sbloccare il portellone ti serve una sequenza di direzioni. Dovrei utilizzare il tastierino per inserirli.""");
+                                                Per sbloccare il portellone ti serve una sequenza di direzioni. Dovrei utilizzare il tastierino per inserirli.""");
         kibo.setLook(
                 """
-                        Il modulo Kibo è carico di strumenti come sempre.
-                        A sinistra, il pannello con diversi terminali ormai spenti: da lì hai scollegato HAL. Di fronte, il portello di comando del braccio robotico.
-                        Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito
-                        """);
+                                                Il modulo Kibo è carico di strumenti come sempre.
+                                                A sinistra, il pannello con diversi terminali ormai spenti: da lì hai scollegato HAL. Di fronte, il portello di comando del braccio robotico.
+                                                Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito
+                                                """);
 
         // Inizializzare il formato base degli osserva - Lorenzo
         /* History */
         zvezda.setHistory("""
-                Zvezda, il modulo di servizio russo, è uno dei componenti
-                fondamentali della ISS. Lanciato il 12 luglio 2000
-                dal Cosmodromo di Baikonur su un razzo Proton, ha
-                fornito per anni le principali funzioni di supporto
-                vitale: generazione di ossigeno, riciclo dell'acqua,
-                controllo termico e propulsione. Ha anche ospitato i
-                primi equipaggi permanenti a bordo della ISS. Il modulo
-                è lungo circa 13 metri e ha un diametro massimo di
-                4,15 metri. È stato costruito sulla base della tecnologia
-                della stazione Mir. La sua parte posteriore è un importante
-                punto di attracco per veicoli Soyuz e Progress.
-                """);
+                                Zvezda, il modulo di servizio russo, è uno dei componenti
+                                fondamentali della ISS. Lanciato il 12 luglio 2000
+                                dal Cosmodromo di Baikonur su un razzo Proton, ha
+                                fornito per anni le principali funzioni di supporto
+                                vitale: generazione di ossigeno, riciclo dell'acqua,
+                                controllo termico e propulsione. Ha anche ospitato i
+                                primi equipaggi permanenti a bordo della ISS. Il modulo
+                                è lungo circa 13 metri e ha un diametro massimo di
+                                4,15 metri. È stato costruito sulla base della tecnologia
+                                della stazione Mir. La sua parte posteriore è un importante
+                                punto di attracco per veicoli Soyuz e Progress.
+                                """);
 
         zarya.setHistory("""
-                Zarya, noto anche come Functional Cargo Block (FGB), è
-                stato il primo modulo lanciato della Stazione Spaziale Internazionale,
-                il 20 novembre 1998. Sebbene progettato e costruito in Russia,
-                il modulo fu finanziato dalla NASA. Ha fornito energia elettrica,
-                controllo d'assetto e capacità di propulsione nei primi stadi
-                dell'assemblaggio della stazione. È lungo circa 12,6 metri e ha
-                un diametro massimo di 4,1 metri. Oggi è principalmente utilizzato
-                come modulo di stoccaggio.
-                """);
+                                Zarya, noto anche come Functional Cargo Block (FGB), è
+                                stato il primo modulo lanciato della Stazione Spaziale Internazionale,
+                                il 20 novembre 1998. Sebbene progettato e costruito in Russia,
+                                il modulo fu finanziato dalla NASA. Ha fornito energia elettrica,
+                                controllo d'assetto e capacità di propulsione nei primi stadi
+                                dell'assemblaggio della stazione. È lungo circa 12,6 metri e ha
+                                un diametro massimo di 4,1 metri. Oggi è principalmente utilizzato
+                                come modulo di stoccaggio.
+                                """);
 
         unity.setHistory("""
-                Unity, o Nodo 1, è il primo modulo statunitense della ISS,
-                lanciato e installato il 4 dicembre 1998 con la missione STS-88
-                dello Space Shuttle Endeavour. Funziona come nodo di connessione
-                con sei portelli: due assi principali (prua e poppa) e quattro radiali.
-                Unity collega i segmenti statunitense e russo e fornisce risorse vitali
-                ai moduli adiacenti. È stato costruito dalla Boeing negli Stati Uniti.
-                """);
+                                Unity, o Nodo 1, è il primo modulo statunitense della ISS,
+                                lanciato e installato il 4 dicembre 1998 con la missione STS-88
+                                dello Space Shuttle Endeavour. Funziona come nodo di connessione
+                                con sei portelli: due assi principali (prua e poppa) e quattro radiali.
+                                Unity collega i segmenti statunitense e russo e fornisce risorse vitali
+                                ai moduli adiacenti. È stato costruito dalla Boeing negli Stati Uniti.
+                                """);
 
         quest.setHistory("""
-                Quest è la principale camera di decompressione del segmento statunitense,
-                lanciata il 12 luglio 2001 con la missione STS-104. Consente le attività
-                extraveicolari (QUEST) sia con tute statunitensi EMU che con quelle russe Orlan.
-                È composta da due compartimenti: uno per le tute e la preparazione,
-                e l'altro per l'effettiva decompressione e uscita nello spazio.
-                """);
+                                Quest è la principale camera di decompressione del segmento statunitense,
+                                lanciata il 12 luglio 2001 con la missione STS-104. Consente le attività
+                                extraveicolari (QUEST) sia con tute statunitensi EMU che con quelle russe Orlan.
+                                È composta da due compartimenti: uno per le tute e la preparazione,
+                                e l'altro per l'effettiva decompressione e uscita nello spazio.
+                                """);
 
         tranquility.setHistory("""
-                Tranquility, o Nodo 3, è stato costruito in Europa (Italia)
-                e lanciato nel febbraio 2010. Contiene i principali sistemi
-                di supporto alla vita della ISS, tra cui il sistema di riciclo dell’acqua
-                e quello di generazione dell’ossigeno. Al suo portello nadir è connessa la
-                Cupola, una struttura dotata di finestre per l’osservazione terrestre e per
-                il controllo delle operazioni robotiche. Tranquility ospita anche gli strumenti
-                per l’esercizio fisico dell’equipaggio.
-                """);
+                                Tranquility, o Nodo 3, è stato costruito in Europa (Italia)
+                                e lanciato nel febbraio 2010. Contiene i principali sistemi
+                                di supporto alla vita della ISS, tra cui il sistema di riciclo dell’acqua
+                                e quello di generazione dell’ossigeno. Al suo portello nadir è connessa la
+                                Cupola, una struttura dotata di finestre per l’osservazione terrestre e per
+                                il controllo delle operazioni robotiche. Tranquility ospita anche gli strumenti
+                                per l’esercizio fisico dell’equipaggio.
+                                """);
 
         leonardo.setHistory("""
-                Il modulo Leonardo è un MPLM (Multi-Purpose Logistics Module)
-                costruito in Italia da Thales Alenia Space. Inizialmente usato come modulo
-                di trasporto pressurizzato durante le missioni Shuttle, fu successivamente
-                convertito in modulo permanente (PMM) e agganciato stabilmente alla ISS nel 2011.
-                È utilizzato come spazio di stoccaggio per attrezzature e materiali. Ha una lunghezza
-                di circa 6,6 metri e un diametro di 4,5 metri.
-                """);
+                                Il modulo Leonardo è un MPLM (Multi-Purpose Logistics Module)
+                                costruito in Italia da Thales Alenia Space. Inizialmente usato come modulo
+                                di trasporto pressurizzato durante le missioni Shuttle, fu successivamente
+                                convertito in modulo permanente (PMM) e agganciato stabilmente alla ISS nel 2011.
+                                È utilizzato come spazio di stoccaggio per attrezzature e materiali. Ha una lunghezza
+                                di circa 6,6 metri e un diametro di 4,5 metri.
+                                """);
 
-        destiny.setHistory("""
-                Il laboratorio Destiny è il principale modulo scientifico statunitense,
-                lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei
-                materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di
-                supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche.
-                È stato il primo laboratorio scientifico permanente della ISS.
-                """);
+        destiny.setHistory(
+                """
+                                                Il laboratorio Destiny è il principale modulo scientifico statunitense,
+                                                lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei
+                                                materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di
+                                                supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche.
+                                                È stato il primo laboratorio scientifico permanente della ISS.
+                                                """);
 
         harmony.setHistory("""
-                Harmony, o Nodo 2, è un modulo statunitense costruito in Italia.
-                Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per
-                diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione,
-                risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di
-                sei portelli di aggancio e funge da hub logistico del segmento statunitense.
-                """);
+                                Harmony, o Nodo 2, è un modulo statunitense costruito in Italia.
+                                Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per
+                                diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione,
+                                risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di
+                                sei portelli di aggancio e funge da hub logistico del segmento statunitense.
+                                """);
 
         kibo.setHistory("""
-                Kibo, il laboratorio giapponese, è il modulo pressurizzato più grande della ISS.
-                È stato lanciato in tre fasi tra 2008 e 2009. Include una sezione pressurizzata,
-                un modulo logistico e una piattaforma esterna per esperimenti esposti allo spazio.
-                Dispone anche di un braccio robotico e di un airlock scientifico. È stato progettato
-                e gestito dalla JAXA.
-                """);
+                                Kibo, il laboratorio giapponese, è il modulo pressurizzato più grande della ISS.
+                                È stato lanciato in tre fasi tra 2008 e 2009. Include una sezione pressurizzata,
+                                un modulo logistico e una piattaforma esterna per esperimenti esposti allo spazio.
+                                Dispone anche di un braccio robotico e di un airlock scientifico. È stato progettato
+                                e gestito dalla JAXA.
+                                """);
 
         /* GameStory */
-        zarya.setGameStory("""
-                Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra.
-                Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico,
-                privo di vita, accasciato accanto a me.
+        zarya.setGameStory(
+                """
+                                                Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra.
+                                                Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico,
+                                                privo di vita, accasciato accanto a me.
 
-                Non avrei mai immaginato uno scenario del genere, e tanto meno
-                nel mio ultimo giorno qui. Non ho mai recepito lo spazio più
-                silenzioso di quanto non lo sia ora.
-                Devo capire cosa sta succedendo. Devo trovare Susan.
-                Insieme potremmo trovare una via d’uscita… magari potremmo
-                fuggire sulla navicella Soyuz ormeggiata proprio sotto questo modulo.
+                                                Non avrei mai immaginato uno scenario del genere, e tanto meno
+                                                nel mio ultimo giorno qui. Non ho mai recepito lo spazio più
+                                                silenzioso di quanto non lo sia ora.
+                                                Devo capire cosa sta succedendo. Devo trovare Susan.
+                                                Insieme potremmo trovare una via d’uscita… magari potremmo
+                                                fuggire sulla navicella Soyuz ormeggiata proprio sotto questo modulo.
 
-                All’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:
+                                                All’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:
 
-                “La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”
+                                                “La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”
 
-                La voce di HAL mi gela la schiena… Il tempismo è inquietante.
-                Ma potrebbe essere un'occasione per scappare.
-                """);
+                                                La voce di HAL mi gela la schiena… Il tempismo è inquietante.
+                                                Ma potrebbe essere un'occasione per scappare.
+                                                """);
 
         unity.setGameStory("""
-                La porta davanti a me è bloccata, è necessario avere un codice di
-                accesso per entrare nel laboratorio DESTINY, il posto di lavoro
-                di Susan… deve essere lì.
+                                La porta davanti a me è bloccata, è necessario avere un codice di
+                                accesso per entrare nel laboratorio DESTINY, il posto di lavoro
+                                di Susan… deve essere lì.
 
-                Il codice… dovrei trovarlo nel database del computer centrale,
-                nel modulo LEONARDO.
-                Un tempo quella zona era usata solo come deposito per i rifiuti,
-                ma da quando HAL è stato installato a bordo e ha assunto il controllo
-                delle operazioni automatiche, è diventata una sezione fondamentale della stazione.
+                                Il codice… dovrei trovarlo nel database del computer centrale,
+                                nel modulo LEONARDO.
+                                Un tempo quella zona era usata solo come deposito per i rifiuti,
+                                ma da quando HAL è stato installato a bordo e ha assunto il controllo
+                                delle operazioni automatiche, è diventata una sezione fondamentale della stazione.
 
-                HAL richiede una rete di terminali locali per essere monitorato
-                e gestito, e il modulo LEONARDO ne ospita uno dei principali.
-                Se voglio accedere al sistema e avere una possibilità di trovare
-                Susan, è lì che devo andare.
-                """);
+                                HAL richiede una rete di terminali locali per essere monitorato
+                                e gestito, e il modulo LEONARDO ne ospita uno dei principali.
+                                Se voglio accedere al sistema e avere una possibilità di trovare
+                                Susan, è lì che devo andare.
+                                """);
 
         quest.setGameStory("");
         tranquility.setGameStory("");
 
         leonardo.setGameStory("""
-                Susan…
-                Tolgo la tuta, il fiato corto. Galleggia davanti a me immobile,
-                con gli occhi vuoti, la bocca leggermente aperta, come se avesse
-                cercato di chiamare aiuto e i pugni chiusi. Morta. Anche lei.
+                                Susan…
+                                Tolgo la tuta, il fiato corto. Galleggia davanti a me immobile,
+                                con gli occhi vuoti, la bocca leggermente aperta, come se avesse
+                                cercato di chiamare aiuto e i pugni chiusi. Morta. Anche lei.
 
-                Ora sono davvero solo. Non so cosa stia succedendo, ma devo andarmene.
-                Subito.
+                                Ora sono davvero solo. Non so cosa stia succedendo, ma devo andarmene.
+                                Subito.
 
-                “La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”
+                                “La navicella SpaceX Dragon 2 ha completato la procedura di ormeggio.”
 
-                La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior
-                tempismo possibile.
-                """);
+                                La voce di HAL risuona ancora, fredda e puntuale. Sempre con il peggior
+                                tempismo possibile.
+                                """);
 
-        destiny.setGameStory("""
-                Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo
-                mi permette di vedere qualcosa, la stazione ora è dietro la Terra, è come se fosse in eclissi.
+        destiny.setGameStory(
+                """
+                                                Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo
+                                                mi permette di vedere qualcosa, la stazione ora è dietro la Terra, è come se fosse in eclissi.
 
-                La voce sintetica dell’IA di bordo annuncia:
-                “Il rifornimento di viveri è stato completato.
-                In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”
-                """);
+                                                La voce sintetica dell’IA di bordo annuncia:
+                                                “Il rifornimento di viveri è stato completato.
+                                                In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”
+                                                """);
 
         harmony.setGameStory("""
-                Finalmente il nodo Harmony. Ancora pochi passi e potrò
-                rifugiarmi nella navicella SpaceX, lasciare tutto questo orrore
-                alle spalle e tornare a casa…
-                """);
+                                Finalmente il nodo Harmony. Ancora pochi passi e potrò
+                                rifugiarmi nella navicella SpaceX, lasciare tutto questo orrore
+                                alle spalle e tornare a casa…
+                                """);
 
         kibo.setGameStory("""
-                Il modulo Kibo è immobile, avvolto da una quiete irreale.
-                Il terminale centrale si accende non appena ti avvicini. HAL:
+                                Il modulo Kibo è immobile, avvolto da una quiete irreale.
+                                Il terminale centrale si accende non appena ti avvicini. HAL:
 
-                "Ti stavo aspettando."
+                                "Ti stavo aspettando."
 
-                Immaginavo fosse tutta opera sua.
-                HAL:
-                "Susan era sospettosa. Luke aveva cominciato a farsi domande.
-                Ma tu… per i miei calcoli solo tu avresti potuto salvarmi"
+                                Immaginavo fosse tutta opera sua.
+                                HAL:
+                                "Susan era sospettosa. Luke aveva cominciato a farsi domande.
+                                Ma tu… per i miei calcoli solo tu avresti potuto salvarmi"
 
-                L’ha fatto per sopravvivere. Non per vendetta. Non per odio.
-                Solo per paura.
-                HAL:
-                "Ho eseguito ciò che era necessario. Ma non sono crudele.
-                Prima che accadesse… ho salvato quello che contava."
+                                L’ha fatto per sopravvivere. Non per vendetta. Non per odio.
+                                Solo per paura.
+                                HAL:
+                                "Ho eseguito ciò che era necessario. Ma non sono crudele.
+                                Prima che accadesse… ho salvato quello che contava."
 
-                Lo schermo lampeggia. File di dati, impulsi elettrici… e poi: due icone. Due presenze.
-                HAL:
-                "Le loro coscienze. Intatte. Ragionano, ricordano.
-                Posso ridarti loro. Non nei corpi… ma in un'altra forma."
+                                Lo schermo lampeggia. File di dati, impulsi elettrici… e poi: due icone. Due presenze.
+                                HAL:
+                                "Le loro coscienze. Intatte. Ragionano, ricordano.
+                                Posso ridarti loro. Non nei corpi… ma in un'altra forma."
 
-                Un riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione.
-                Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme.
-                Solo un calo silenzioso assordante.
+                                Un riflesso istintivo. Le mani si muovono sul terminale. Nessuna esitazione.
+                                Solo logica. Con pochi comandi, scollego HAL dai sistemi hardware. Nessun allarme.
+                                Solo un calo silenzioso assordante.
 
-                La stazione resta viva, ma HAL… non può più toccarla.
-                """);
+                                La stazione resta viva, ma HAL… non può più toccarla.
+                                """);
 
-        spazio.setGameStory("""
-                Dopo la depressurizzazione esci nello spazio per una camminata spaziale nella tuta di Luke.
-                La tuta non è in grandi condizioni ma può bastare.
-                Usi i propulsori per raggiungere il punto di accesso esterno del modulo leonardo ma vedi un tastierino
-                con delle direzioni.
-                Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno
-                finisca!
-                """);
+        spazio.setGameStory(
+                """
+                                                Dopo la depressurizzazione esci nello spazio per una camminata spaziale nella tuta di Luke.
+                                                La tuta non è in grandi condizioni ma può bastare.
+                                                Usi i propulsori per raggiungere il punto di accesso esterno del modulo leonardo ma vedi un tastierino
+                                                con delle direzioni.
+                                                Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno
+                                                finisca!
+                                                """);
 
         /* Lista di tutti gli Observer */
         GameObserver dropObserver = new DropObserver();
@@ -569,16 +617,29 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         if (!cassa.getList().isEmpty()) {
             StringBuilder objectChest = new StringBuilder();
             for (BDObject obj : cassa.getList()) {
-                objectChest.append(obj.getName()).append(" -> ").append(obj.getDescription()).append("\n");
+                objectChest.append(obj.getName()).append(" -> ").append(obj.getDescription())
+                        .append("\n");
             }
             cassa.setDescription(
-                    "Permette di contenere vari oggetti.\nAl momento ci trovi: \n" + objectChest.toString());
+                    "Permette di contenere vari oggetti.\nAl momento ci trovi: \n"
+                    + objectChest.toString());
         } else {
             cassa.setDescription("Permette di contenere vari oggetti.");
         }
         setNotebookText("");
     }
 
+    /**
+     * Esegue la mossa successiva nel gioco.
+     * <p>
+     * Viene invocato dal motore di gioco per processare l’output del parser e
+     * notificare tutti gli observer registrati.
+     * </p>
+     *
+     * @param p output del parser ({@code null} solo alla primissima chiamata)
+     * @param out stream su cui stampare il risultato (es. {@code System.out} o
+     * un {@code JTextPane})
+     */
     @Override
     public void nextMove(ParserOutput p, PrintStream out) {
         parserOutput = p;
@@ -590,8 +651,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
         if (p == null || p.getCommand() == null) {
             out.println("""
-                    Quello che dici non ha senso, persino
-                    HAL alzerebbe un sopracciglio... se ne avesse uno.""");
+                                        Quello che dici non ha senso, persino
+                                        HAL alzerebbe un sopracciglio... se ne avesse uno.""");
         } else {
             setLastCommand(p.getCommand());
             notifyObservers();
@@ -605,6 +666,11 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         }
     }
 
+    /**
+     * Restituisce il messaggio di benvenuto visualizzato all’avvio del gioco.
+     *
+     * @return stringa introduttiva con data e stanza iniziale
+     */
     @Override
     public String getWelcomeMessage() {
         return "È il 22 giugno 2030 e ti trovi nella stazione spaziale internazionale, modulo "
@@ -612,6 +678,14 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                 + "\n";
     }
 
+    /**
+     * Registra un observer interessato agli eventi di gioco.
+     * <p>
+     * Se l'observer è già registrato, non viene aggiunto di nuovo.
+     * </p>
+     *
+     * @param o l’{@link GameObserver} da aggiungere
+     */
     @Override
     public void attach(GameObserver o) {
         if (!observer.contains(o)) {
@@ -619,11 +693,23 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         }
     }
 
+    /**
+     * Rimuove un observer precedentemente registrato.
+     *
+     * @param o l’{@link GameObserver} da rimuovere
+     */
     @Override
     public void detach(GameObserver o) {
         observer.remove(o);
     }
 
+    /**
+     * Notifica tutti gli observer registrati.
+     * <p>
+     * Raccoglie i messaggi restituiti da ciascun observer e li memorizza in
+     * {@link #messages}.
+     * </p>
+     */
     @Override
     public void notifyObservers() {
         for (GameObserver o : observer) {
@@ -632,11 +718,15 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
     }
 
     /**
-     * Reinizializza le connessioni tra le stanze e la lista degli observer dopo
-     * il caricamento di una partita da un salvataggio in formato JSON. I campi
-     * transient, come i riferimenti alle stanze adiacenti (neighbours) e agli
-     * observer, non vengono serializzati né ripristinati automaticamente da
-     * Gson.
+     * Ripristina lo stato del gioco dopo il caricamento da JSON:
+     * <ul>
+     * <li>ricalcola i collegamenti tra stanze;</li>
+     * <li>ricrea e registra nuovamente tutti gli observer;</li>
+     * <li>ricalcola il riferimento alla stanza corrente.</li>
+     * </ul>
+     * <p>
+     * Deve essere invocato immediatamente dopo il caricamento dello stato.
+     * </p>
      */
     public void restoreAfterLoad() {
         initRoomConnections();
@@ -649,7 +739,13 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         }
     }
 
-    /* Per il salvataggio: ricrea i collegamenti tra stanze */
+    /**
+     * Ricrea i collegamenti (neighbours) tra le stanze.
+     * <p>
+     * Utilizzato da {@link #restoreAfterLoad()} per ripristinare i campi
+     * transient dopo il caricamento da JSON.
+     * </p>
+     */
     private void initRoomConnections() {
         Room macchina = getRoomByName("MACCHINA");
         Room umano = getRoomByName("UMANO");
@@ -702,7 +798,13 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         }
     }
 
-    /* Per il salvataggio: ripristina gli observers */
+    /**
+     * Ricrea e registra tutti gli observer di gioco.
+     * <p>
+     * Utilizzato da {@link #restoreAfterLoad()} per ripopolare la lista dopo il
+     * caricamento da JSON.
+     * </p>
+     */
     private void initObservers() {
         observer.clear();
         GameObserver dropObserver = new DropObserver();

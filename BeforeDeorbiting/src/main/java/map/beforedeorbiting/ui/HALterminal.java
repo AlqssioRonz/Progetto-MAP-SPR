@@ -14,15 +14,35 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.table.JTableHeader;
 import map.beforedeorbiting.GameDesc;
-
 import map.beforedeorbiting.database.DBConfig;
 
+/**
+ * Finestra di interfaccia utente per il terminale HAL, che permette di
+ * visualizzare e controllare i vari moduli della stazione, gestire lo stato
+ * dell’AI e consultare le informazioni dell’equipaggio.
+ *
+ * @author lorenzopeluso
+ */
 public class HALterminal extends JFrame {
 
+    /**
+     * Layout a schede per cambiare i pannelli interni.
+     */
     private final CardLayout cardLayout;
+
+    /**
+     * Pannello principale che contiene tutti gli altri pannelli modulo.
+     */
     private final JPanel mainPanel;
+
+    /**
+     * Riferimento allo stato di gioco in uso.
+     */
     private final GameDesc game;
 
+    /**
+     * TextArea in cui viene mostrato lo stato corrente del modulo Robotica.
+     */
     private JTextArea roboticsStatusArea;
 
     private static final Color BG_COLOR = Color.decode("#0f111c");
@@ -31,6 +51,12 @@ public class HALterminal extends JFrame {
     private static final Color BUTTON_FG = Color.decode("#00e1d4");
     private static final Font BUTTON_FONT = new Font("Consolas", Font.BOLD, 25);
 
+    /**
+     * Crea e inizializza il terminale HAL con i vari pannelli (moduli,
+     * controllo, crew, robotica) legati allo stato di gioco.
+     *
+     * @param game l’oggetto GameDesc che contiene lo stato corrente del gioco
+     */
     public HALterminal(GameDesc game) {
         this.game = game;
         setTitle("Computer centrale della Stazione");
@@ -57,9 +83,14 @@ public class HALterminal extends JFrame {
 
         add(mainPanel);
         cardLayout.show(mainPanel, "MODULE_PANEL");
-
     }
 
+    /**
+     * Costruisce il pannello principale che permette di selezionare il modulo
+     * da visualizzare (Robotica, Supporto Vitale, Navigazione, Crew).
+     *
+     * @return JPanel con i bottoni dei moduli
+     */
     private JPanel createModulePanel() {
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
         panel.setBackground(PANEL_COLOR);
@@ -69,17 +100,13 @@ public class HALterminal extends JFrame {
         for (String name : modules) {
             JButton btn = new JButton(name);
             styleSciFiButton(btn);
-            if (null == name) {
-                btn.addActionListener(e -> cardLayout.show(mainPanel, "CONTROL_PANEL"));
-            } else {
-                switch (name) {
-                    case "Crew" ->
-                        btn.addActionListener(l -> cardLayout.show(mainPanel, "CREW_PANEL"));
-                    case "Robotica" ->
-                        btn.addActionListener(l -> cardLayout.show(mainPanel, "ROBOTICS_PANEL"));
-                    default ->
-                        btn.addActionListener(e -> cardLayout.show(mainPanel, "CONTROL_PANEL"));
-                }
+            switch (name) {
+                case "Crew" ->
+                    btn.addActionListener(l -> cardLayout.show(mainPanel, "CREW_PANEL"));
+                case "Robotica" ->
+                    btn.addActionListener(l -> cardLayout.show(mainPanel, "ROBOTICS_PANEL"));
+                default ->
+                    btn.addActionListener(e -> cardLayout.show(mainPanel, "CONTROL_PANEL"));
             }
             panel.add(btn);
         }
@@ -87,6 +114,12 @@ public class HALterminal extends JFrame {
         return panel;
     }
 
+    /**
+     * Costruisce il pannello di controllo generale della stazione, con status
+     * area e toggle per l’AI.
+     *
+     * @return JPanel del pannello di controllo
+     */
     private JPanel createControlPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBackground(PANEL_COLOR);
@@ -127,6 +160,12 @@ public class HALterminal extends JFrame {
         return panel;
     }
 
+    /**
+     * Costruisce il pannello dedicato alla Robotica, con status area e pulsanti
+     * per mostrare i codici di manovra.
+     *
+     * @return JPanel del pannello Robotica
+     */
     private JPanel createRoboticsPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBackground(PANEL_COLOR);
@@ -172,6 +211,12 @@ public class HALterminal extends JFrame {
         return panel;
     }
 
+    /**
+     * Costruisce il pannello che mostra i dati dell’equipaggio prelevati dal
+     * database in una JTable.
+     *
+     * @return JPanel del pannello Crew
+     */
     private JPanel createCrewPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBackground(PANEL_COLOR);
@@ -212,7 +257,6 @@ public class HALterminal extends JFrame {
         };
         table.setFont(new Font("Consolas", Font.PLAIN, 14));
         table.setRowHeight(24);
-
         table.setBackground(BG_COLOR);
         table.setForeground(BUTTON_FG);
         table.setGridColor(BUTTON_BG);
@@ -241,6 +285,10 @@ public class HALterminal extends JFrame {
         return panel;
     }
 
+    /**
+     * Popola la roboticsStatusArea con i codici di manovra del braccio
+     * CanadArm2 in formato testuale.
+     */
     private void showManeuverCodesInTextArea() {
         StringBuilder codes = new StringBuilder();
         codes.append("""
@@ -288,6 +336,12 @@ public class HALterminal extends JFrame {
         roboticsStatusArea.setCaretPosition(0);
     }
 
+    /**
+     * Applica uno stile “science-fiction” a un AbstractButton: font, colori di
+     * sfondo e bordo.
+     *
+     * @param btn il bottone da stilizzare
+     */
     private void styleSciFiButton(AbstractButton btn) {
         btn.setFont(BUTTON_FONT);
         btn.setBackground(BUTTON_BG);
@@ -296,6 +350,13 @@ public class HALterminal extends JFrame {
         btn.setBorder(new LineBorder(BUTTON_FG, 2));
     }
 
+    /**
+     * Genera il testo di stato da visualizzare nei pannelli Control e Robotica
+     * in base allo stato dell’AI.
+     *
+     * @param aiActive true se l’AI è attiva, false se disattivata
+     * @return stringa formattata con lo stato dei sistemi
+     */
     private String getStatusText(boolean aiActive) {
         String prefix = aiActive ? "AI Status: Active" : "AI Status: Deactivated";
         return prefix + "\n"
@@ -303,24 +364,4 @@ public class HALterminal extends JFrame {
                 + "Navigation: Online\n"
                 + "Communications: Online\n";
     }
-
-    /*public static void main(String[] args) {
-        
-        try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-            }   
-        
-        try (Connection conn = DBConfig.getConnection()) {
-            DBConfig.populateDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        SwingUtilities.invokeLater(() -> {
-            HALterminal terminal = new HALterminal();
-            terminal.setVisible(true);
-        });
-    }*/
 }

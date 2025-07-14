@@ -18,26 +18,29 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
+ * Finestra singleton che mostra all’utente la lista dei comandi di gioco
+ * sovrapposta a un’immagine di background. Utilizza uno {@link ImageIcon} per
+ * l’icona della finestra e un pannello personalizzato per disegnare lo sfondo.
  *
  * @author andre
  */
 public class CommandsUI extends JFrame {
 
-
     /**
-     * Istanza della
+     * Istanza unica di {@code CommandsUI} (pattern singleton).
      */
     private static CommandsUI instance;
+
     /**
      * Immagine di background della finestra dei comandi.
      */
     private Image backgroundImage;
 
     /**
-     * Metodo getter per ottenere la singola istanza della classe. Se la classe
-     * non è stata ancora istanziata, la istanzia.
+     * Restituisce l’unica istanza di {@code CommandsUI}, creandola se non
+     * esiste ancora.
      *
-     * @return istanza di CommandsGUI.
+     * @return l’istanza di {@code CommandsUI}
      */
     public static CommandsUI getInstance() {
         if (instance == null) {
@@ -47,34 +50,36 @@ public class CommandsUI extends JFrame {
     }
 
     /**
-     * Costruttore privato per l'impostazione del frame
+     * Costruttore privato che configura il frame:
+     * <ul>
+     * <li>Carica e disegna l’immagine di sfondo</li>
+     * <li>Imposta titolo, dimensioni, icona e comportamento di chiusura</li>
+     * <li>Aggiunge un {@link JTextArea} trasparente con la lista dei
+     * comandi</li>
+     * </ul>
      */
     private CommandsUI() {
-        // Imposta il titolo della finestra
         super("Comandi di gioco");
 
-        // Carica l'immagine di sfondo
+        // Caricamento dell’immagine di sfondo
         try {
             backgroundImage = ImageIO.read(new File("src/main/resources/img/SPAZIO1.jpg"));
         } catch (IOException e) {
-         System.err.print("Errore nel caricamento dell'immagine di background");
+            System.err.println("Errore nel caricamento dell'immagine di background: " + e.getMessage());
         }
 
-        // Configura la finestra
+        // Configurazione base del frame
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setSize(650, 560);
         setResizable(false);
         setLayout(new BorderLayout());
-        ImageIcon img = new ImageIcon("src/main/resources/img/icona_pennello.jpg");
-        setIconImage(img.getImage());
+        setIconImage(new ImageIcon("src/main/resources/img/icona_pennello.jpg").getImage());
 
-        // Pannello personalizzato per disegnare lo sfondo
+        // Pannello per disegnare lo sfondo
         JPanel backgroundPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
-                // Disegna l'immagine di sfondo
                 if (backgroundImage != null) {
                     g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
@@ -83,36 +88,35 @@ public class CommandsUI extends JFrame {
         backgroundPanel.setLayout(new BorderLayout());
         add(backgroundPanel, BorderLayout.CENTER);
 
-        //JTextArea per il testo sopra l'immagine
-        JTextArea textArea = new JTextArea("""
-                                           \s
-        INVENTARIO: visualizza gli oggetti nell'inventario
-                                           \s
-        FORWARD/NORD: per muoverti in avanti
-                                           \s
-        AFT/SUD: per muoverti indietro
-                                           \s
-        STARBOARD/EST: per muoverti a destra
-                                           \s
-        PORT/OVEST: per muoverti a sinistra
-                                           \s
-        OVERHEAD/SU: per andare sopra
-                                           \s
-        DECK/GIU: per andare sotto
-                                           \s
-        PRENDI: per prendere un oggetto
-                                           \s
-        LASCIA: per lasciare un oggetto
-                                           \s
-        USA: per usare un oggetto o più se concatenati
-                                           \s
-        OSSERVA: per osservare l'ambiente circostante o un oggetto
-                                           \s
-        SALVA: per salvare la partita
-                                           \s
-        AIUTO: per visualizzare la lista dei comandi
-                                           """);
+        // Area di testo trasparente che mostra le istruzioni
+        JTextArea textArea = new JTextArea(
+                """
+                        INVENTARIO: visualizza gli oggetti nell'inventario
 
+                        FORWARD/NORD: per muoverti in avanti
+
+                        AFT/SUD: per muoverti indietro
+
+                        STARBOARD/EST: per muoverti a destra
+
+                        PORT/OVEST: per muoverti a sinistra
+
+                        OVERHEAD/SU: per andare sopra
+
+                        DECK/GIU: per andare sotto
+
+                        PRENDI: per prendere un oggetto
+
+                        LASCIA: per lasciare un oggetto
+
+                        USA: per usare un oggetto o più se concatenati
+
+                        OSSERVA: per osservare l'ambiente circostante o un oggetto
+
+                        SALVA: per salvare la partita
+
+                        AIUTO: per visualizzare la lista dei comandi
+                        """);
         textArea.setOpaque(false);
         textArea.setEditable(false);
         textArea.setLineWrap(true);
@@ -120,14 +124,13 @@ public class CommandsUI extends JFrame {
         textArea.setFont(new Font("Consolas", Font.BOLD | Font.ITALIC, 16));
         textArea.setForeground(Color.WHITE);
 
-        // Pannello con layout trasparente per il testo
+        // Pannello trasparente per contenere il testo
         JPanel textPanel = new JPanel(new BorderLayout());
         textPanel.setOpaque(false);
         textPanel.add(textArea, BorderLayout.NORTH);
-
         backgroundPanel.add(textPanel, BorderLayout.CENTER);
 
-        // Rendi la finestra visibile
+        // Mostra la finestra al centro dello schermo
         setLocationRelativeTo(null);
         setVisible(true);
     }

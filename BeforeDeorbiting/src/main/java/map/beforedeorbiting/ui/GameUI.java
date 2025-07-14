@@ -917,9 +917,6 @@ public class GameUI extends JFrame {
                             .getCurrentRoom().getDescription());
 
                 } else if (result == 1) {
-                    printer.print(engine.getGame().getCurrentRoom().getGameStory()
-                            + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
-                            .getCurrentRoom().getDescription());
                     game.setCurrentRoom(game.getRoomByName("QUEST"));
 
                 } else if (result == -1) {
@@ -947,6 +944,7 @@ public class GameUI extends JFrame {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+        dialog.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

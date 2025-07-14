@@ -83,7 +83,7 @@ public class DirectionsPuzzleUI extends JPanel {
      * Timer che gestisce il timeout del puzzle.
      */
     private final Timer timeoutTimer;
-
+    
     /**
      * Costruisce il pannello del puzzle direzionale. Avvia un timer di 30
      * secondi, configura layout, pulsanti direzionali e pulsanti di azione, e

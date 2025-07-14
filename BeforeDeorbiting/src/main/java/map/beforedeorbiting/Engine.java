@@ -103,7 +103,7 @@ public class Engine {
                     game.getInventory().getList());
             if (p == null || p.getCommand() == null) {
                 System.out.println(
-                        "Quello che dici non ha senso, persino HAL alzerebbe un sopracciglio... se ne avesse uno.\n");
+                        "Quello che dici non ha senso, persino HAL alzerebbe un sopracciglio... se ne avesse uno.");
             } else {
                 game.nextMove(p, System.out);
                 int roomId = game.getCurrentRoom().getId();

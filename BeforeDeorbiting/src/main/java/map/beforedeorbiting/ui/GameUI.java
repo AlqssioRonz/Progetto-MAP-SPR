@@ -914,7 +914,7 @@ public class GameUI extends JFrame {
                     game.setTrapdoor(true);
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()
                             + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
-                            .getCurrentRoom().getDescription());
+                            .getCurrentRoom().getDescription() + " \n");
 
                 } else if (result == 1) {
                     printer.print(engine.getGame().getCurrentRoom().getGameStory()

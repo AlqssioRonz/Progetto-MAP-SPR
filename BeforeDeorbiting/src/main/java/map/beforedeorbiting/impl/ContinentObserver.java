@@ -43,6 +43,7 @@ public class ContinentObserver implements GameObserver {
                             || (continent == CommandType.OCEANIA && ISSContinent.equalsIgnoreCase("oceania")
                             || (continent == CommandType.ANTARTIDE && ISSContinent.equalsIgnoreCase("antartide"))
                             || (continent == CommandType.OCEANO && ISSContinent.equalsIgnoreCase("oceano")))) {
+                        game.getCurrentRoo().setRoomImage("src/main/resources/img/zarya_esplosione.png");
                         continentMsg.append("COSA DIAVOLO È STATO QUEL RUMORE?!\n"
                                 + "mi scappa un urlo prima di vedere la verità. "
                                 + "Mi avvicino al finestrino e vedo solo macerie, rottami che galleggiano nel vuoto.\n"

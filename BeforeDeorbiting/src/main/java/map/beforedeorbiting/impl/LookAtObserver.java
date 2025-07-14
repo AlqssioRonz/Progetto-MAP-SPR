@@ -314,7 +314,7 @@ public class LookAtObserver implements GameObserver, Serializable {
      */
     public String leonardoDescr(GameDesc game) {
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(4))) {
-            return "C'è un diario vicino al corpo di Susan";
+            return "C'è un diario vicino al corpo di Susan.";
         }
         return "Gestire questa situazione sta diventando impossibile.";
     }

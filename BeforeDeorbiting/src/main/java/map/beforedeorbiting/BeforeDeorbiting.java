@@ -179,7 +179,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
         diarioSusan.setPickupable(true);
         diarioSusan.setUsable(true);
         BDObject bigliettinoLuke = new BDObject(5, "Bigliettino Luke",
-                "Luke ha in mano un bigliettino. Chissà cosa ci sarà scritto.");
+                "Un bigliettino di Luke... chissà cosa ci sarà scritto.");
         bigliettinoLuke.setAlias(Set.of("bigliettino", "biglietto", "bigliettinoluke", "bigliettoluke"));
         bigliettinoLuke.setPickupable(true);
         bigliettinoLuke.setUsable(true);
@@ -381,8 +381,7 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                 """
                                                 Il modulo Kibo è carico di strumenti come sempre.
                                                 A sinistra, il pannello con diversi terminali ormai spenti: da lì hai scollegato HAL. Di fronte, il portello di comando del braccio robotico.
-                                                Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito
-                                                """);
+                                                Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito.""");
 
         // Inizializzare il formato base degli osserva - Lorenzo
         /* History */
@@ -547,9 +546,10 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
         kibo.setGameStory("""
                                 Il modulo Kibo è immobile, avvolto da una quiete irreale.
-                                Il terminale centrale si accende non appena ti avvicini. HAL:
+                                Il terminale centrale si accende non appena ti avvicini. 
 
-                                "Ti stavo aspettando."
+                                HAL:
+                          "Ti stavo aspettando."
 
                                 Immaginavo fosse tutta opera sua.
                                 HAL:

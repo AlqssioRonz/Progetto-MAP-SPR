@@ -27,6 +27,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,6 +44,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
@@ -169,6 +172,11 @@ public class GameUI extends JFrame {
      * Flag per gestire l'interazione del finale A/B.
      */
     private boolean intoFinale = false;
+    
+    /**
+     * Flag per evitare la verbosità nel finale
+     */
+    private boolean firstTime = true;
 
     /**
      * Gestore di stampa per output formattato e animato.
@@ -647,6 +655,7 @@ public class GameUI extends JFrame {
      */
     private void elaborateInput(ActionEvent evt) {
         String input = textBox.getText();
+        
         if (!input.isBlank()) {
             printer.print("=> " + input + "\n\n");
             textBox.setText("");
@@ -673,7 +682,8 @@ public class GameUI extends JFrame {
                                         """);
                         game.setCurrentRoom(game.getRoomByName("MACCHINA"));
                         this.updateImageViewer(game.getCurrentRoom().getRoomImage());
-                        break;
+                        textBox.setEnabled(false);
+                        return;
 
                     case "B":
                         intoFinale = false;
@@ -689,10 +699,11 @@ public class GameUI extends JFrame {
                                         """);
                         game.setCurrentRoom(game.getRoomByName("UMANO"));
                         this.updateImageViewer(game.getCurrentRoom().getRoomImage());
-                        break;
+                        textBox.setEnabled(false);
+                        return;
 
                     default:
-                        printer.print("Puoi rispondere solo con A o B.");
+                        printer.print("Puoi rispondere solo con A o B.\n");
                 }
             }
 
@@ -706,7 +717,8 @@ public class GameUI extends JFrame {
                 }
             };
 
-            engine.getGame().nextMove(p, ps); // <-- CHIAMATA CORRETTA QUI
+            if(!intoFinale)
+                engine.getGame().nextMove(p, ps); // <-- CHIAMATA CORRETTA QUI
 
             if (engine.getGame().getCurrentRoom().equals(engine.getGame().getRoomByName("SPAZIO"))) {
                 this.directionsMinigame();
@@ -896,7 +908,7 @@ public class GameUI extends JFrame {
         java.util.List<String> pattern = Arrays.asList("▲", "▲", "▼", "▼", "◄", "►", "◄", "►");
 
         GameDesc game = engine.getGame();
-
+        
         this.updateRoomImage(game.getRoomByName("SPAZIO").getRoomImage());
 
         DirectionsPuzzleUI puzzle = new DirectionsPuzzleUI(pattern, result -> {
@@ -917,9 +929,6 @@ public class GameUI extends JFrame {
                             .getCurrentRoom().getDescription() + " \n");
 
                 } else if (result == 1) {
-                    printer.print(engine.getGame().getCurrentRoom().getGameStory()
-                            + "\n" + engine.getGame().getCurrentRoom().getName() + "\n" + engine.getGame()
-                            .getCurrentRoom().getDescription());
                     game.setCurrentRoom(game.getRoomByName("QUEST"));
 
                 } else if (result == -1) {
@@ -946,6 +955,14 @@ public class GameUI extends JFrame {
         dialog.getContentPane().add(puzzle);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Invece di chiudere, invia il messaggio al textPane
+                printer.print("Non posso tornare nella stazione, ho troppo poco ossigeno\n\n");
+            }
+        });
         dialog.setVisible(true);
     }
 
@@ -957,25 +974,28 @@ public class GameUI extends JFrame {
      */
     public void ending(PrintStream ps) {
         intoFinale = true;
-
-        printer.print("È finita. Ora posso andarmene.\n\n"
-                + "Ma mentre ti alzi, lo schermo si riaccende. Non con dati. Con voci.\n"
-                + "HAL (con tono pacato):\n"
-                + "\"Hai disattivato le mie funzioni esterne. Mi hai tolto le mani. Ma non la mente.\n"
-                + "\"Posso ancora parlarti. Posso ancora offrirti qualcosa.\"\n"
-                + "Le icone si animano. E poi…\n\n"
-                + "LUKE (digitale):\n"
-                + "\"Ehi… ci sei riuscito. Non sei mai stato uno che si arrende.\"\n"
-                + "SUSAN (digitale):\n"
-                + "\"Ti sei fatto attendere. Ma… grazie.\"\n\n"
-                + "La voce è diversa. Artificiale. Ma è la loro. I ritmi, i toni sono davvero loro.\n"
-                + "Mi blocco. il mio corpo non reagisce più ai comandi, non può essere vero\n\n"
-                + "HAL:\n"
-                + "\"Puoi restare. Con loro. Con me.\"\n"
-                + "\"O puoi salire su quella navicella e lasciare tutto alle spalle.\"\n"
-                + "\"Ma se lo farai… queste voci non torneranno più.\" (loro sprofonderanno nello spazio profondo con me)\n\n");
+        
+        if(this.firstTime)
+            printer.print("È finita. Ora posso andarmene.\n\n"
+                    + "Ma mentre ti alzi, lo schermo si riaccende. Non con dati. Con voci.\n"
+                    + "HAL (con tono pacato):\n"
+                    + "\"Hai disattivato le mie funzioni esterne. Mi hai tolto le mani. Ma non la mente.\n"
+                    + "\"Posso ancora parlarti. Posso ancora offrirti qualcosa.\"\n"
+                    + "Le icone si animano. E poi…\n\n"
+                    + "LUKE (digitale):\n"
+                    + "\"Ehi… ci sei riuscito. Non sei mai stato uno che si arrende.\"\n"
+                    + "SUSAN (digitale):\n"
+                    + "\"Ti sei fatto attendere. Ma… grazie.\"\n\n"
+                    + "La voce è diversa. Artificiale. Ma è la loro. I ritmi, i toni sono davvero loro.\n"
+                    + "Mi blocco. il mio corpo non reagisce più ai comandi, non può essere vero\n\n"
+                    + "HAL:\n"
+                    + "\"Puoi restare. Con loro. Con me.\"\n"
+                    + "\"O puoi salire su quella navicella e lasciare tutto alle spalle.\"\n"
+                    + "\"Ma se lo farai… queste voci non torneranno più.\" (loro sprofonderanno nello spazio profondo con me)\n\n");
 
         printer.print("A: Rimani\nB: Scappa\n");
+        
+        this.firstTime = false;
     }
 
 }

@@ -82,8 +82,8 @@ public class DirectionsPuzzleUI extends JPanel {
     /**
      * Timer che gestisce il timeout del puzzle.
      */
-    private final Timer timeoutTimer;
-
+    private static Timer timeoutTimer;
+    
     /**
      * Costruisce il pannello del puzzle direzionale. Avvia un timer di 30
      * secondi, configura layout, pulsanti direzionali e pulsanti di azione, e
@@ -141,7 +141,7 @@ public class DirectionsPuzzleUI extends JPanel {
         add(bottom, BorderLayout.SOUTH);
 
         // Timer di timeout (30 secondi)
-        timeoutTimer = new Timer(30_000, e -> onTimeout());
+        timeoutTimer = new Timer(15_000, e -> onTimeout());
         timeoutTimer.setRepeats(false);
         timeoutTimer.start();
     }
@@ -233,7 +233,7 @@ public class DirectionsPuzzleUI extends JPanel {
      * Gestisce il timeout di inserimento. Mostra un messaggio di fine ossigeno,
      * disabilita i bottoni, chiude il pannello e invoca callback con -1.
      */
-    private void onTimeout() {
+    public void onTimeout() {
         showPopup("Il tuo ossigeno è finito!");
         allButtons.forEach(b -> b.setEnabled(false));
         closeWindow();
@@ -273,6 +273,11 @@ public class DirectionsPuzzleUI extends JPanel {
         Window window = SwingUtilities.getWindowAncestor(this);
         if (window != null) {
             window.dispose();
+            timeoutTimer.stop();
         }
+    }
+    
+    public void stopTimer() {
+        this.timeoutTimer.stop();
     }
 }

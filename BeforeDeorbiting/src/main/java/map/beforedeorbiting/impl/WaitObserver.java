@@ -34,7 +34,8 @@ public class WaitObserver implements GameObserver {
 
         if (parserOutput.getCommand() != null
                 && parserOutput.getCommand().getType() == CommandType.WAIT
-                && game.getCurrentRoom().equals(game.getRoomByName("DESTINY"))) {
+                && game.getCurrentRoom().equals(game.getRoomByName("DESTINY"))
+                && !game.getRoomByName("DESTINY").isVisible()) {
             // Nel modulo DESTINY la luce cambia dopo l'attesa
             game.getCurrentRoom().setRoomImage("src/main/resources/img/destiny_luce_oblo.png");
             game.getRoomByName("DESTINY").setVisible(true);

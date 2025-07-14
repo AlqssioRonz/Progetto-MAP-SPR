@@ -162,7 +162,7 @@ public class MenuUI extends JFrame {
         start = createTextButton("Nuova Partita");
         load = createTextButton("Carica Partita");
         commands = createTextButton("Comandi di Gioco");
-        credits = createTextButton("Crediti e Classifica");
+        credits = createTextButton("Crediti e Documentazione");
 
         // Pulsante audio con icona
         audio = new JButton();

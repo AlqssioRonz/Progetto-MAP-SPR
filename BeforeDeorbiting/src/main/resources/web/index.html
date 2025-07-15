@@ -327,6 +327,7 @@
         <a href="#progettazione">Progettazione</a>
         <a href="#manuale">Manuale</a>
         <a href="#soluzioni">Soluzioni</a>
+        <a href="#curiosita">Curiosità</a>
     </nav>
 
     <!-- Hero Section -->
@@ -338,7 +339,12 @@
     <section id="spiegazione">
         <h2>Spiegazione del progetto</h2>
         <p>Before Deorbiting è un progetto sviluppato come lavoro finale dal Team SPR per il corso di Metodi Avanzati di
-            Programmazione, tenuto dal Prof. Pierpaolo Basile presso l’Università degli Studi di Bari “Aldo Moro”.</p>
+            Programmazione, tenuto dal Prof. Pierpaolo Basile presso l’Università degli Studi di Bari “Aldo Moro”.
+            <br><br>
+            L'obiettivo del corso era quello di approfondire il paradigma della Programmazione a Oggetti e applicarlo
+            concretamente attraverso la realizzazione di un progetto software. In questo caso, si è scelto di sviluppare
+            un'avventura testuale.
+        </p>
         <p class="team-intro">Il Team SPR è composto da:</p>
         <ul class="authors">
             <li><a href="https://github.com/AndreSal8021" target="_blank">Andrea Salonia</a></li>
@@ -469,6 +475,17 @@
             <li><strong>GsonFactory:</strong> configura Gson con i factory e adapter personalizzati.</li>
         </ul>
         <br>
+        <h3>Diagramma delle classi</h3>
+        <p>Di seguito il diagramma delle classi di una porzione significativa del codice. Abbiamo scelto il gruppo di
+            classi che gestisce lo scheletro dell'applicazione, abbiamo incluso parser ed alcuni elementi di UI per
+            completezza.</p>
+        <br>
+        <p>Per visualizzare il diagramma in alta risoluzione, clicca sull'immagine.</p>
+        <a href="images/DiagrammaMapDark.jpg" target="_blank">
+            <img src="images/DiagrammaMapDark.jpg" alt="Diagramma delle classi"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+        </a>
+        <br>
         <div id="specifica">
             <h2>Specifiche del tipo List</h2>
             <h3> Speficica Sintattica</h3>
@@ -529,17 +546,6 @@
                 <li><code>remove(newList, id') = error</code></li>
             </ul>
         </div>
-        <br>
-        <h3>Diagramma delle classi</h3>
-        <p>Di seguito il diagramma delle classi di una porzione significativa del codice. Abbiamo scelto il gruppo di
-            classi che gestisce lo scheletro dell'applicazione, abbiamo incluso parser ed alcuni elementi di UI per
-            completezza.</p>
-        <br>
-        <p>Per visualizzare il diagramma in alta risoluzione, clicca sull'immagine.</p>
-        <a href="images/DiagrammaMapDark.jpg" target="_blank">
-            <img src="images/DiagrammaMapDark.jpg" alt="Diagramma delle classi"
-                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
-        </a>
         <br>
         <h3>Dettagli implementativi</h3>
         <p>Per ciascun argomento del corso spiegare se e come è stato utilizzato all’interno del progetto.</p>
@@ -753,6 +759,59 @@
         </ol>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
+
+    <section id="curiosita">
+        <h2>Curiosità</h2>
+        <p><strong>Before Deorbiting</strong> prende spunto dal capolavoro cinematografico <em>2001: Odissea nello
+                spazio</em>. Non solo per l’atmosfera misteriosa e il ruolo dell’intelligenza artificiale, ma anche per
+            quel senso di isolamento e scoperta che si respira durante il gioco.</p>
+
+        <p>Ciò che però rende davvero speciale questo progetto è l’attenzione quasi maniacale al realismo scientifico e
+            spaziale.</p>
+
+        <p>La mappa è infatti una riproduzione accuratissima — quasi identica alla realtà — della vera Stazione Spaziale
+            Internazionale (ISS), che, secondo i piani attuali, verrà deorbitata nel 2030. Anche la navetta usata dal
+            protagonista per fuggire nel finale si basa sul vero veicolo scelto per riportare gli astronauti sulla
+            Terra.</p>
+
+        <p>Per realizzare tutto questo, il Team SPR ha condotto una ricerca approfondita, studiando immagini
+            satellitari, report ufficiali della NASA e schemi della stazione. Moduli, passaggi e ambienti interni sono
+            stati ricostruiti nel dettaglio, integrando perfettamente trama e topografia reale della ISS.</p>
+
+        <p>Un dettaglio particolarmente interessante è legato al comando <strong>“osserva”</strong> nel modulo
+            <em>Tranquility</em>: quando lo si usa, il gioco si collega in tempo reale a un’API REST per ottenere la
+            posizione esatta della ISS. Da lì, genera un’immagine della Terra vista proprio da quel punto nello spazio.
+            Un’esperienza tanto immersiva quanto irripetibile.</p>
+
+        <p>Ed è proprio questo il punto: <strong>Before Deorbiting</strong> sarà giocabile in modo completo solo fino al
+            2030. Una volta che la vera ISS sarà deorbitata, alcune funzionalità non potranno più essere replicate.</p>
+
+        <p>Qui sotto una piccola galleria con immagini che raccontano il dietro le quinte della progettazione, tra
+            ispirazioni visive e scelte narrative.</p>
+
+        <a href="images/ISSCuriosita1.jpg" target="_blank">
+            <img src="images/ISSCuriosita1.jpg" alt="ISSCuriosita1"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+        </a>
+        <br><br>
+        <a href="images/ISSCuriosita2.jpg" target="_blank">
+            <img src="images/ISSCuriosita2.jpg" alt="ISSCuriosita2"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+        </a>
+        <br><br>
+        <a href="images/ISSCuriosita3.jpg" target="_blank">
+            <img src="images/ISSCuriosita3.jpg" alt="ISSCuriosita3"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+        </a>
+        <br><br>
+        <a href="images/ISSCuriosita4.jpg" target="_blank">
+            <img src="images/ISSCuriosita4.jpg" alt="ISSCuriosita4"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+        </a>
+        <br>
+        <a class="back-to-top" href="#top">↑ Torna su</a>
+    </section>
+
     <!-- Back-to-top button -->
     <button id="to-top">↑ Top</button>
 

@@ -193,6 +193,50 @@
             text-decoration: underline;
         }
 
+        /* AUTORI CARDS */
+        .authors {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 0;
+            margin: 20px 0;
+            list-style: none;
+        }
+
+        .team-intro {
+            text-align: center;
+            font-size: 1.2em;
+            /* opzionale: ingrandisce leggermente il testo */
+            margin-bottom: 10px;
+            /* spazio sotto */
+        }
+
+        .authors li {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform .3s, box-shadow .3s;
+        }
+
+        .authors li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .authors a {
+            display: block;
+            padding: 15px 20px;
+            color: #fff;
+            font-size: 1.1em;
+            text-decoration: none;
+            font-family: 'BDFont', sans-serif;
+        }
+
+        .authors a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         /* HERO SECTION */
         .hero {
             display: flex;
@@ -280,7 +324,6 @@
     <nav>
         <a href="#spiegazione">Spiegazione</a>
         <a href="#trama">Trama</a>
-        <a href="#specifica">Specifica</a>
         <a href="#progettazione">Progettazione</a>
         <a href="#manuale">Manuale</a>
         <a href="#soluzioni">Soluzioni</a>
@@ -296,15 +339,18 @@
         <h2>Spiegazione del progetto</h2>
         <p>Before Deorbiting è un progetto sviluppato come lavoro finale dal Team SPR per il corso di Metodi Avanzati di
             Programmazione, tenuto dal Prof. Pierpaolo Basile presso l’Università degli Studi di Bari “Aldo Moro”.</p>
-        <ul style="text-align: left;">
-        <li><a href="https://github.com/AndreSal8021"  style="color: white;">Andrea Salonia</a></li>
-        <li><a href="https://github.com/lorenzoPeluso04" style="color: white;">Lorenzo Peluso</a></li>
-        <li><a href="https://github.com/AlqssioRonz" style="color: white;">Alessio Ronzullo</a></li>
+        <p class="team-intro">Il Team SPR è composto da:</p>
+        <ul class="authors">
+            <li><a href="https://github.com/AndreSal8021" target="_blank">Andrea Salonia</a></li>
+            <li><a href="https://github.com/lorenzoPeluso04" target="_blank">Lorenzo Peluso</a></li>
+            <li><a href="https://github.com/AlqssioRonz" target="_blank">Alessio Ronzullo</a></li>
         </ul>
+        <br>
         <h3>Che cos'è un'avventura testuale?</h3>
         <p>Un’avventura testuale è un videogioco in cui il giocatore interagisce con l’ambiente scrivendo comandi
             testuali. Diffuso soprattutto agli albori dell’informatica, questo genere punta tutto sulla narrazione e
-            sull’immaginazione, offrendo un’esperienza interattiva senza elementi grafici.</p>
+            sull’immaginazione, ma può integrare elementi grafici come HUD, icone e terminali per arricchire
+            l’esperienza.</p>
         <h3>Caratteristiche principali</h3>
         <ul class="features">
             <li><strong>Interfaccia testuale:</strong> comandi scritti come “avanti”, “prendi biglietto” o “osserva”.
@@ -327,65 +373,6 @@
             Riuscirai a capire cosa sta succedendo… prima del deorbitaggio?</p>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
-
-    <section id="specifica">
-  <h2>Specifiche del tipo List</h2>
-  <h3>  Speficica Sintattica</h3>
-
-  <h3 style="text-align: left;">Tipi</h3>
-  <ul class="features">
-    <li><strong>List</strong></li>
-    <li><strong>Element</strong> (tipo generico)</li>
-    <li><strong>Integer</strong></li>
-    <li><strong>Boolean</strong></li>
-  </ul>
-    <h4 style="text-align: left;">Operatori</h4>
-  <ul class="features">
-    <li><code>newList() → List</code><br><em>Crea una nuova lista vuota</em></li>
-    <li><code>add(List, Element, Integer) → List</code><br><em>Aggiunge un elemento nella posizione indicata</em></li>
-    <li><code>isEmpty(List) → Boolean</code><br><em>True se la lista è vuota</em></li>
-    <li><code>getSize(List) → Integer</code><br><em>Restituisce la dimensione della lista</em></li>
-    <li><code>getIndex(List, Element) → Integer</code><br><em>Restituisce la posizione dell'elemento</em></li>
-    <li><code>getElement(List, Integer) → Element</code><br><em>Restituisce l'elemento in posizione</em></li>
-    <li><code>remove(List, Integer) → List</code><br><em>Rimuove l'elemento in posizione</em></li>
-    <li><code>contains(List, Element) → Boolean</code><br><em>True se l'elemento è presente</em></li>
-  </ul>
-
-  <h3>Specifica Semantica</h3>
-  <h4 style="text-align: left;">Parametri</h4>
-  <ul class="features">
-    
-    <li><code>l, l' : List</code></li>
-    <li><code>e, e' : Element</code></li>
-    <li><code>id, id' : Integer</code></li>
-  </ul>
-  
-  <h4 style="text-align:left;">Operazioni</h4>
-  <ul class="features">
-    <li><code>isEmpty(newList) = true</code></li>
-    <li><code>isEmpty(add(l, e, id)) = false</code></li>
-    <li><code>getSize(newList()) = 0</code></li>
-    <li><code>getSize(add(l, e, id)) = if isEmpty(l) then 1 else getSize(l) + 1</code></li>
-    <li><code>getIndex(add(l, e, id), e') = if e = e' then id else getIndex(l, e')</code></li>
-    <li><code>getElement(add(l, e, id), id') = if id = id' then e else getElement(l, id')</code></li>
-    <li><code>remove(add(l, e, id), id') = if id = id' then l else add(remove(l, id'), e)</code></li>
-    <li><code>contains(newList, e') = false</code></li>
-    <li><code>contains(add(l, e, id), e') = if e = e' then true else contains(l, e')</code></li>
-  </ul>
-  <h4 style="text-align: left;">Osservazioni e Costruttori</h3>
-  <img src="images/tabella_specifiche.png" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
-
-  <h3>Specifica di Restrizione</h3>
-
-  <h4 style="text-align: left;">Restrizioni</h4>
-  <ul class="features">
-    <li><code>getIndex(newList, e') = error</code></li>
-    <li><code>getElement(newList, id') = error</code></li>
-    <li><code>remove(newList, id') = error</code></li>
-  </ul>
-
-  <a class="back-to-top" href="#top">↑ Torna su</a>
-</section>
 
 
     <section id="progettazione">
@@ -425,13 +412,16 @@
             <li><strong>NotebookUI:</strong> visualizza il taccuino narrativo del giocatore.</li>
             <li><strong>PrinterUI:</strong> simula la stampa a schermo di messaggi di gioco, come da una stampante di
                 bordo.</li>
+            <li><strong>RobotArmPuzzleUI:</strong> interfaccia grafica per il minigioco del braccio robotico.</li>
+            <li><strong>InsertPasswordUI:</strong> pannello per l’inserimento della password nei terminali di bordo.
+            </li>
         </ul>
 
         <h3>Package type</h3>
         <ul class="features">
             <li><strong>BDObject:</strong> rappresenta un oggetto interattivo nel gioco, con nome, descrizione, alias e
                 proprietà.</li>
-            <li><strong>BDObjectChest:</strong> estende BDObject come contenitore apribile per altri oggetti.</li>
+            <li><strong>BDObjectChest:</strong> estende BDObject come contenitore osservabile per altri oggetti.</li>
             <li><strong>Room:</strong> definisce le stanze, descrizioni, oggetti presenti e direzioni collegate.</li>
             <li><strong>Inventory:</strong> gestisce gli oggetti raccolti dal giocatore.</li>
             <li><strong>Command:</strong> rappresenta un comando riconoscibile dal parser, con tipo e sinonimi.</li>
@@ -440,7 +430,8 @@
 
         <h3>Package impl</h3>
         <ul class="features">
-            <li><strong>GameObserver:</strong> interfaccia base per tutti gli observer del gioco.</li>
+            <li><strong>GameObserver:</strong> interfaccia base per l'implementazione del pattern Observer nel gioco.
+            </li>
             <li><strong>GameObservable:</strong> interfaccia che permette di registrare gli observer (implementata da
                 BeforeDeorbiting).</li>
             <li><strong>PickUpObserver:</strong> gestisce il comando PRENDI, aggiungendo oggetti all’inventario.</li>
@@ -452,6 +443,9 @@
             <li><strong>MovementObserver:</strong> consente il movimento tra stanze.</li>
             <li><strong>UseObserver:</strong> gestisce il comando USA per attivare effetti sugli oggetti.</li>
             <li><strong>SaveObserver:</strong> salva lo stato attuale della partita.</li>
+            <li><strong>WaitObserver:</strong> gestisce il comando ASPETTA.</li>
+            <li><strong>ContinentObserver:</strong> rileva il continente visualizzato.</li>
+            <li><strong>RotateObserver:</strong> gestisce il comando RUOTA.</li>
         </ul>
 
         <h3>Package database</h3>
@@ -466,35 +460,218 @@
             <li><strong>JSONSaveController:</strong> gestisce salvataggi e caricamenti su file JSON.</li>
             <li><strong>RestServer:</strong> server REST per il gioco, basato su Jersey.</li>
             <li><strong>HtmlResource:</strong> fornisce contenuti HTML per l’interfaccia web.</li>
-            <li><strong>LeaderboardResource:</strong> espone la classifica dei giocatori.</li>
             <li><strong>MusicController:</strong> controlla la riproduzione musicale di sottofondo.</li>
             <li><strong>ConcurrentChronometer:</strong> cronometro multithread per tenere traccia del tempo di gioco.
             </li>
+            <li><strong>ISSPositionREST:</strong> client REST per la posizione ISS.</li>
+            <li><strong>InstantAdapter:</strong> Gson TypeAdapter per java.time.Instant.</li>
+            <li><strong>DurationAdapter:</strong> Gson TypeAdapter per java.time.Duration.</li>
+            <li><strong>GsonFactory:</strong> configura Gson con i factory e adapter personalizzati.</li>
         </ul>
         <br>
+        <div id="specifica">
+            <h2>Specifiche del tipo List</h2>
+            <h3> Speficica Sintattica</h3>
+
+            <h3 style="text-align: left;">Tipi</h3>
+            <ul class="features">
+                <li><strong>List</strong></li>
+                <li><strong>Element</strong> (tipo generico)</li>
+                <li><strong>Integer</strong></li>
+                <li><strong>Boolean</strong></li>
+            </ul>
+            <h4 style="text-align: left;">Operatori</h4>
+            <ul class="features">
+                <li><code>newList() → List</code><br><em>Crea una nuova lista vuota</em></li>
+                <li><code>add(List, Element, Integer) → List</code><br><em>Aggiunge un elemento nella posizione
+                        indicata</em></li>
+                <li><code>isEmpty(List) → Boolean</code><br><em>True se la lista è vuota</em></li>
+                <li><code>getSize(List) → Integer</code><br><em>Restituisce la dimensione della lista</em></li>
+                <li><code>getIndex(List, Element) → Integer</code><br><em>Restituisce la posizione dell'elemento</em>
+                </li>
+                <li><code>getElement(List, Integer) → Element</code><br><em>Restituisce l'elemento in posizione</em>
+                </li>
+                <li><code>remove(List, Integer) → List</code><br><em>Rimuove l'elemento in posizione</em></li>
+                <li><code>contains(List, Element) → Boolean</code><br><em>True se l'elemento è presente</em></li>
+            </ul>
+
+            <h3>Specifica Semantica</h3>
+            <h4 style="text-align: left;">Osservazioni e Costruttori</h4>
+            <img src="images/tabella_specifiche.png"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            <h4 style="text-align: left;">Parametri</h4>
+            <ul class="features">
+
+                <li><code>l, l' : List</code></li>
+                <li><code>e, e' : Element</code></li>
+                <li><code>id, id' : Integer</code></li>
+            </ul>
+
+            <h4 style="text-align:left;">Operazioni</h4>
+            <ul class="features">
+                <li><code>isEmpty(newList) = true</code></li>
+                <li><code>isEmpty(add(l, e, id)) = false</code></li>
+                <li><code>getSize(newList()) = 0</code></li>
+                <li><code>getSize(add(l, e, id)) = if isEmpty(l) then 1 else getSize(l) + 1</code></li>
+                <li><code>getIndex(add(l, e, id), e') = if e = e' then id else getIndex(l, e')</code></li>
+                <li><code>getElement(add(l, e, id), id') = if id = id' then e else getElement(l, id')</code></li>
+                <li><code>remove(add(l, e, id), id') = if id = id' then l else add(remove(l, id'), e)</code></li>
+                <li><code>contains(newList, e') = false</code></li>
+                <li><code>contains(add(l, e, id), e') = if e = e' then true else contains(l, e')</code></li>
+            </ul>
+
+            <h3>Specifica di Restrizione</h3>
+
+            <h4 style="text-align: left;">Restrizioni</h4>
+            <ul class="features">
+                <li><code>getIndex(newList, e') = error</code></li>
+                <li><code>getElement(newList, id') = error</code></li>
+                <li><code>remove(newList, id') = error</code></li>
+            </ul>
+        </div>
+        <br>
         <h3>Diagramma delle classi</h3>
-        <p>Di seguito il diagramma delle classi di una porzione significativa del codice. Abbiamo scelto il gruppo di classi che gestisce lo scheletro dell'applicazione, abbiamo incluso parser ed alcuni elementi di UI per completezza.</p>
+        <p>Di seguito il diagramma delle classi di una porzione significativa del codice. Abbiamo scelto il gruppo di
+            classi che gestisce lo scheletro dell'applicazione, abbiamo incluso parser ed alcuni elementi di UI per
+            completezza.</p>
         <br>
         <p>Per visualizzare il diagramma in alta risoluzione, clicca sull'immagine.</p>
         <a href="images/DiagrammaMapDark.jpg" target="_blank">
-        <img src="images/DiagrammaMapDark.jpg" alt="Diagramma delle classi"
-       style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            <img src="images/DiagrammaMapDark.jpg" alt="Diagramma delle classi"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
         </a>
         <br>
         <h3>Dettagli implementativi</h3>
         <p>Per ciascun argomento del corso spiegare se e come è stato utilizzato all’interno del progetto.</p>
         <ul class="features">
-            <li><strong>Programmazione generica:</strong> gestione di collezioni parametrizzate per inventario e parser.
+            <li><strong>Programmazione generica applicata ai principi OOP:</strong>
+                <ul>
+                    <li><strong>Incapsulamento:</strong> classi come <code>Inventory</code> e <code>BDObject</code>
+                        nascondono gli attributi interni e offrono metodi pubblici per la gestione dei dati.</li>
+                    <a href="images/ScreenInventory1.jpg" target="_blank">
+                        <img src="images/ScreenInventory1.jpg" alt="Screen Inventory1"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <a href="images/ScreenInventory2.jpg" target="_blank">
+                        <img src="images/ScreenInventory2.jpg" alt="Screen Inventory2"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <li><strong>Astrazione:</strong> <code>GameDesc</code> fornisce un’interfaccia astratta per
+                        inizializzare il mondo di gioco e gestire i comandi, isolando i dettagli implementativi.</li>
+                    <a href="images/ScreenGameDesc.jpg" target="_blank">
+                        <img src="images/ScreenGameDesc.jpg" alt="Screen GameDesc1"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <a href="images/ScreenGameDesc2.jpg" target="_blank">
+                        <img src="images/ScreenGameDesc2.jpg" alt="Screen GameDesc2"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <a href="images/ScreenGameDesc3.jpg" target="_blank">
+                        <img src="images/ScreenGameDesc3.jpg" alt="Screen GameDesc3"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <a href="images/ScreenGameDesc4.jpg" target="_blank">
+                        <img src="images/ScreenGameDesc4.jpg" alt="Screen GameDesc4"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <li><strong>Ereditarietà:</strong> <code>BDObjectChest</code> estende <code>BDObject</code>,
+                        riutilizzando attributi e metodi comuni e aggiungendo funzionalità di contenitore.</li>
+                    <a href="images/ScreenChest1.jpg" target="_blank">
+                        <img src="images/ScreenChest1.jpg" alt="Screen ScreenChest1"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <a href="images/ScreenChest2.jpg" target="_blank">
+                        <img src="images/ScreenChest2.jpg" alt="Screen Chest2"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <li><strong>Polimorfismo:</strong> gli observer (ad es. <code>MovementObserver</code>,
+                        <code>UseObserver</code>) implementano <code>GameObserver</code>, permettendo al motore di
+                        invocare uniformemente il metodo <code>update</code> su tutte le classi concrete.
+                    </li>
+                    <a href="images/ScreenPolimorfismo1.jpg" target="_blank">
+                        <img src="images/ScreenPolimorfismo1.jpg" alt="Screen Polimorfismo1"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <a href="images/ScreenPolimorfismo2.jpg" target="_blank">
+                        <img src="images/ScreenPolimorfismo2.jpg" alt="Screen Polimorfismo2"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                    <a href="images/ScreenPolimorfismo3.jpg" target="_blank">
+                        <img src="images/ScreenPolimorfismo3.jpg" alt="Screen Polimorfismo3"
+                            style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+                    </a>
+                </ul>
             </li>
             <li><strong>File:</strong> salvataggi/caricamenti su JSON tramite JSONSaveController.</li>
-            <li><strong>Database (JDBC):</strong> AstronautsDAO per persistenza e recupero dati astronauti. Utile alla risoluzione di uno specifico puzzle.</li>
-            <li><strong>Lambda Expression:</strong> configurazione dei thread grafici di Java Swing.</li>
-            <li><strong>SWING:</strong> interfaccia grafica aggiuntiva per versioni desktop con pannelli Java Swing.
+            <a href="images/ScreenFile1.jpg" target="_blank">
+                <img src="images/ScreenFile1.jpg" alt="Screen File1"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenFile2.jpg" target="_blank">
+                <img src="images/ScreenFile2.jpg" alt="Screen File2"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <li><strong>Database (JDBC):</strong> DBConfig per creazione e comunicazione col Database. Utile alla
+                risoluzione di uno specifico puzzle:</li>
+            <a href="images/ScreenDB.jpg" target="_blank">
+                <img src="images/ScreenDB.jpg" alt="Screen DB"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <li><strong>Lambda Expression:</strong> filtro per lo stream in GameDesc e configurazione dei thread grafici
+                di Java Swing:</li>
+            <a href="images/ScreenLambda1.jpg" target="_blank">
+                <img src="images/ScreenLambda1.jpg" alt="Screen Lambda1"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenLambda2.jpg" target="_blank">
+                <img src="images/ScreenLambda2.jpg" alt="Screen Lambda2"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenLambda3.jpg" target="_blank">
+                <img src="images/ScreenLambda3.jpg" alt="Screen Lambda3"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <li><strong>SWING:</strong> interfaccia grafica aggiuntiva per versioni desktop con pannelli Java Swing:
             </li>
-            <li><strong>Thread e concorrenza:</strong> ConcurrentChronometer per cronometro di gioco. Utilizzo dei thread di aggiornamento GUI di JavaSwing.</li>
-            <li><strong>Socket/REST:</strong> RestServer e utilizzo di una API free per la soluzione di un puzzle in-game.
+            <a href="images/ScreenSWING1.jpg" target="_blank">
+                <img src="images/ScreenSWING1.jpg" alt="Screen SWING1"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenSWING2.jpg" target="_blank">
+                <img src="images/ScreenSWING2.jpg" alt="Screen SWING2"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenSWING3.jpg" target="_blank">
+                <img src="images/ScreenSWING3.jpg" alt="Screen SWING3"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <li><strong>Thread e concorrenza:</strong> ConcurrentChronometer per cronometro di gioco. Utilizzo dei
+                thread di aggiornamento GUI di JavaSwing:</li>
+            <a href="images/ScreenThread1.jpg" target="_blank">
+                <img src="images/ScreenThread1.jpg" alt="Screen Thread1"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenThread2.jpg" target="_blank">
+                <img src="images/ScreenThread2.jpg" alt="Screen Thread2"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <li><strong>Socket/REST:</strong> RestServer e utilizzo di una API free per la soluzione di un puzzle
+                in-game:
             </li>
+            <a href="images/ScreenREST1.jpg" target="_blank">
+                <img src="images/ScreenREST1.jpg" alt="Screen REST1"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenREST2.jpg" target="_blank">
+                <img src="images/ScreenREST2.jpg" alt="Screen REST2"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
+            <a href="images/ScreenREST3.jpg" target="_blank">
+                <img src="images/ScreenREST3.jpg" alt="Screen REST3"
+                    style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            </a>
         </ul>
+
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>
 
@@ -514,15 +691,18 @@
             <li><strong>USA:</strong> per usare un oggetto o concatenarne più di uno</li>
             <li><strong>OSSERVA:</strong> per osservare l'ambiente o un oggetto</li>
             <li><strong>SALVA:</strong> per salvare la partita</li>
-            <li><strong>STORIA:</strong> per mostrare delle informazioni sulla vera stazione spaziale ISS modulo per modulo</li>
+            <li><strong>STORIA:</strong> per mostrare delle informazioni sulla vera stazione spaziale ISS modulo per
+                modulo</li>
             <li><strong>AIUTO:</strong> per mostrare questa lista di comandi</li>
+            <li><strong>ASPETTA:</strong> permette di aspettare una certa quantità di tempo</li>
+            <li><strong>RUOTA:</strong> per mostrare questa lista di comandi</li>
             <li><strong>PLAY/MUTA:</strong> pulsante per attivare/disattivare la musica</li>
             <li><strong>MENU:</strong> pulsante per tornare al menu principale</li>
             <li><strong>SKIP:</strong> pulsante per mostrare tutto il testo immediatamente</li>
-            <li><strong>TIMER:</strong> indica il tempo di gioco</li>
-        <h2 style="text-align: center;">Mappa di Gioco</h2>
-         <img src="images/mappaISS.jpg" alt="Mappa di Gioco"
-        style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
+            <li><strong>TIMER:</strong> permette di girare gli oggetti</li>
+            <h2 style="text-align: center;">Mappa di Gioco</h2>
+            <img src="images/mappaISS.jpg" alt="Mappa di Gioco"
+                style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);">
         </ul>
         <a class="back-to-top" href="#top">↑ Torna su</a>
     </section>

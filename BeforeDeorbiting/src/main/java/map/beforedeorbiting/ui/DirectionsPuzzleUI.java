@@ -246,24 +246,40 @@ public class DirectionsPuzzleUI extends JPanel {
      * @param message testo da visualizzare nella finestra di dialogo
      */
     private void showPopup(String message) {
-        UIManager.put("OptionPane.background", BG_COLOR);
-        UIManager.put("Panel.background", BG_COLOR);
-        UIManager.put("OptionPane.messageForeground", ACCENT_COLOR);
-        UIManager.put("Button.background", ACCENT_COLOR);
-        UIManager.put("Button.foreground", BG_COLOR);
-        UIManager.put("Button.font", ACTION_FONT);
+        Object optBg = UIManager.get("OptionPane.background");
+        Object panelBg = UIManager.get("Panel.background");
+        Object optFg = UIManager.get("OptionPane.messageForeground");
+        Object btnBg = UIManager.get("Button.background");
+        Object btnFg = UIManager.get("Button.foreground");
+        Object btnFont = UIManager.get("Button.font");
 
-        JOptionPane.showMessageDialog(
-                this,
-                new JLabel(message, SwingConstants.CENTER) {
-            {
-                setForeground(ACCENT_COLOR);
-                setBackground(BG_COLOR);
-                setFont(ACTION_FONT);
-            }
-        },
-                "Risultato",
-                JOptionPane.INFORMATION_MESSAGE);
+        try {
+            UIManager.put("OptionPane.background", BG_COLOR);
+            UIManager.put("Panel.background", BG_COLOR);
+            UIManager.put("OptionPane.messageForeground", ACCENT_COLOR);
+            UIManager.put("Button.background", ACCENT_COLOR);
+            UIManager.put("Button.foreground", BG_COLOR);
+            UIManager.put("Button.font", ACTION_FONT);
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    new JLabel(message, SwingConstants.CENTER) {
+                {
+                    setForeground(ACCENT_COLOR);
+                    setBackground(BG_COLOR);
+                    setFont(ACTION_FONT);
+                }
+            },
+                    "Risultato",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } finally {
+            UIManager.put("OptionPane.background", optBg);
+            UIManager.put("Panel.background", panelBg);
+            UIManager.put("OptionPane.messageForeground", optFg);
+            UIManager.put("Button.background", btnBg);
+            UIManager.put("Button.foreground", btnFg);
+            UIManager.put("Button.font", btnFont);
+        }
     }
 
     /**

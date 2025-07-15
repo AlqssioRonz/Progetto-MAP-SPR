@@ -20,5 +20,5 @@ Progetto di Metodi Avanzati di Programmazione (Salonia - Peluso - Ronzullo)
 - [X] Sito - RestFul
 - [X] Aggiornare le immagini in base al conenuto
 - [X] Enigme tablet - WORKINPROGRESS - andrea
-- [ ] Documentazione
-- [ ] 100%
+- [X] Documentazione
+- [X] 100%

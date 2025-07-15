@@ -295,6 +295,13 @@ public class DirectionsPuzzleUI extends JPanel {
         }
     }
     
+    /**
+     * Ferma il timer attualmente in esecuzione.
+     * <p>
+     * Questo metodo interrompe il {@code timeoutTimer}, evitando che vengano eseguite
+     * eventuali azioni pianificate allo scadere del tempo.
+     * Utile per disattivare il countdown in corso quando non è più necessario.
+     */
     public void stopTimer() {
         this.timeoutTimer.stop();
     }

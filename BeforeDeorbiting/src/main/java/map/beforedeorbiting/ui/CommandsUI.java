@@ -70,7 +70,7 @@ public class CommandsUI extends JFrame {
 
         // Configurazione base del frame
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setSize(650, 580);
+        setSize(650, 650);
         setResizable(false);
         setLayout(new BorderLayout());
         setIconImage(new ImageIcon("src/main/resources/img/icona_pennello.jpg").getImage());
@@ -91,33 +91,37 @@ public class CommandsUI extends JFrame {
         // Area di testo trasparente che mostra le istruzioni
         JTextArea textArea = new JTextArea(
                 """
-                        INVENTARIO: visualizza gli oggetti nell'inventario
+                INVENTARIO: visualizza gli oggetti nell'inventario
 
-                        FORWARD/NORD: per muoverti in avanti
+                FORWARD/NORD: per muoverti in avanti
 
-                        AFT/SUD: per muoverti indietro
+                AFT/SUD: per muoverti indietro
 
-                        STARBOARD/EST: per muoverti a destra
+                STARBOARD/EST: per muoverti a destra
 
-                        PORT/OVEST: per muoverti a sinistra
+                PORT/OVEST: per muoverti a sinistra
 
-                        OVERHEAD/SU: per andare sopra
+                OVERHEAD/SU: per andare sopra
 
-                        DECK/GIU: per andare sotto
+                DECK/GIU: per andare sotto
 
-                        PRENDI: per prendere un oggetto
+                PRENDI: per prendere un oggetto
 
-                        LASCIA: per lasciare un oggetto
+                LASCIA: per lasciare un oggetto
 
-                        USA: per usare un oggetto o più se concatenati
+                USA: per usare un oggetto o più se concatenati
 
-                        OSSERVA: per osservare l'ambiente circostante o un oggetto
+                OSSERVA: per osservare l'ambiente circostante o un oggetto
 
-                        SALVA: per salvare la partita
+                SALVA: per salvare la partita
 
-                        AIUTO: per visualizzare la lista dei comandi
+                AIUTO: per visualizzare la lista dei comandi
                 
-                        STORIA: per conoscere la vera storia del moludo in cui ti trovi
+                STORIA: per conoscere la vera storia del moludo in cui ti trovi
+                
+                ASPETTA: permette di aspettare una certa quantità di tempo
+                
+                RUOTA: permette di girare gli oggetti
                         """);
         textArea.setOpaque(false);
         textArea.setEditable(false);

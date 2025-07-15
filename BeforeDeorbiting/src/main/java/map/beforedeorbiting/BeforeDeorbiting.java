@@ -373,16 +373,15 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                                 La botola su si è aperta e porta direttamente a Unity.
                                 Il corpo di Susan fluttua a mezz’aria, immobile.
                                 """);
-        // BUG: VIENE MOSTRATO DUE VOLTE!
 
         spazio.setLook(
                 """
-                                                Per sbloccare il portellone ti serve una sequenza di direzioni. Dovrei utilizzare il tastierino per inserirli.""");
+                Per sbloccare il portellone ti serve una sequenza di direzioni. Dovrei utilizzare il tastierino per inserirli.""");
         kibo.setLook(
                 """
-                                                Il modulo Kibo è carico di strumenti come sempre.
-                                                Di fronte, il portello di comando del braccio robotico. A sinistra, il terminale di controllo del braccio meccanico. 
-                                                Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito.""");
+                Il modulo Kibo è carico di strumenti come sempre.
+                Di fronte, il portello di comando del braccio robotico. A sinistra, il terminale di controllo del braccio meccanico. 
+                Ora, tutto è immobile. Ma qualcosa nell’aria sembra ancora muoversi… devo scappare subito.""");
 
         // Inizializzare il formato base degli osserva - Lorenzo
         /* History */
@@ -433,9 +432,8 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
                                 e lanciato nel febbraio 2010. Contiene i principali sistemi
                                 di supporto alla vita della ISS, tra cui il sistema di riciclo dell’acqua
                                 e quello di generazione dell’ossigeno. Al suo portello nadir è connessa la
-                                Cupola, una struttura dotata di finestre per l’osservazione terrestre e per
-                                il controllo delle operazioni robotiche. Tranquility ospita anche gli strumenti
-                                per l’esercizio fisico dell’equipaggio.
+                                Cupola, una struttura dotata di finestre per l’osservazione terrestre e per il controllo delle operazioni robotiche.
+                               Tranquility ospita anche gli strumenti per l’esercizio fisico dell’equipaggio.
                                 """);
 
         leonardo.setHistory("""
@@ -449,50 +447,49 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
         destiny.setHistory(
                 """
-                                                Il laboratorio Destiny è il principale modulo scientifico statunitense,
-                                                lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei
-                                                materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di
-                                                supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche.
-                                                È stato il primo laboratorio scientifico permanente della ISS.
-                                                """);
+                Il laboratorio Destiny è il principale modulo scientifico statunitense,
+                lanciato nel 2001. È utilizzato per esperimenti di biologia, fisica, scienza dei
+                materiali e altre discipline. Contiene fino a 24 rack per esperimenti e sistemi di
+                supporto. Include anche una finestra ad alta qualità ottica per osservazioni scientifiche.
+                È stato il primo laboratorio scientifico permanente della ISS.
+                """);
 
         harmony.setHistory("""
-                                Harmony, o Nodo 2, è un modulo statunitense costruito in Italia.
-                                Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per
-                                diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione,
-                                risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di
-                                sei portelli di aggancio e funge da hub logistico del segmento statunitense.
+                           Harmony, o Nodo 2, è un modulo statunitense costruito in Italia.
+                           Lanciato nel 2007 con la missione STS-120, funge da punto di connessione per
+                           diversi altri moduli come Destiny, Kibo e Columbus. Inoltre, fornisce alimentazione,
+                           risorse e accesso ai veicoli cargo come Dragon e Cygnus. Dispone di
+                           sei portelli di aggancio e funge da hub logistico del segmento statunitense.
                                 """);
 
         kibo.setHistory("""
-                                Kibo, il laboratorio giapponese, è il modulo pressurizzato più grande della ISS.
-                                È stato lanciato in tre fasi tra 2008 e 2009. Include una sezione pressurizzata,
-                                un modulo logistico e una piattaforma esterna per esperimenti esposti allo spazio.
-                                Dispone anche di un braccio robotico e di un airlock scientifico. È stato progettato
-                                e gestito dalla JAXA.
-                                """);
+                        Kibo, il laboratorio giapponese, è il modulo pressurizzato più grande della ISS.
+                        È stato lanciato in tre fasi tra 2008 e 2009. Include una sezione pressurizzata,
+                        un modulo logistico e una piattaforma esterna per esperimenti esposti allo spazio.
+                        Dispone anche di un braccio robotico e di un airlock scientifico. È stato progettato
+                        e gestito dalla JAXA.
+                        """);
 
         /* GameStory */
         zarya.setGameStory(
                 """
-                                                Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra.
-                                                Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico,
-                                                privo di vita, accasciato accanto a me.
+                Un brivido gelido mi corre lungo la schiena. Luke è lì, a terra.
+                Immobile. Nessun respiro, nessuno sguardo. Solo il corpo del mio amico, privo di vita, accasciato accanto a me.
 
-                                                Non avrei mai immaginato uno scenario del genere, e tanto meno
-                                                nel mio ultimo giorno qui. Non ho mai recepito lo spazio più
-                                                silenzioso di quanto non lo sia ora.
-                                                Devo capire cosa sta succedendo. Devo trovare Susan.
-                                                Insieme potremmo trovare una via d’uscita… magari potremmo
-                                                fuggire sulla navicella Soyuz ormeggiata proprio sotto questo modulo.
+                Non avrei mai immaginato uno scenario del genere, e tanto meno
+                nel mio ultimo giorno qui. Non ho mai recepito lo spazio più
+                silenzioso di quanto non lo sia ora.
+                Devo capire cosa sta succedendo. Devo trovare Susan.
+                Insieme potremmo trovare una via d’uscita… magari potremmo
+                fuggire sulla navicella Soyuz ormeggiata proprio sotto questo modulo.
 
-                                                All’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:
+                All’improvviso, la voce fredda e neutra dell’IA di bordo irrompe nell’aria:
 
-                                                “La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”
+                “La navicella SpaceX Dragon 2 è in posizione. A breve inizierà la procedura di ormeggio.”
 
-                                                La voce di HAL mi gela la schiena… Il tempismo è inquietante.
-                                                Ma potrebbe essere un'occasione per scappare.
-                                                """);
+                La voce di HAL mi gela la schiena… Il tempismo è inquietante.
+                Ma potrebbe essere un'occasione per scappare.
+                """);
 
         unity.setGameStory("""
                                 La porta davanti a me è bloccata, è necessario avere un codice di
@@ -530,13 +527,13 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
         destiny.setGameStory(
                 """
-                                                Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo
-                                                mi permette di vedere qualcosa, la stazione ora è dietro la Terra, è come se fosse in eclissi.
+                Appena varco la soglia, la luce si spegne di colpo, nemmeno l'oblò di questo modulo mi permette di vedere qualcosa,
+                la stazione ora è dietro la Terra, è come se fosse in eclissi.
 
-                                                La voce sintetica dell’IA di bordo annuncia:
-                                                “Il rifornimento di viveri è stato completato.
-                                                In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”
-                                                """);
+                La voce sintetica dell’IA di bordo annuncia:
+                “Il rifornimento di viveri è stato completato.
+                In base alla composizione dell’equipaggio, le provviste basteranno per i prossimi dieci mesi”
+                """);
 
         harmony.setGameStory("""
                                 Finalmente il nodo Harmony. Ancora pochi passi e potrò
@@ -576,12 +573,12 @@ public class BeforeDeorbiting extends GameDesc implements GameObservable {
 
         spazio.setGameStory(
                 """
-                                                Dopo la depressurizzazione esci nello spazio per una camminata spaziale nella tuta di Luke.
-                                                La tuta non è in grandi condizioni ma può bastare.
-                                                Usi i propulsori per raggiungere il punto di accesso esterno del modulo leonardo ma vedi un tastierino
-                                                con delle direzioni.
-                                                Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno finisca!
-                                                """);
+                Dopo la depressurizzazione esci nello spazio per una camminata spaziale nella tuta di Luke.
+                La tuta non è in grandi condizioni ma può bastare.
+                Usi i propulsori per raggiungere il punto di accesso esterno del modulo leonardo ma vedi un tastierino
+                con delle direzioni.
+                Serve per iniziare la sequenza di apertura e depressurizzazione. Non ho molto tempo prima che l'ossigeno finisca!
+                """);
 
         /* Lista di tutti gli Observer */
         GameObserver dropObserver = new DropObserver();

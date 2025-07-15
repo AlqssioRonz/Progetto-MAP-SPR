@@ -60,16 +60,14 @@ public class RotateObserver implements GameObserver {
                 }
 
             } else {
-                rotatemsg.append("Probabilmente non dovresti farlo qui... o in questo momento...");
+                rotatemsg.append("C'è un tempo e un luogo per ogni cosa, ma non ora...");
             }
-
             // Comando ROTATE senza oggetto valido
         } else if (parserOutput.getCommand() != null
                 && parserOutput.getCommand().getType() == CommandType.ROTATE
                 && parserOutput.getInvObject() == null) {
-            rotatemsg.append("Probabilmente non dovresti farlo qui... o in questo momento...");
+            rotatemsg.append("C'è un tempo e un luogo per ogni cosa, ma non ora...");
         }
-
         return rotatemsg.toString();
     }
 }

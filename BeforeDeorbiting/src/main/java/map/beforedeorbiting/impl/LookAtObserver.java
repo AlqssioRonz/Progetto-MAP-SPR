@@ -140,6 +140,12 @@ public class LookAtObserver implements GameObserver, Serializable {
                     di ossigeno, come sarà mai potuto succedere… stringe un
                     bigliettino tra le sue mani.
                          """);
+        } else if(hasSuit && !hasNote) {
+            msg.append("""
+                    Luke è seduto contro il muro, immobile. La visiera riflette
+                    la luce, ma non si muove.
+                    Era il mio migliore amico, è probabilmente morto per mancanza
+                    di ossigeno, come sarà mai potuto succedere… """);
         } else if(!hasSuit){
             if (hasNote) {
                 msg.append("""
@@ -152,7 +158,7 @@ public class LookAtObserver implements GameObserver, Serializable {
                         mi rivoltava lo stomaco.
                              """);
             }
-        }
+        } 
         if (game.getCurrentRoom().getObjects().contains(game.getObjectByID(6))) {
             msg.append(
                     "Nella stanza vedo anche un piccolo pezzo di vetro... a cosa potrà mai servire?");

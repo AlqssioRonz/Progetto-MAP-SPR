@@ -612,7 +612,7 @@ public class GameUI extends JFrame {
                     ma finalmente oggi è l'ultimo giorno di pasti liofilizzati
                     Non vedo l'ora di gustarmi un vero caffè.
 
-                    Tra poco la stazione verrà deorbitata: una volta distrutta,
+                    Tra poco la stazione verrà DEORBITATA: una volta distrutta,
                     i detriti si disperderanno nello spazio. Un po' di nostalgia la sentirò,
                     inutile negarlo.
                     Vedere la Terra da 408 chilometri d'altezza è un'esperienza che pochi possono raccontare.

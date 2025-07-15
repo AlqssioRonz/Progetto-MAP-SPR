@@ -13,7 +13,9 @@ import map.beforedeorbiting.type.CommandType;
  * condizioni di luce nel modulo DESTINY o fornisce un messaggio alternativo se
  * si resta in altre stanze.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class WaitObserver implements GameObserver {
 

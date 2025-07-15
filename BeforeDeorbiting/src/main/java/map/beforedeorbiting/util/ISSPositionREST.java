@@ -15,6 +15,8 @@ import java.util.Map;
  * l’endpoint <code>http://api.open-notify.org/iss-now.json</code>.
  *
  * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class ISSPositionREST {
 

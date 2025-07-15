@@ -24,6 +24,8 @@ import map.beforedeorbiting.util.ISSPositionREST;
  * {@link GameObservable} per il pattern Observer.
  * </p>
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class BeforeDeorbiting extends GameDesc implements GameObservable {

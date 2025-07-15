@@ -12,7 +12,9 @@ import map.beforedeorbiting.type.Command;
  * identificato, l’oggetto ambiente (se presente) e l’oggetto preso
  * dall’inventario (se presente).
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class ParserOutput {
 

@@ -8,7 +8,9 @@ package map.beforedeorbiting.type;
  * Elenca i tipi di comando supportati dal gioco Before Deorbiting. Ogni comando
  * rappresenta un’azione o una direzione che il giocatore può eseguire.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public enum CommandType {
 

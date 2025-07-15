@@ -26,6 +26,8 @@ import java.net.URI;
  * dell’applicazione.
  *
  * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class RestServer {
 

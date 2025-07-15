@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
  * corretta. Se l’utente preme ENTER, il dialogo si chiude e lo stato di
  * risoluzione viene salvato.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class RobotArmPuzzleUI extends JPanel {
 

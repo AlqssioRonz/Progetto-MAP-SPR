@@ -20,7 +20,9 @@ import map.beforedeorbiting.type.BDObject;
  * una JTextArea con l'elenco aggiornato degli oggetti presenti nell'inventario
  * del {@link GameDesc}.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class InventoryUI extends JPanel {
 

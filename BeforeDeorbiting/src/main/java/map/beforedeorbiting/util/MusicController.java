@@ -20,6 +20,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * interne al classpath (src/main/resources) che da file sul filesystem.
  * </p>
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class MusicController implements Runnable, Serializable {

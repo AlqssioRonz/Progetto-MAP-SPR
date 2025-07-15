@@ -15,6 +15,8 @@ import java.time.Instant;
  * (deserialization), ricrea l’{@code Instant} a partire dalla stringa.
  * </p>
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class InstantAdapter extends TypeAdapter<Instant> {

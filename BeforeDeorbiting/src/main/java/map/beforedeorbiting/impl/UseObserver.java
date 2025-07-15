@@ -26,6 +26,8 @@ import map.beforedeorbiting.ui.RobotArmPuzzleUI;
  * di utilizzare gli oggetti in gioco e di visualizzare un messaggio di
  * risposta. Per farlo, implementa l'interfaccia GameObserver.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class UseObserver implements GameObserver, Serializable {

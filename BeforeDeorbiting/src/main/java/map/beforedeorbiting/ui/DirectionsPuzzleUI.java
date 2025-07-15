@@ -29,7 +29,9 @@ import javax.swing.UIManager;
  * (CLEAR, ENTER), traccia l’input dell’utente, gestisce timeout e invoca una
  * callback di risultato.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class DirectionsPuzzleUI extends JPanel {
 

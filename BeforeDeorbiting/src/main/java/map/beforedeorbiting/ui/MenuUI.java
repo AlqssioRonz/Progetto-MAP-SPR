@@ -47,6 +47,8 @@ import map.beforedeorbiting.util.RestServer;
  * Contiene pulsanti per avviare, caricare e visualizzare comandi/crediti, più
  * un toggle per l'audio e un server REST per la classifica online.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class MenuUI extends JFrame {

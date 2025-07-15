@@ -14,8 +14,9 @@ import java.util.List;
  * starboard, port, overhead, deck). Contiene anche gli oggetti presenti nella
  * stanza.
  *
+ * @author andre
  * @author lorenzopeluso
- * @author alessioronzullo
+ * @author ronzu
  */
 public class Room {
 

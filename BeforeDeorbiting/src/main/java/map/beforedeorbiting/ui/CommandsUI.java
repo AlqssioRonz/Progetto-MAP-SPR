@@ -23,6 +23,8 @@ import javax.swing.JTextArea;
  * l’icona della finestra e un pannello personalizzato per disegnare lo sfondo.
  *
  * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class CommandsUI extends JFrame {
 

@@ -22,7 +22,9 @@ import map.beforedeorbiting.type.CommandType;
  * definisce i metodi che una sottoclasse deve implementare per
  * inizializzazione, avanzamento della storia e messaggio di benvenuto.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public abstract class GameDesc implements Serializable {
 

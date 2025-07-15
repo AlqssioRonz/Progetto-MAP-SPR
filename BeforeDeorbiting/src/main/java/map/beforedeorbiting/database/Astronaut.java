@@ -4,7 +4,9 @@ package map.beforedeorbiting.database;
  * Rappresenta un astronauta con i suoi dati anagrafici e il totale delle ore
  * trascorse a bordo della Stazione Spaziale Internazionale (ISS).
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class Astronaut {
 

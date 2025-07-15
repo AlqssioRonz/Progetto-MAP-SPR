@@ -44,7 +44,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
@@ -60,6 +59,10 @@ import map.beforedeorbiting.util.ConcurrentChronometer;
  * Finestra principale dell’interfaccia grafica di “Before Deorbiting”. Coordina
  * creazione/avvio del gioco, I/O testuale, pannello immagine, menu (musica,
  * timer, skip, esci), minigiochi e finale interattivo.
+ * 
+ * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class GameUI extends JFrame {
 

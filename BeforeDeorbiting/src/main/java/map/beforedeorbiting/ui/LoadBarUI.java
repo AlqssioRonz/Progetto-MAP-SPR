@@ -27,6 +27,8 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
  * </p>
  *
  * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class LoadBarUI extends JPanel {
 

@@ -9,6 +9,10 @@ import java.time.Duration;
 
 /**
  * Adatta un {@link Duration} per la serializzazione con Gson.
+ * 
+ * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class DurationAdapter extends TypeAdapter<Duration> {
 

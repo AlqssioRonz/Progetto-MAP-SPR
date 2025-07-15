@@ -16,7 +16,9 @@ import java.util.Set;
  * e identifica comandi e oggetti sia nell’ambiente sia nell’inventario.
  * Fornisce il risultato dell’analisi in un {@link ParserOutput}.
  * 
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class Parser {
 

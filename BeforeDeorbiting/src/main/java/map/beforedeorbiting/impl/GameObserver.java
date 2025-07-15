@@ -12,7 +12,9 @@ import map.beforedeorbiting.parser.ParserOutput;
  * {@code GameObserver} viene notificata ad ogni comando valido inserito dal
  * giocatore e può reagire producendo un messaggio da visualizzare.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  * @see GameObservable
  */
 public interface GameObserver {

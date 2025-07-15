@@ -12,6 +12,8 @@ import map.beforedeorbiting.ui.CommandsUI;
  * visualizzare la lista di tutti i comandi di gioco. Per farlo, implmenta
  * l'interfaccia GameObserver.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class HelpObserver implements GameObserver, Serializable {

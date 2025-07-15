@@ -21,7 +21,9 @@ import map.beforedeorbiting.database.DBConfig;
  * fornito per eseguire la logica del gioco. All’avvio popola il database e
  * stampa i messaggi di benvenuto e di uscita.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class Engine {
 

@@ -23,6 +23,10 @@ import map.beforedeorbiting.util.ISSPositionREST;
  * Osservatore per il comando 'OSSERVA'. Genera descrizioni dettagliate in base
  * alla stanza corrente e allo stato degli oggetti presenti, incluse
  * informazioni sulla posizione attuale della ISS.
+ * 
+ * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class LookAtObserver implements GameObserver, Serializable {
 

@@ -18,6 +18,8 @@ import map.beforedeorbiting.type.BDObjectChest;
  * prendere l'oggetto desiderato (anche dalla cassa) e inserirlo
  * nell'inventario. Per farlo, implmenta l'interfaccia GameObserver.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class PickUpObserver implements GameObserver, Serializable {

@@ -42,6 +42,8 @@ import map.beforedeorbiting.GameDesc;
  * non decorata, permette di leggere/modificare il file
  * <code>notebook.txt</code> e salva le modifiche su disco.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class NotebookUI {

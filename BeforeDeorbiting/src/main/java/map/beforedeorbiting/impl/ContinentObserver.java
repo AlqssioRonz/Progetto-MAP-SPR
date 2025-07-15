@@ -16,7 +16,9 @@ import map.beforedeorbiting.util.ISSPositionREST;
  * flag della botola e restituisce il messaggio di scoperta; altrimenti
  * restituisce messaggi di errore o di input non sensato.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  * @see ISSPositionREST
  */
 public class ContinentObserver implements GameObserver {

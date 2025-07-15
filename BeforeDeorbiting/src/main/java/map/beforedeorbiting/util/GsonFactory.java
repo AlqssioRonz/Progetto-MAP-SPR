@@ -21,6 +21,8 @@ import java.time.Instant;
  * La singola istanza {@link #GSON} può essere riutilizzata ovunque
  * nell'applicazione.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class GsonFactory {

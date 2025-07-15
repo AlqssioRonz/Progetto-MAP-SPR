@@ -18,6 +18,8 @@ import map.beforedeorbiting.ui.InventoryUI;
  * lasciare l'oggetto desiderato e inserirlo nella stanza o nella cassa della
  * stanza. Per farlo, implmenta l'interfaccia GameObserver.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class DropObserver implements GameObserver, Serializable {

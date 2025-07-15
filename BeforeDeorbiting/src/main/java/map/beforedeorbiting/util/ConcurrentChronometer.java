@@ -14,7 +14,9 @@ import javax.swing.SwingUtilities;
  * aggiornare la UI in modo thread-safe.
  * </p>
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class ConcurrentChronometer extends Thread {
 

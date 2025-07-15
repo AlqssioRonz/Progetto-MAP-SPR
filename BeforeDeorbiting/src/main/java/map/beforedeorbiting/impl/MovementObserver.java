@@ -23,7 +23,9 @@ import map.beforedeorbiting.type.Room;
  * {@code apply()} della {@link java.util.function.Function} viene poi
  * recuperata la stanza di destinazione.
  *
- * @author lorenz
+ * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class MovementObserver implements GameObserver, Serializable {
 

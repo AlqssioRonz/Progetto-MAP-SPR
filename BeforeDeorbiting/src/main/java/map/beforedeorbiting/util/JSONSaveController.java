@@ -20,6 +20,8 @@ import map.beforedeorbiting.GameDesc;
  * timestamp. Ora registra un InstanceCreator per GameDesc in modo da istanziare
  * BeforeDeorbiting().
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class JSONSaveController {

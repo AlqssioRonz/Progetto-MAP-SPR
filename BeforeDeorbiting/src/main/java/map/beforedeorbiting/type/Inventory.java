@@ -12,7 +12,9 @@ import java.util.List;
  * raccolti durante l’avventura. Fornisce metodi per accedere, aggiungere,
  * rimuovere e contare gli oggetti presenti.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class Inventory {
 

@@ -16,7 +16,9 @@ import map.beforedeorbiting.GameDesc;
  * pemette di implementare il comando visualizzando i contenuti dell'inventario.
  * Per farlo, implmenta l'interfaccia GameObserver.
  * 
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class InventoryObserver implements GameObserver, Serializable {
     

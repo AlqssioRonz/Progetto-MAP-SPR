@@ -13,6 +13,8 @@ import javax.swing.text.StyledDocument;
  * {@link ExecutorService} per non bloccare il thread UI.
  *
  * @author andre
+ * @author lorenzopeluso
+ * @author ronzu
  */
 public class PrinterUI {
 

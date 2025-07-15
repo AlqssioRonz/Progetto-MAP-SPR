@@ -9,7 +9,9 @@ package map.beforedeorbiting.impl;
  * rimuovere {@link GameObserver} e di notificare tutti gli osservatori
  * registrati quando si verifica un evento di gioco rilevante.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public interface GameObservable {
 

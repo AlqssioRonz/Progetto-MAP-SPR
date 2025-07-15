@@ -15,7 +15,9 @@ import org.h2.tools.RunScript;
  * per memorizzare i dati degli astronauti. Fornisce metodi per ottenere una
  * connessione e per popolare il database tramite script SQL.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class DBConfig {
 

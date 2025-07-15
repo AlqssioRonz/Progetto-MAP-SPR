@@ -15,6 +15,8 @@ import map.beforedeorbiting.type.CommandType;
  * l’accesso alle stanze Harmony e Kibo. In caso contrario restituisce messaggi
  * di errore o input non valido.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 public class RotateObserver implements GameObserver {

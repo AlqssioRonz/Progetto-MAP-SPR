@@ -21,7 +21,9 @@ import map.beforedeorbiting.database.DBConfig;
  * visualizzare e controllare i vari moduli della stazione, gestire lo stato
  * dell’AI e consultare le informazioni dell’equipaggio.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class HALterminal extends JFrame {
 

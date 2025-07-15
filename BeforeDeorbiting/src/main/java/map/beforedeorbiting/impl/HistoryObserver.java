@@ -15,7 +15,9 @@ import map.beforedeorbiting.type.CommandType;
  * storia del modulo in cui si trova il giocatore.
  * Per farlo, implmenta l'interfaccia GameObserver.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class HistoryObserver implements GameObserver, Serializable {
     

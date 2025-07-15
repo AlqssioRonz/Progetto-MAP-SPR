@@ -14,7 +14,9 @@ import javax.swing.border.LineBorder;
  * modale. Mostra un campo di testo per l’inserimento e un pulsante "Enter",
  * restituendo se la password corrisponde a quella attesa.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class InsertPasswordUI extends JPanel {
 

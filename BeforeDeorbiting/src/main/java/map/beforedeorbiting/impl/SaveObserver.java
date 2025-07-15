@@ -19,6 +19,8 @@ import map.beforedeorbiting.util.JSONSaveController;
  * stato del gioco e utilizza {@link JSONSaveController} per effettuare il
  * salvataggio con timestamp.
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  * @see JSONSaveController
  */

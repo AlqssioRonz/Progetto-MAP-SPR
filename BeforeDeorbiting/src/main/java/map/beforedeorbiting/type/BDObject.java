@@ -12,7 +12,9 @@ import java.util.Set;
  * descrizione, alias e proprietà di utilizzo all’interno del gioco. Può essere
  * raccolto (pickupable), utilizzato (usable) o essere in uso (inUse).
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class BDObject {
 

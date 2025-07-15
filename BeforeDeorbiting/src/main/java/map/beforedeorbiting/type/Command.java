@@ -13,7 +13,9 @@ import java.util.Arrays;
  * un nome principale e un insieme di alias per riconoscere varianti testuali
  * del comando stesso.
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class Command {
 

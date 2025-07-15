@@ -20,6 +20,8 @@ import java.nio.charset.StandardCharsets;
  * <li>Situazioni di file non trovato (404) o errori interni (500).</li>
  * </ul>
  *
+ * @author andre
+ * @author lorenzopeluso
  * @author ronzu
  */
 @Path("/")

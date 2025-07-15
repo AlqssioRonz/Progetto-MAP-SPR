@@ -13,7 +13,9 @@ import java.util.Set;
  * può contenere più oggetti di gioco. Fornisce metodi per gestire il contenuto
  * interno (lista di {@link BDObject}).
  *
+ * @author andre
  * @author lorenzopeluso
+ * @author ronzu
  */
 public class BDObjectChest extends BDObject {
 
